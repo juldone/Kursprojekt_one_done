@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { max-width: 400px; width: 100%; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h2 { text-align: center; }
+        label { display: block; margin: 10px 0 5px; }
+        input { width: 100%; padding: 8px; margin: 5px 0 15px; border: 1px solid #ddd; border-radius: 4px; }
+        button { width: 100%; padding: 10px; border: none; background-color: #28a745; color: white; font-size: 16px; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .message { margin-top: 20px; font-size: 14px; color: red; text-align: center; }
+        .token { margin-top: 20px; word-wrap: break-word; color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="registerEmail">Email:</label>
+            <input type="email" id="registerEmail" required>
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" required>
+            <button type="submit">Register</button>
+        </form>
+
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" required>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="message" id="message"></div>
+        <div class="token" id="token"></div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
+        const messageDiv = document.getElementById('message');
+        const tokenDiv = document.getElementById('token');
+
+        // Event Listener für die Registrierung
+        registerForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.color = 'green';
+                } else {
+                    messageDiv.textContent = data.message || 'Registration failed';
+                    messageDiv.style.color = 'red';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Error: ' + error.message;
+                messageDiv.style.color = 'red';
+            }
+        });
+
+        // Event Listener für das Login
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.color = 'green';
+                    tokenDiv.textContent = 'JWT Token: ' + data.token;
+                } else {
+                    messageDiv.textContent = data.message || 'Login failed';
+                    messageDiv.style.color = 'red';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Error: ' + error.message;
+                messageDiv.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
