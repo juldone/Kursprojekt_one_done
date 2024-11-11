@@ -10,7 +10,7 @@
 // specialEffect -> chance = die Wahrscheinlichkeit mit welcher der Effekt ausgelöst wird, type = der Schadenstyp (Feuer, Gift, Fluch usw.)
 // description = die Beschreibung des jeweiligen Effekts.
 //
-// Eine Beispielewaffe würde unten z.B. so aussehen.
+// Eine Beispielewaffe würde z.B. so aussehen.
 
 const t2Bows = [
   {
