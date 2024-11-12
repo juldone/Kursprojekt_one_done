@@ -3,13 +3,14 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
 
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
