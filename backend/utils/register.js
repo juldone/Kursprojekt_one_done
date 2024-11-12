@@ -1,32 +1,38 @@
 import bcrypt from "bcryptjs";
 import User from "../data/User.js";
-import counter from "../data/counter";
-import autoincID from "../data/counter";
+import Counter from "../data/counter.js";
 
 export async function register(req, res) {
-  autoincID.findOneAndUpdate(
-    { id: "autoval" },
-    { $inc: { sequenz: 1 } },
-    { new: true },
-    (err, cd) => {
-      if (cd == null) {
-        const newval = new autoincID({ id: "autoval", sequenz: 1 });
-        newval.save();
-      }
-    }
-  );
-
   try {
     const { email, password, userName } = req.body;
 
+    // Überprüfen, ob Benutzer oder Benutzername bereits existieren
     const existingUser = await User.findOne({
       $or: [{ email }, { userName }],
     });
     if (existingUser) {
-      return res.status(400).json({ message: "Benutzer existiert bereits" });
+      return res
+        .status(400)
+        .json({ message: "Benutzer oder Benutzername existiert bereits" });
     }
+
+    // Passwort hashen
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashedPassword, userName });
+
+    // Erhöhe den Zähler nur, wenn der Benutzer tatsächlich angelegt wird
+    const counter = await Counter.findOneAndUpdate(
+      { id: "autoval" },
+      { $inc: { sequenz: 1 } },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+
+    // Neuen Benutzer mit der auto-incrementierten `userId` erstellen
+    const user = new User({
+      userId: counter.sequenz, // Verwendung der auto-incrementierten ID
+      email,
+      password: hashedPassword,
+      userName,
+    });
     await user.save();
 
     res.status(201).json({ message: "Benutzer erfolgreich registriert" });

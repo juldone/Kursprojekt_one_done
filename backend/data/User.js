@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   userName: { type: String, required: true, unique: true },
-  uniqueAccID: { type: Number, required: true, unique: true },
+  userId: { type: Number, required: true, unique: true },
 });
 
 // Benutzer-Modell exportieren
