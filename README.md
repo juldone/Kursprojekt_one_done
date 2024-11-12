@@ -4,6 +4,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 
 ### Changelog 12.11.24
 
+### Tim
+
+- character.js erstellt, accountId hinzugefügt Feld hinzugefügt
+- characterCreation.js erstellt, Beschreibung hinzugefügt, Eindeutige Charakter-ID generiert und mit Account ID verbunden
+
 ### Brian
 
 - Die Datenbank MongoDB lokal installiert um sich mit dem Backend-Server (express) zu verbinden.
