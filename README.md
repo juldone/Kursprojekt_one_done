@@ -8,6 +8,12 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 
 - character.js erstellt, accountId hinzugefügt Feld hinzugefügt
 - characterCreation.js erstellt, Beschreibung hinzugefügt, Eindeutige Charakter-ID generiert und mit Account ID verbunden
+- Arbeitsbranch "Crafting" erstellt folgende Punkte sind in der Branch passiert:
+- chanceTable erstellt mit welches Seltenheitsgrade und ihre Wahrscheinlichkeiten enthält
+- crafting.js erstellt und ein Schema für ein Crafting-Rezept geschrieben
+- craftingController.js erstellt und eine Funktion geschrieben die überprüft ob genug Materialien für das Rezept vorhanden sind, das Crafting durchführt und welches Item erstellt wurde.
+- craftingSystem.js erstellt
+- ### REMINDER - MORGEN FUNKTIONEN TESTEN
 
 ### Brian
 
