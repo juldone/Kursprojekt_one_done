@@ -2,41 +2,26 @@ import fs from "fs";
 import path from "path";
 import mongoose from "mongoose";
 import { fileURLToPath } from "url";
-import models from "../data/weapons.js"; // Importiere das gesamte Export-Objekt
-import dotenv from "dotenv";
-dotenv.config();
+import models from "../data/armor.js"; // Importiere das gesamte Export-Objekt
 
-const { Weapon } = models; // Entnimm nur das `Weapon`-Modell
+const { Armor } = models; // Entnimm nur das `Weapon`-Modell
 
 // __dirname in ES-Modulen erstellen
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export async function weaponImport(req, res) {
+export async function armorImport(req, res) {
   try {
-    const uri = process.env.MONGODB_URI;
-    if (!uri) {
-      console.error(
-        "MongoDB URI nicht gefunden. Bitte in der .env Datei setzen."
-      );
-      process.exit(1);
-    }
-
-    mongoose
-      .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => console.log("MongoDB verbunden"))
-      .catch((error) => console.error("MongoDB Verbindungsfehler:", error));
-
     // Lade die JSON-Datei aus dem angegebenen Verzeichnis
-    const weaponData = JSON.parse(
+    const armorData = JSON.parse(
       await fs.promises.readFile(
-        path.join(__dirname, "..", "data", "waffen.json"),
+        path.join(__dirname, "..", "data", "armor.json"),
         "utf-8"
       )
     );
 
     // Speichern der Waffen-Daten in der MongoDB
-    const docs = await Weapon.insertMany(weaponData);
+    const docs = await Armor.insertMany(armorData);
     console.log("Waffen erfolgreich importiert:", docs);
 
     // Verbindung schließen und Erfolgsmeldung senden

@@ -7,7 +7,9 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
-import { Weapon } from "./data/weapons.js";
+import { weaponImport } from "./utils/weaponimport.js";
+
+import { armorImport } from "./utils/armorimport.js";
 
 const app = express();
 app.use(express.json());
@@ -37,7 +39,9 @@ app.get("/protected", protect);
 app.use(express.static(path.resolve("public")));
 
 // Route zum Abrufen aller Waffen
-app.get("/weapons", Weapon);
+app.get("/weapons", weaponImport); // /weapons, Weapon
+// Route zum Abrufen aller Armor
+app.get("/armor", armorImport);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
