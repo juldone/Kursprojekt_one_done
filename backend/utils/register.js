@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import User from "../models/user.js"; // Importiere das User-Modell
 import User from "./data/User.js"; // Passe den Pfad an, wenn notwendig
 
 export async function register(req, res) {
