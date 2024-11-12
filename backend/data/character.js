@@ -1,29 +1,29 @@
 import mongoose from "mongoose";
 
 // Charakter-Schema
-
 const characterSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  level: { type: Number, required: true, default: 1 },
+  _id: { type: String, required: true, unique: true },
+  accountId: { type: String, required: true }, // Verweis auf die Account-ID
+  name: { type: String, required: true },
+  level: { type: Number, default: 1 },
   stats: {
-    hp: { type: Number, required: true, default: 100 },
-    attack: { type: Number, required: true, default: 10 },
-    defense: { type: Number, required: true, default: 5 },
-    speed: { type: Number, required: true, default: 5 },
+    hp: { type: Number, default: 100 },
+    attack: { type: Number, default: 10 },
+    defense: { type: Number, default: 5 },
+    speed: { type: Number, default: 5 },
   },
   equipment: {
     armor: {
-      head: { type: String, required: false },
-      chest: { type: String, required: false },
-      hands: { type: String, required: false },
-      legs: { type: String, required: false },
+      head: { type: String, default: null },
+      chest: { type: String, default: null },
+      hands: { type: String, default: null },
+      legs: { type: String, default: null },
     },
-    weapon: { type: String, required: false },
+    weapon: { type: String, default: null },
   },
 });
 
 // Charakter-Modell exportieren
-
 const Character = mongoose.model("Character", characterSchema);
 
 export default Character;

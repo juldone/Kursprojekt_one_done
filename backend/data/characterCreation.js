@@ -1,68 +1,43 @@
-// Funktionsbeschreibung
-// Erstellung neuer Charaktere und vergabe automatischer Standardwerte.
-// Importierung der character.js-Datei zur Verwendung des Character-Modells.
-
-import mongoose from "mongoose";
-import Character from "./character.js"; // Character-Schema wird importiert
-
-// Verbindung zur MongoDB-Datenbank herstellen
-mongoose.connect("mongodb://localhost:27017/gameDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+import Character from "../models/character.js";
+import { v4 as uuidv4 } from "uuid"; // UUID-Bibliothek für eindeutige IDs
 
 // Funktion zur Charaktererstellung
-async function createCharacter({ name, level = 1, stats, equipment }) {
-  try {
-    //Standardwerte festlegen, falls nicht bereitgsetellt
-    const defaultStats = {
-      hp: 100,
-      attack: 10,
-      defense: 5,
-      speed: 5,
-      ...stats, // Werte überschreiben, falls sie in stats angegeben sind
-    };
+export async function createCharacter(data) {
+  const { accountId, name, level = 1, stats, equipment } = data; // accountId wird nun auch übernommen
 
-    const defaultEquipment = {
-      armor: {
-        head: null,
-        chest: null,
-        hands: null,
-        legs: null,
-        ...equipment?.armor, // spezifische Rüstungsteile
-      },
-      weapon: equipment?.weapon || null,
-    };
+  // Standard-Stats setzen
+  const defaultStats = {
+    hp: 100,
+    attack: 10,
+    defense: 5,
+    speed: 5,
+    ...stats,
+  };
 
-    // Neuen Charakter erstellen
-    const newCharacter = new Character({
-      name,
-      level,
-      stats: defaultStats,
-      equipment: defaultEquipment,
-    });
-
-    // Charakter in der Datenbank speichern
-    const savedCharacter = await newCharacter.save();
-    console.log("Dein Charakter trägt folgenden Namen:", savedCharacter);
-    return savedCharacter;
-  } catch (error) {
-    console.error("Fehler bei der Charaktererstellung:", error);
-  }
-}
-
-// Beispiel für die Charaktererstellung
-createCharacter({
-  name: "BraveKnight",
-  level: 5,
-  stats: { hp: 120, attack: 15, defense: 10, speed: 10 },
-  equipment: {
+  // Standard-Ausrüstung setzen
+  const defaultEquipment = {
     armor: {
-      head: "item_id_head_armor",
-      chest: "item_id_chest_armor",
-      hands: "item_id_hand_armor",
-      legs: "item_id_leg_armor",
+      head: null,
+      chest: null,
+      hands: null,
+      legs: null,
+      ...equipment?.armor,
     },
-    weapon: "item_id_weapon",
-  },
-}).then(() => mongoose.disconnect()); // Verbindung zur Datenbank schließen
+    weapon: equipment?.weapon || null,
+  };
+
+  // Eindeutige Charakter-ID generieren
+  const uniqueCharacterID = uuidv4();
+
+  const newCharacter = new Character({
+    _id: uniqueCharacterID, // Generierte Charakter-ID
+    accountId: accountId, // Zugehörige Account-ID
+    name,
+    level,
+    stats: defaultStats,
+    equipment: defaultEquipment,
+  });
+
+  // Charakter in der Datenbank speichern
+  return await newCharacter.save();
+}
