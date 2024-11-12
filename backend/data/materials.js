@@ -32,13 +32,13 @@ const materials = [
     name: "Stein",
     description: "Ein paar solide Steine",
     minAmount: 1,
-    maxAmount: 3,
+    maxAmount: 2,
   },
   {
     name: "Metal",
     description: "Teile einer Rüstung",
     minAmount: 0,
-    maxAmount: 2,
+    maxAmount: 1,
   },
 ];
 
