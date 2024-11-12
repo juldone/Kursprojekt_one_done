@@ -1,3 +1,7 @@
+// Funktionsbeschreibung
+// Erstellung neuer Charaktere und vergabe automatischer Standardwerte.
+// Importierung der character.js-Datei zur Verwendung des Character-Modells.
+
 import mongoose from "mongoose";
 import Character from "./character.js"; // Character-Schema wird importiert
 
@@ -47,7 +51,7 @@ async function createCharacter({ name, level = 1, stats, equipment }) {
   }
 }
 
-// Beispiel für die CHaraktererstellung
+// Beispiel für die Charaktererstellung
 createCharacter({
   name: "BraveKnight",
   level: 5,
