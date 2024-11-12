@@ -7,7 +7,6 @@
 // minDamage -> der Mindestwert an Schaden der pro Angriff ausgegeben wird.
 // maxDamage -> der Maximalwert an Schaden der pro Angriff ausgegeben wird.
 //attackSpeed -> Angriffsgeschwindigkeit. Skala von 0 (ultra langsam) bis 5 (ultra schnell).
-
 const t1Artefacts = [
   {
     tier: "T1",
