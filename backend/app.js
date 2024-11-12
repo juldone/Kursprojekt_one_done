@@ -7,6 +7,7 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
+import { Weapon } from "./data/weapons.js";
 
 const app = express();
 app.use(express.json());
@@ -34,6 +35,9 @@ app.get("/protected", protect);
 
 // Statische Dateien bereitstellen
 app.use(express.static(path.resolve("public")));
+
+// Route zum Abrufen aller Waffen
+app.get("/weapons", Weapon);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

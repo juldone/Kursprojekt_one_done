@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Drachenklauen-Axt",
+    "wea_id": "1",
+    "type": "axt",
+    "damage": 75,
+    "attributes": {
+      "strength": 20,
+      "agility": 5,
+      "intelligence": 0
+    },
+    "rarity": "epic",
+    "price": 1500
+  },
+  {
+    "name": "Feuerbogen",
+    "type": "bogen",
+    "wea_id": "2",
+    "damage": 60,
+    "attributes": {
+      "strength": 50,
+      "agility": 123,
+      "intelligence": 4
+    },
+    "rarity": "rare",
+    "price": 1200
+  },
+  {
+    "name": "Stacheldrahtkeule",
+    "wea_id": "3",
+    "type": "axt",
+    "damage": 75,
+    "attributes": {
+      "strength": 20,
+      "agility": 5,
+      "intelligence": 0
+    },
+    "rarity": "epic",
+    "price": 1500
+  }
+]

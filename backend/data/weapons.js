@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 // Waffenschema
 const weaponSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  wea_id: { type: Number, required: true },
   type: {
     type: String,
     enum: ["artefakte", "axt", "bogen", "schwerter"],
@@ -25,6 +26,7 @@ const weaponSchema = new mongoose.Schema({
 // Rüstungsschema
 const armorSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  amr_id: { type: Number, required: true },
   type: {
     type: String,
     enum: ["kopf", "brust", "hände", "beine"],
