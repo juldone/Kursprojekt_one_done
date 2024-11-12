@@ -14,12 +14,17 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Die Datenbank MongoDB lokal installiert um sich mit dem Backend-Server (express) zu verbinden.
 - User.js editiert um eine Unique userID hinzuzufügen , register.js dementsprechen überarbeitet für das AutoIncrement.
 - Frontend erstellt um die jeweiligen Funktion wie Register und Login zu testen um Fehler dementsprechen zu beheben.
+- weapon- und armorimport überarbeitet und gesplittet sodass beides modular läuft.
+- weapon.js und armor.js voneinander getrennt für modularität
+- Überprüft ob beides in der Datenbank importiert wird über waffen.json und armor.json
+- Fehler bei der ID muss noch überarbeitet werden.
+- **Datenbankverbindung muss nochmal überprüft werden derzeit ein Sicherheitsproblem**
 
 ### Julian
 
 - Lokalen Server mit verknüpfung zu Mongo DB eingerichtet
 - Waffenschema und Rüstungsschema in der weapons.js erstellt im weapon branch
-
+- Armor und Weapons.js sind überarbeitet,  GET - Abfragen laufen jetzt dauerhaft jetzt ohne fehlermeldung
 ## Ordnerstruktur
 
 BaJuTi_Gaming/
