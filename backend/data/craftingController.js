@@ -49,3 +49,5 @@ async function craftItem(recipeId, playerMaterials) {
 }
 
 module.exports = { craftItem };
+
+// brb bin depressiv postman internal server error 500. brauche crack um das hier durchzustehen.
