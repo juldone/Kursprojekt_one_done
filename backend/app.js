@@ -11,6 +11,8 @@ import { weaponImport } from "./utils/weaponimport.js";
 import { itemImport } from "./utils/itemimport.js";
 import { armorImport } from "./utils/armorimport.js";
 import { materials } from "./utils/materialimport.js";
+import { enemyImport } from "./data/enemies/enemyimport.js";
+import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 
@@ -62,6 +64,11 @@ app.get("/item", itemImport);
 
 // Materialien-Import
 app.post("/materials", materials);
+
+app.get("/enemy", enemyImport);
+
+// Füge die Kampf-Route hinzu
+app.post("/battle", battle);
 
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
