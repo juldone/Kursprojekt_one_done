@@ -5,6 +5,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 13.11.24
 
 ### Tim
+- MongoDB richtig initialisiert
+- lokale Probleme mit MSI-Setup behoben
+- characterCreation.js getestet
+- ordnerstruktur in der Branch erstellt
+- auf Branch auf Merge Vorgang vorbereitet.
 
 ### Brian
 
