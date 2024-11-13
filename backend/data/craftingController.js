@@ -35,7 +35,7 @@ async function craftItem(recipeId, playerMaterials) {
       playerMaterial.amount -= ingredient.amount;
     });
 
-    // Neues Item hinzufügen (kannst du anpassen, um es ins Inventar zu legen)
+    // Neues Item hinzufügen
     console.log(`Item ${recipe.resultItem} erstellt!`);
     return {
       success: true,
