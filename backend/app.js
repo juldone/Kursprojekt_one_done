@@ -11,7 +11,7 @@ import { weaponImport } from "./utils/weaponimport.js";
 import { armorImport } from "./utils/armorimport.js";
 import { materials } from "./utils/materialimport.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
-import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
+import { craftRandomItem } from "./data/crafting/";
 
 // Initialisiere Express
 const app = express();
