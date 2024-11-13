@@ -21,36 +21,31 @@ export async function itemImport(req, res) {
       )
     );
 
-    // Überprüfen, ob es überhaupt neue Items gibt (Vergleiche IDs in der DB)
+    // Überprüfe, ob die importierten IDs bereits in der Datenbank existieren
     const existingIds = await Item.find({
       id: { $in: itemData.map((item) => item.id) },
     }).select("id");
 
+    // Erstelle eine Liste der bereits existierenden IDs in der DB
     const existingIdsSet = new Set(existingIds.map((item) => item.id));
     const newItemData = itemData.filter((item) => !existingIdsSet.has(item.id));
 
     // Wenn keine neuen Items vorhanden sind
     if (newItemData.length === 0) {
-      console.log(
-        "Keine neuen Items zum Importieren, alle IDs existieren bereits."
-      );
-      return;
+      return res.status(400).json({
+        message:
+          "Keine neuen Items zum Importieren, alle IDs existieren bereits.",
+      });
     }
 
-    // Erstelle ein Array von Update-Operationen für die neuen Items (mit upsert)
-    const operations = newItemData.map((item) => ({
-      updateOne: {
-        filter: { id: item.id }, // Suche nach Items mit der gleichen ID
-        update: { $set: item }, // Aktualisiere die Felder
-        upsert: true, // Wenn das Item nicht existiert, füge es hinzu
-      },
-    }));
+    // Daten in der MongoDB speichern
+    const docs = await Item.insertMany(newItemData);
+    console.log("Items erfolgreich importiert:", docs);
 
-    // Führe die Bulk-Operation aus, um Duplikate zu vermeiden
-    const result = await Item.bulkWrite(operations);
-
-    console.log("Items erfolgreich importiert:", result);
+    // Erfolgsmeldung senden
+    res.status(200).json({ message: "Items erfolgreich importiert", docs });
   } catch (err) {
     console.error("Fehler beim Importieren der Items:", err);
+    res.status(500).json({ error: "Fehler beim Importieren der Items" });
   }
 }

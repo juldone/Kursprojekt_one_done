@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // Rüstungsschema
 const armorSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  id: { type: Number, required: true },
+  id: { type: Number, required: true, unique: true },
   type: {
     type: String,
     enum: ["kopf", "brust", "hände", "beine"],

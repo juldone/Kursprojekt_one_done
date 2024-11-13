@@ -7,10 +7,7 @@ const itemSchema = new mongoose.Schema({
     required: true,
   },
 
-  id: {
-    type: Number,
-    required: true,
-  },
+  id: { type: Number, required: true, unique: true },
 
   type: {
     type: String,
@@ -28,4 +25,4 @@ const itemSchema = new mongoose.Schema({
 // Modelle für Items exportieren
 const Item = mongoose.model("Item", itemSchema);
 
-export default { Item };
+export default Item;

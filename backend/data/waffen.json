@@ -64,5 +64,16 @@
       "agility": 50,
       "intelligence": 15
     }
+  },
+  {
+    "name": "Lichtschwert4000",
+    "id": 1006,
+    "type": "Schwert",
+    "damage": 95,
+    "attributes": {
+      "strength": 25,
+      "agility": 50,
+      "intelligence": 15
+    }
   }
 ]
