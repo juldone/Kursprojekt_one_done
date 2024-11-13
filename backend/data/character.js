@@ -7,7 +7,7 @@ const characterSchema = new mongoose.Schema({
   _id: { type: String, required: true, unique: true },
 
   // accountId: Verweist auf die ID des Benutzerkontos, das den Charakter besitzt.
-  accountId: { type: String, required: true }, // Verweis auf die Account-ID
+  accountId: { type: Number, required: true }, // Verweis auf die Account-ID
 
   // Name des Charakters, als String gespeichert und erforderlich.
   name: { type: String, required: true },
