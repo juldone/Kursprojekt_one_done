@@ -2,11 +2,8 @@ import fs from "fs";
 import path from "path";
 import mongoose from "mongoose";
 import { fileURLToPath } from "url";
-import models from "../data/weapons.js"; // Importiert das gesamte Export-Objekt
+import Weapon from "../data/weapons.js"; // Modell importieren
 
-const { Weapon } = models; // Entnimm nur das 'Weapon' - Modell
-
-// __dirname in ES-Modulen erstellen
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -20,9 +17,9 @@ export async function weaponImport(req, res) {
       )
     );
 
-    // Überprüfe, ob die Verindung besteht
+    // Überprüfe, ob die Verbindung zur MongoDB besteht
     if (!mongoose.connection.readyState) {
-      return res.status(500).json({ error: "keine Datenbankverbindung" });
+      return res.status(500).json({ error: "Keine Datenbankverbindung" });
     }
 
     // Daten in der MongoDB speichern
