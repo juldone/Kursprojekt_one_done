@@ -7,7 +7,13 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
+<<<<<<< HEAD
 import { craftRandomItem } from "file:///C:/Users/Tim%60s%20PC/BaJuTi_Gaming/BaJuTi_Gaming/backend/craftingSystem.js"; // Relative Pfadangabe versucht, da Modul bisher nicht geladen werden konnte
+=======
+import { weaponImport } from "./utils/weaponimport.js";
+
+import { armorImport } from "./utils/armorimport.js";
+>>>>>>> 3a08eb38d2932f693ac8a9bba40e0c6985e8c851
 
 const app = express();
 app.use(express.json());
@@ -38,6 +44,11 @@ app.get("/craft", (req, res) => {
 });
 
 app.use(express.static(path.resolve("public")));
+
+// Route zum Abrufen aller Waffen
+app.get("/weapons", weaponImport); // /weapons, Weapon
+// Route zum Abrufen aller Armor
+app.get("/armor", armorImport);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
