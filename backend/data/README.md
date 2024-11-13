@@ -8,6 +8,10 @@
 - wir müssen von vers. items unterscheiden
 - armor worunter brust , kopf , hände und beine zählt
 - waffen 1H ,2H , ranged oder magical
+- User brauch noch ein Inventar
+- beim craften müssen die mats abgezogen werden , die rarität ausgewürfelt werden und der gegenstand ins spieler inventar gepackt werden.
+- zusätzlich brauch der character noch eine funktion damit die gecrafteten Sachen angelegt werden können ( kann man sicherlich mit einer - funktion machen.)
+- Übersicht der stats des characters. sprich alle stats müssen zusammengerechnet werden.
 
 ## Laut recherche könnte das so aussehen
 
