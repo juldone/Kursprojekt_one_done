@@ -28,5 +28,15 @@
       "health": 10,
       "defense": 5
     }
+  },
+  {
+    "name": "Handschuhe der eschicklichkeit",
+    "id": 2003,
+    "type": "hände",
+    "defense": 30,
+    "attributes": {
+      "health": 10,
+      "defense": 5
+    }
   }
 ]

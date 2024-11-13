@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import connectDB from "../db.js"; // Importiere die zentrale DB-Verbindung
+import Armor from "../data/armor.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,16 +22,14 @@ export async function armorImport(req, res) {
     );
 
     // Überprüfe, ob die importierten IDs bereits in der Datenbank existieren
-    const existingIds = await armor
-      .find({
-        id: { $in: armorData.map((armor) => armor.id) },
-      })
-      .select("id");
+    const existingIds = await Armor.find({
+      id: { $in: armorData.map((armor) => armor.id) },
+    }).select("id");
 
     // Erstelle eine Liste der bereits existierenden IDs in der DB
     const existingIdsSet = new Set(existingIds.map((armor) => armor.id));
     const newArmorData = armorData.filter(
-      (weapon) => !existingIdsSet.has(armor.id)
+      (armor) => !existingIdsSet.has(armor.id)
     );
 
     // Wenn keine neuen Waffen vorhanden sind

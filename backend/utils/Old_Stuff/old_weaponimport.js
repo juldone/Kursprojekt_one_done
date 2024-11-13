@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import mongoose from "mongoose";
 import { fileURLToPath } from "url";
-import Weapon from "../data/weapons.js"; // Modell importieren
+import Weapon from "../../data/weapons.js"; // Modell importieren
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

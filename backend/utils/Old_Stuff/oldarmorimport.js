@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import mongoose from "mongoose";
 import { fileURLToPath } from "url";
-import models from "../data/armor.js"; // Importiert das gesamte Export-Objekt
+import models from "../../data/armor.js"; // Importiert das gesamte Export-Objekt
 
 const { Armor } = models; // Entnimm nur das `Armor`-Modell
 

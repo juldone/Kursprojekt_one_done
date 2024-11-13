@@ -17,4 +17,4 @@ const armorSchema = new mongoose.Schema({
 });
 
 const Armor = mongoose.model("Armor", armorSchema);
-export default { Armor };
+export default Armor;

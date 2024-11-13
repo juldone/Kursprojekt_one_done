@@ -2,8 +2,8 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import Item from "../data/Items/items.js"; // Modell korrekt importieren
-import connectDB from "../db.js"; // Importiere die zentrale DB-Verbindung
+import Item from "../../data/Items/items.js"; // Modell korrekt importieren
+import connectDB from "../../db.js"; // Importiere die zentrale DB-Verbindung
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
