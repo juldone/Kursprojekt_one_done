@@ -10,6 +10,7 @@ import { register } from "./utils/register.js";
 import { craftRandomItem } from "file:///C:/Users/Tim%60s%20PC/BaJuTi_Gaming/BaJuTi_Gaming/backend/craftingSystem.js"; // Relative Pfadangabe versucht, da Modul bisher nicht geladen werden konnte
 import { weaponImport } from "./utils/weaponimport.js";
 import { armorImport } from "./utils/armorimport.js";
+import { materials } from "./utils/materialimport.js";
 
 const app = express();
 app.use(express.json());
@@ -45,6 +46,9 @@ app.use(express.static(path.resolve("public")));
 app.get("/weapons", weaponImport); // /weapons, Weapon
 // Route zum Abrufen aller Armor
 app.get("/armor", armorImport);
+
+// Verbinde die Material-Route
+app.post("/materials", materials);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
