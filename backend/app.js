@@ -4,8 +4,6 @@ import express from "express";
 import mongoose from "mongoose";
 import path from "path";
 import cors from "cors";
-
-// Importiere alle benötigten Routen und Funktionen
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
@@ -32,7 +30,7 @@ if (!uri) {
 }
 
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(uri)
   .then(() => console.log("Mit MongoDB verbunden"))
   .catch((error) => console.error("MongoDB Verbindungsfehler:", error));
 
