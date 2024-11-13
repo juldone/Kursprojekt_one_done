@@ -2,6 +2,14 @@
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
+### Changelog 13.11.24
+
+### Tim
+
+### Brian
+
+### Julian
+
 ### Changelog 12.11.24
 
 ### Tim
