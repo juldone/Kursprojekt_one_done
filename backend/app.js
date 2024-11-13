@@ -11,10 +11,18 @@ import { weaponImport } from "./utils/weaponimport.js";
 import { itemImport } from "./utils/itemimport.js";
 import { armorImport } from "./utils/armorimport.js";
 import { materials } from "./utils/materialimport.js";
+import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
+import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 
+// Initialisiere Express
 const app = express();
+
+// Middleware, um JSON-Daten zu verarbeiten
 app.use(express.json());
+
+// CORS konfigurieren, falls erforderlich
 app.use(cors());
+
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -23,32 +31,45 @@ if (!uri) {
 }
 
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB verbunden"))
+  .connect(uri)
+  .then(() => console.log("Mit MongoDB verbunden"))
   .catch((error) => console.error("MongoDB Verbindungsfehler:", error));
 
-// Registrierungs-Route
-app.post("/register", register);
+// Routen definieren
 
-// Login-Route
+// Registrierung und Login
+app.post("/register", register);
 app.post("/login", login);
 
-// Geschützte Route
+// Geschützte Route (z.B. nach Login)
 app.get("/protected", protect);
 
-// Statische Dateien bereitstellen
-app.use(express.static(path.resolve("public")));
+// Crafting-System (Zufälliges Item generieren)
+app.get("/craft", (req, res) => {
+  const result = craftRandomItem();
+  res.json({
+    message: `Du hast ein ${result.rarity} ${result.itemType} erhalten!`,
+  });
+});
 
-// Route zum Abrufen aller Waffen
-app.get("/weapons", weaponImport); // /weapons, Weapon
-// Route zum Abrufen aller Armor
+// Waffen-Import
+app.get("/weapons", weaponImport);
+
+// Armor-Import
 app.get("/armor", armorImport);
 // Route zum Abrufen aller Items
 app.get("/item", itemImport);
 
-// Verbinde die Material-Route
+// Materialien-Import
 app.post("/materials", materials);
 
+// Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
+app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
+
+// Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
+app.use(express.static(path.resolve("public")));
+
+// Server starten
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);
