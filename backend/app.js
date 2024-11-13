@@ -11,6 +11,7 @@ import { weaponImport } from "./utils/weaponimport.js";
 import { armorImport } from "./utils/armorimport.js";
 import { materials } from "./utils/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
+import { battle } from "./controllers/battlecontroller.js";
 
 const app = express();
 app.use(express.json());
@@ -48,6 +49,9 @@ app.get("/armor", armorImport);
 app.post("/materials", materials);
 
 app.get("/enemy", enemyImport);
+
+// Füge die Kampf-Route hinzu
+app.post("/battle", battle);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
