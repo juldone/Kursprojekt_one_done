@@ -3,10 +3,9 @@ import mongoose from "mongoose";
 // Waffenschema
 const weaponSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  wea_id: { type: Number, required: true },
+  id: { type: Number, required: true }, // Sicherstellen, dass id einzigartig ist, falls nötig
   type: {
     type: String,
-    enum: ["artefakte", "axt", "bogen", "schwerter"],
     required: true,
   },
   damage: { type: Number, required: true },
@@ -15,15 +14,9 @@ const weaponSchema = new mongoose.Schema({
     agility: { type: Number, default: 0 },
     intelligence: { type: Number, default: 0 },
   },
-  rarity: {
-    type: String,
-    enum: ["common", "uncommon", "rare", "epic", "legendary"],
-    required: true,
-  },
-  price: { type: Number, required: true },
 });
 
-// Modelle für Waffen und Rüstungen erstellen und exportieren
+// Modell für Waffen erstellen und exportieren
 const Weapon = mongoose.model("Weapon", weaponSchema);
 
-export default { Weapon };
+export default Weapon;
