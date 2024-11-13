@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 // Definiere das Schema für Charakterdokumente in der Datenbank.
 const characterSchema = new mongoose.Schema({
-  // Definiere das _id-Feld als Zeichenkette, die erforderlich und eindeutig ist (Charakter-ID).
-  _id: { type: String, required: true, unique: true },
+  // Definiere eine separate Charakter-ID als String, die erforderlich und eindeutig ist.
+  characterId: { type: String, required: true, unique: true },
 
   // accountId: Verweist auf die ID des Benutzerkontos, das den Charakter besitzt.
   accountId: { type: String, required: [true, "Account ID ist erforderlich"] },
