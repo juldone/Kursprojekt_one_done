@@ -1,38 +1,42 @@
 [
   {
     "name": "Helm des Sturms",
-    "amr_id": 4,
+    "id": 2000,
     "type": "kopf",
     "defense": 50,
     "attributes": {
       "health": 20,
       "defense": 15
-    },
-    "rarity": "rare",
-    "price": 1500
+    }
   },
   {
     "name": "Brustplatte des Wächters",
-    "amr_id": 5,
+    "id": 2001,
     "type": "brust",
     "defense": 120,
     "attributes": {
       "health": 50,
       "defense": 30
-    },
-    "rarity": "epic",
-    "price": 3500
+    }
   },
   {
     "name": "Handschuhe der Geschicklichkeit",
-    "amr_id": 6,
+    "id": 2002,
     "type": "hände",
     "defense": 30,
     "attributes": {
       "health": 10,
       "defense": 5
-    },
-    "rarity": "uncommon",
-    "price": 800
+    }
+  },
+  {
+    "name": "Handschuhe der eschicklichkeit",
+    "id": 2003,
+    "type": "hände",
+    "defense": 30,
+    "attributes": {
+      "health": 10,
+      "defense": 5
+    }
   }
 ]
