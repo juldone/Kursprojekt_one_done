@@ -9,6 +9,14 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Brian
 
 ### Julian
+- armor.js items.js und weapons.js überarbeitet / neue ID-Struktur hinzugefügt / Attribute entfernt
+- Datenbanken bearbeitet 
+- eingeständige DB.js erstellt um zu MongoDB zu connecten ( Abrufen einzelner connectes zur MongDB von Datenbanken 
+  gebündelte und in DB.js eingefügt )
+- verwaltung der DB.js implementiert
+-  Sicherheitslücke für Dauerhaften aktiven DB-Serverzugang geschlossen
+-  ID Struktur  für MONGODB angepasst
+-  importdateien ( armor, weapons, items ) überprüfung hinzugefügt (von existierenden IDs in der DB / Implementierung zur überprüfung von neuen IDs zu existierenden / Listenabgleich falls keine neuen Daten hinzugefügt werden = benachrichtigung
 
 ### Changelog 12.11.24
 
