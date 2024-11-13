@@ -1,14 +1,17 @@
 // Importiere das Character-Modell aus der Datei character.js, um es in der Funktion zu verwenden.
 import Character from "../models/character.js";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+
+const uri = process.env.MONGO_URI;
 // Importiere die UUID-Bibliothek, um eindeutige IDs für die Charaktere zu generieren.
 import { v4 as uuidv4 } from "uuid"; // UUID-Bibliothek für eindeutige IDs
 
 // Stelle eine Verbindung zur MongoDB-Datenbank her (bitte die vollständige Verbindungs-URL ergänzen).
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB verbunden"))
+  .then(() => console.log("MongoDB verbunden)"))
   .catch((error) => console.error("MongoDB Verbindungsfehler:", error));
 
 // Definiere die Funktion zur Charaktererstellung. Sie ist asynchron, um auf die Datenbankspeicherung warten zu können.
