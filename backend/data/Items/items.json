@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Ritterhelm",
+    "id": "5000",
+    "type": "headgear",
+    "attributes": { "strength": 10, "agility": 2, "intelligence": 0 }
+  },
+  {
+    "name": "Zaubererhut",
+    "id": "5001",
+    "type": "headgear",
+    "attributes": { "strength": 0, "agility": 5, "intelligence": 15 }
+  },
+  {
+    "name": "Jägerkappe",
+    "id": "5002",
+    "type": "headgear",
+    "attributes": { "strength": 5, "agility": 10, "intelligence": 3 }
+  },
+
+  {
+    "name": "Ritterrüstung",
+    "id": "5003",
+    "type": "chestarmor",
+    "attributes": { "strength": 20, "agility": 3, "intelligence": 0 }
+  },
+  {
+    "name": "Robe",
+    "id": "5004",
+    "type": "chestarmor",
+    "attributes": { "strength": 0, "agility": 7, "intelligence": 12 }
+  },
+  {
+    "name": "Lederrüstung",
+    "id": "5005",
+    "type": "chestarmor",
+    "attributes": { "strength": 15, "agility": 6, "intelligence": 2 }
+  },
+
+  {
+    "name": "Ritterhose",
+    "id": "5006",
+    "type": "pants",
+    "attributes": { "strength": 12, "agility": 4, "intelligence": 0 }
+  },
+  {
+    "name": "Stoffhose",
+    "id": "5007",
+    "type": "pants",
+    "attributes": { "strength": 0, "agility": 5, "intelligence": 8 }
+  },
+  {
+    "name": "Lederhose",
+    "id": "5008",
+    "type": "pants",
+    "attributes": { "strength": 10, "agility": 8, "intelligence": 1 }
+  },
+
+  {
+    "name": "Ritterschuhe",
+    "id": "5009",
+    "type": "shoes",
+    "attributes": { "strength": 8, "agility": 6, "intelligence": 0 }
+  },
+  {
+    "name": "Sandalen",
+    "id": "5010",
+    "type": "shoes",
+    "attributes": { "strength": 0, "agility": 12, "intelligence": 3 }
+  },
+  {
+    "name": "Lederstiefel",
+    "id": "5011",
+    "type": "shoes",
+    "attributes": { "strength": 6, "agility": 9, "intelligence": 1 }
+  }
+]
