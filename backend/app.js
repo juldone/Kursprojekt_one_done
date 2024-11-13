@@ -8,8 +8,8 @@ import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
 import { weaponImport } from "./utils/weaponimport.js";
-
 import { armorImport } from "./utils/armorimport.js";
+import { materials } from "./utils/materialimport.js";
 
 const app = express();
 app.use(express.json());
@@ -42,6 +42,9 @@ app.use(express.static(path.resolve("public")));
 app.get("/weapons", weaponImport); // /weapons, Weapon
 // Route zum Abrufen aller Armor
 app.get("/armor", armorImport);
+
+// Verbinde die Material-Route
+app.post("/materials", materials);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
