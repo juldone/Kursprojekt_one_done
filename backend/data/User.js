@@ -13,6 +13,12 @@ const userSchema = new mongoose.Schema({
     Stein: { type: Number, default: 0 },
     Metall: { type: Number, default: 0 },
   },
+  inventory: [
+    {
+      itemName: { type: String, required: true },
+      rarity: { type: String }, // optional, falls es eine Rarität gibt
+    },
+  ],
 });
 
 // Benutzer-Modell exportieren
