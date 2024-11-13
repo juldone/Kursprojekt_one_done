@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 // Schema für ein Crafting-Rezept
 const craftingRecipeSchema = new mongoose.Schema({
+  ID: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
   resultItem: {
     type: String,
     required: true, // Name des resultierenden Items
@@ -25,7 +30,8 @@ const craftingRecipeSchema = new mongoose.Schema({
   ],
 });
 
-// Beispielrezepte
+// Beispielrezepte - diese müssen in eine Seperate JSON Datei - diese Daten müssen in eine Datenbank importiert werden um dann in Form einer
+// ID aufgerufen zu werden
 const recipes = [
   {
     resultItem: "Holzbogen",

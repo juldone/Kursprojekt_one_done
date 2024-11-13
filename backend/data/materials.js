@@ -10,35 +10,22 @@ const materialSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  minAmount: {
-    type: Number,
-    required: true,
-  },
-  maxAmount: {
-    type: Number,
-    required: true,
-  },
 });
 
-// Beispielmaterialien (zum Testen)
+// Beispielmaterialien (zum Testen) - Müssen in eine seperate JSON-Datei, diese Daten müssen in eine Datenbank importiert werden um dann in Form einer
+// ID aufgerufen zu werden
 const materials = [
   {
     name: "Holz",
     description: "Ein paar Holzbretter",
-    minAmount: 1,
-    maxAmount: 4,
   },
   {
     name: "Stein",
     description: "Ein paar solide Steine",
-    minAmount: 1,
-    maxAmount: 2,
   },
   {
     name: "Metal",
     description: "Teile einer Rüstung",
-    minAmount: 0,
-    maxAmount: 1,
   },
 ];
 
