@@ -5,10 +5,29 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 13.11.24
 
 ### Tim
+- MongoDB richtig initialisiert
+- lokale Probleme mit MSI-Setup behoben
+- characterCreation.js getestet
+- ordnerstruktur in der Branch erstellt
+- auf Branch auf Merge Vorgang vorbereitet.
 
 ### Brian
-
+- Fehler behoben in einigen Datein
+- User.js überarbeitet und in der DB überprüft
+- materialsimport.js erstellt und materialen dem spieler hinzugefügt
+- battlecontroller geschrieben damit der user gegen einen bot kämpfen kann.
+- authenticator geschrieben damit man nur zugang zu bestimmten bereichen hat sowohl mit testtoken als auch mit logintoken geprüft
+- ID´s des User accounts angepasst.
+- alle prototyp branches geprüft und in main gemerged und nachträglich nochmal auf funktion gestestet
 ### Julian
+- armor.js items.js und weapons.js überarbeitet / neue ID-Struktur hinzugefügt / Attribute entfernt
+- Datenbanken bearbeitet 
+- eingeständige DB.js erstellt um zu MongoDB zu connecten ( Abrufen einzelner connectes zur MongDB von Datenbanken 
+  gebündelte und in DB.js eingefügt )
+- verwaltung der DB.js implementiert
+-  Sicherheitslücke für Dauerhaften aktiven DB-Serverzugang geschlossen
+-  ID Struktur  für MONGODB angepasst
+-  importdateien ( armor, weapons, items ) überprüfung hinzugefügt (von existierenden IDs in der DB / Implementierung zur überprüfung von neuen IDs zu existierenden / Listenabgleich falls keine neuen Daten hinzugefügt werden = benachrichtigung
 
 ### Changelog 12.11.24
 
