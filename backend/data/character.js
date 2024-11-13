@@ -1,4 +1,3 @@
-// Importiere das Mongoose-Modul, um mit MongoDB-Datenbanken zu arbeiten.
 import mongoose from "mongoose";
 
 // Definiere das Schema für Charakterdokumente in der Datenbank.
@@ -7,20 +6,42 @@ const characterSchema = new mongoose.Schema({
   _id: { type: String, required: true, unique: true },
 
   // accountId: Verweist auf die ID des Benutzerkontos, das den Charakter besitzt.
-  accountId: { type: String, required: true }, // Verweis auf die Account-ID
+  accountId: { type: String, required: [true, "Account ID ist erforderlich"] },
 
   // Name des Charakters, als String gespeichert und erforderlich.
-  name: { type: String, required: true },
+  name: {
+    type: String,
+    required: [true, "Name des Charakters ist erforderlich"],
+    minlength: [2, "Name muss mindestens 2 Zeichen lang sein"],
+    maxlength: [12, "Name darf nicht länger als 12 Zeichen sein"],
+  },
 
   // Level des Charakters mit einem Standardwert von 1, falls nicht angegeben.
-  level: { type: Number, default: 1 },
+  level: {
+    type: Number,
+    default: 1,
+    min: [1, "Level muss mindestens 1 sein"],
+    max: [100, "Level darf nicht mehr als 100 sein"],
+  },
 
   // Objekt für die Statistiken (stats) des Charakters, mit Standardwerten für jeden Wert.
   stats: {
-    hp: { type: Number, default: 100 }, // Lebenspunkte (Health Points) mit Standardwert 100
-    attack: { type: Number, default: 10 }, // Angriffswert des Charakters mit Standardwert 10
-    defense: { type: Number, default: 5 }, // Verteidigungswert des Charakters mit Standardwert 5
-    speed: { type: Number, default: 5 }, // Geschwindigkeitswert des Charakters mit Standardwert 5
+    hp: { type: Number, default: 100, min: [0, "HP darf nicht negativ sein"] }, // Lebenspunkte (Health Points) mit Standardwert 100
+    attack: {
+      type: Number,
+      default: 10,
+      min: [0, "Angriffswert darf nicht negativ sein"],
+    }, // Angriffswert des Charakters mit Standardwert 10
+    defense: {
+      type: Number,
+      default: 5,
+      min: [0, "Verteidigungswert darf nicht negativ sein"],
+    }, // Verteidigungswert des Charakters mit Standardwert 5
+    speed: {
+      type: Number,
+      default: 5,
+      min: [0, "Geschwindigkeitswert darf nicht negativ sein"],
+    }, // Geschwindigkeitswert des Charakters mit Standardwert 5
   },
 
   // Objekt für die Ausrüstung (equipment) des Charakters, unterteilt in Rüstung und Waffen.

@@ -8,7 +8,7 @@ const rarityChanceTable = {
 };
 
 // Funktion, die basierend auf dem Chance-Table eine Seltenheit zurückgibt
-function getRandomRarity() {
+export function getRandomRarity() {
   const randomNumber = Math.random() * 100; // Zufallszahl zwischen 0 und 100
   let cumulativeChance = 0;
 
@@ -21,4 +21,4 @@ function getRandomRarity() {
   return "common"; // Standardwert, falls keine Übereinstimmung gefunden wird
 }
 
-module.exports = { getRandomRarity };
+export default { getRandomRarity };
