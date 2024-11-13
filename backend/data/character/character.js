@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const characterSchema = new mongoose.Schema({
-  _id: { type: String, required: true, unique: true }, // _id als String (UUID)
+  characterId: { type: String, required: true, unique: true }, // characterId als String (UUID)
   accountId: { type: Number, required: true },
   name: {
     type: String,

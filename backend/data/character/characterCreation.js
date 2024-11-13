@@ -26,7 +26,7 @@ export async function createCharacter(req, res) {
     const uniqueCharacterID = uuidv4(); // Erzeuge eine UUID für den Charakter
 
     const newCharacter = new Character({
-      _id: uniqueCharacterID,
+      characterId: uniqueCharacterID,
       accountId,
       name,
       level,

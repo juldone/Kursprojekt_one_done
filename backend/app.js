@@ -63,14 +63,50 @@ app.get("/armor", armorImport);
 app.get("/item", itemImport);
 
 // Materialien-Import
+// Zum testen =
+// {
+//   "accountId": 1,
+//   "materialType": "Holz",
+//   "amount": 100
+// }
+
 app.post("/materials", materials);
 
 app.get("/enemy", enemyImport);
 
 // Füge die Kampf-Route hinzu
+// Zum Testen :
+
+// {
+//   "characterId": "charakter_id_aus_der_datenbank",
+//   "enemyId": 6000
+// }
+
 app.post("/battle", battle);
 
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
+// Zum Testen der character erstellung
+// {
+//   "accountId": "1",
+//   "name": "Horst",
+//   "level": 1,
+//   "stats": {
+//     "hp": 150,
+//     "attack": 20,
+//     "defense": 10,
+//     "speed": 8
+//   },
+//   "equipment": {
+//     "weapon": "Schwert",
+//     "armor": {
+//       "head": "Helm",
+//       "chest": "Brustpanzer",
+//       "hands": "Handschuhe",
+//       "legs": "Beinschützer"
+//     }
+//   }
+// }
+
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
