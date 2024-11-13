@@ -4,12 +4,45 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 
 ### Changelog 13.11.24
 
-### Tim
+- ### Tim
 - MongoDB richtig initialisiert
 - lokale Probleme mit MSI-Setup behoben
 - characterCreation.js getestet
 - ordnerstruktur in der Branch erstellt
-- auf Branch auf Merge Vorgang vorbereitet.
+- Branch auf Merge Vorgang vorbereitet.
+- Strukturierungsfehler behoben und die "crafting" Branch in der ich den character ordner 
+  erstellt hatte und an der character.js und characterCreation.js gearbeitet habe zu "character" 
+  umbenannt, den vorerst nicht mehr benötigten branch crafting gelöscht und im Anschluss neu 
+  initialisiert. Funktioniert
+- initialisieren der "crafting"-branch
+- crafting ordner erstellt
+- account.js erstellt
+- crafting.js erstellt
+- craftingController.js erstellt
+- craftingItem.js erstellt
+- auf Testdurchläufe morgen vorbereitet, mit letztem Commit reminder gesetzt
+- Alf Over and Out
+⠀⠀⠀⠀⠀⠀⠀⠀⢠⡖⠀⠀⢀⣠⡤⠶⠶⢦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡄⠀⣰⢻⣇⡴⠛⠉⠀⡀⠀⠀⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣷⢠⡏⢸⢏⠄⠀⡔⠉⣀⡴⢋⣁⣐⣢⡈⢷⡀⠀⠀⠀⠀⠀⠀⠀
+⢀⣀⣀⡀⢸⡟⣿⠀⠈⢸⣀⣮⣤⣤⣟⣰⣷⣶⣶⣌⡙⠦⣝⠲⣤⣤⡀⠀⠀⠀
+⣞⠀⢄⠉⠻⢧⡈⠀⠀⢸⣿⣿⣿⠟⠉⠉⠉⢉⣙⢻⣖⡂⠈⠉⠉⠉⠀⠀⠀⠀
+⢹⡄⠀⠑⣄⠀⠈⠳⣤⣾⣿⣿⠃⠖⠒⣄⠀⡧⢾⡏⢻⡗⠂⠀⠀⠀⠀⠀⠀⠀
+⠀⢳⡀⠀⢸⠳⣄⠀⢸⢿⣿⢿⡀⡚⢹⣿⠀⠀⣘⠷⠶⣷⣤⣀⠀⠀⠀⠀⠀⠀
+⠀⠀⢷⡀⠘⣧⡸⠃⠀⣼⠋⣸⠁⠀⠒⠋⢀⡰⠁⠀⡼⠁⠀⠉⠛⢦⡀⠀⠀⠀
+⠀⠀⣸⠁⠀⡼⠁⠴⢾⡇⢀⡏⠀⠀⠤⠖⢫⡇⠀⢠⠃⠀⠀⣀⣀⣀⠿⢦⡀⠀
+⠀⠀⢹⡀⠀⠁⠀⣾⡿⢁⡞⠀⠀⠀⠀⠀⢸⡅⠀⠘⡄⠀⢸⠁⡶⡄⢺⣳⠹⣆
+⠀⠀⠀⠓⠦⣶⠋⠀⠇⣸⠁⠀⠀⢸⡀⠀⠈⡇⠀⠀⢧⠀⠸⡄⠙⠋⠀⠀⠀⣿
+⠀⠀⠀⠀⢰⣣⠀⠀⠀⣿⠀⠀⠀⠈⣇⠀⠀⢳⠀⠀⠈⢧⡀⢱⣄⠀⠀⠀⢀⡿
+⠀⠀⠀⠀⣸⠃⠀⠀⠀⢹⡄⠀⠀⠀⠘⢦⣄⡠⠷⡖⠲⠚⣍⠙⢏⠓⠦⠴⠛⠁
+⠀⠀⠀⢠⠏⡀⠀⠀⠀⠀⠙⠳⠤⠤⠴⠋⠣⡀⠀⠘⠀⠑⣈⣧⡜⣧⠀⠀⠀⠀
+⠀⠀⠀⣾⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠱⣄⢀⣆⠀⢹⠑⢴⢸⡆⠀⠀⠀
+⠀⠀⠈⢀⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠼⣄⣸⡤⠎⢀⡇⠀⠀⠀
+⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⠄⢀⠀⠀⠀⠀⢀⡤⠟⠀⠀⠀⠀
+⠀⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠐⠛⣺⢿⣾⡤⠴⠚⠋⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠳⣦⡀⣄⣀⠀⠀⠀⢻⣖⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠙⠿⠉⠉⠉⠉⠉⠁⠀⠀⠀
 
 ### Brian
 - Fehler behoben in einigen Datein
