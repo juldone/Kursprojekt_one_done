@@ -60,6 +60,9 @@ app.get("/armor", armorImport);
 // Materialien-Import
 app.post("/materials", materials);
 
+//app.post("/craft/:1/:1000", authorized) => Drachenklauen Axt wird gecraftet
+// Ist ein Seperater Button in dem Crafting Interface ( Seite )
+
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
 
