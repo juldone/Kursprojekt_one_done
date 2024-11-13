@@ -10,6 +10,7 @@ import { register } from "./utils/register.js";
 import { weaponImport } from "./utils/weaponimport.js";
 import { itemImport } from "./utils/itemimport.js";
 import { armorImport } from "./utils/armorimport.js";
+import { materials } from "./utils/materialimport.js";
 
 const app = express();
 app.use(express.json());
@@ -44,6 +45,9 @@ app.get("/weapons", weaponImport); // /weapons, Weapon
 app.get("/armor", armorImport);
 // Route zum Abrufen aller Items
 app.get("/item", itemImport);
+
+// Verbinde die Material-Route
+app.post("/materials", materials);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

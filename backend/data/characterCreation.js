@@ -1,68 +1,51 @@
-// Funktionsbeschreibung
-// Erstellung neuer Charaktere und vergabe automatischer Standardwerte.
-// Importierung der character.js-Datei zur Verwendung des Character-Modells.
+// Importiere das Character-Modell aus der Datei character.js, um es in der Funktion zu verwenden.
+import Character from "../models/character.js";
 
-import mongoose from "mongoose";
-import Character from "./character.js"; // Character-Schema wird importiert
+// Importiere die UUID-Bibliothek, um eindeutige IDs für die Charaktere zu generieren.
+import { v4 as uuidv4 } from "uuid"; // UUID-Bibliothek für eindeutige IDs
 
-// Verbindung zur MongoDB-Datenbank herstellen
-mongoose.connect("mongodb://localhost:27017/gameDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// Stelle eine Verbindung zur MongoDB-Datenbank her (bitte die vollständige Verbindungs-URL ergänzen).
+mongoose.connect("mongodb://");
 
-// Funktion zur Charaktererstellung
-async function createCharacter({ name, level = 1, stats, equipment }) {
-  try {
-    //Standardwerte festlegen, falls nicht bereitgsetellt
-    const defaultStats = {
-      hp: 100,
-      attack: 10,
-      defense: 5,
-      speed: 5,
-      ...stats, // Werte überschreiben, falls sie in stats angegeben sind
-    };
+// Definiere die Funktion zur Charaktererstellung. Sie ist asynchron, um auf die Datenbankspeicherung warten zu können.
+export async function createCharacter(data) {
+  // Destrukturiere die Eingabedaten und lege Standardwerte fest (Level 1, falls nicht angegeben).
+  const { accountId, name, level = 1, stats, equipment } = data; // accountId wird nun auch übernommen
 
-    const defaultEquipment = {
-      armor: {
-        head: null,
-        chest: null,
-        hands: null,
-        legs: null,
-        ...equipment?.armor, // spezifische Rüstungsteile
-      },
-      weapon: equipment?.weapon || null,
-    };
+  // Definiere Standardwerte für die Charakter-Statistiken und überschreibe sie mit den übergebenen Daten, falls vorhanden.
+  const defaultStats = {
+    hp: 100, // Standardwert für die Lebenspunkte (Health Points)
+    attack: 10, // Standardwert für den Angriff
+    defense: 5, // Standardwert für die Verteidigung
+    speed: 5, // Standardwert für die Geschwindigkeit
+    ...stats, // Erlaubt das Überschreiben einzelner Stat-Werte, falls im Input "stats" vorhanden
+  };
 
-    // Neuen Charakter erstellen
-    const newCharacter = new Character({
-      name,
-      level,
-      stats: defaultStats,
-      equipment: defaultEquipment,
-    });
-
-    // Charakter in der Datenbank speichern
-    const savedCharacter = await newCharacter.save();
-    console.log("Dein Charakter trägt folgenden Namen:", savedCharacter);
-    return savedCharacter;
-  } catch (error) {
-    console.error("Fehler bei der Charaktererstellung:", error);
-  }
-}
-
-// Beispiel für die Charaktererstellung
-createCharacter({
-  name: "BraveKnight",
-  level: 5,
-  stats: { hp: 120, attack: 15, defense: 10, speed: 10 },
-  equipment: {
+  // Definiere Standardwerte für die Ausrüstung und überschreibe sie mit den übergebenen Daten, falls vorhanden.
+  const defaultEquipment = {
     armor: {
-      head: "item_id_head_armor",
-      chest: "item_id_chest_armor",
-      hands: "item_id_hand_armor",
-      legs: "item_id_leg_armor",
+      head: null, // Standardwert für Kopf-Rüstung (keine Ausrüstung standardmäßig)
+      chest: null, // Standardwert für Brust-Rüstung (keine Ausrüstung standardmäßig)
+      hands: null, // Standardwert für Handschuh-Rüstung (keine Ausrüstung standardmäßig)
+      legs: null, // Standardwert für Bein-Rüstung (keine Ausrüstung standardmäßig)
+      ...equipment?.armor, // Überschreibe, falls spezifische Rüstungsteile im Input "equipment.armor" angegeben sind
     },
-    weapon: "item_id_weapon",
-  },
-}).then(() => mongoose.disconnect()); // Verbindung zur Datenbank schließen
+    weapon: equipment?.weapon || null, // Falls im Input "equipment.weapon" vorhanden, setze dies, ansonsten kein Standardwaffenwert
+  };
+
+  // Erzeuge eine eindeutige ID für den neuen Charakter mit Hilfe der UUID-Bibliothek.
+  const uniqueCharacterID = uuidv4();
+
+  // Erstelle ein neues Charakter-Dokument basierend auf dem Character-Modell und den zusammengestellten Daten.
+  const newCharacter = new Character({
+    uniqueCharacterID: uniqueCharacterID, // Setze die generierte eindeutige ID als Charakter-ID
+    accountId: accountId, // Weist den Charakter dem übergebenen Account zu
+    name, // Setzt den Namen des Charakters
+    level, // Setzt das Level des Charakters
+    stats: defaultStats, // Übernimmt die festgelegten Statistiken
+    equipment: defaultEquipment, // Übernimmt die festgelegte Ausrüstung
+  });
+
+  // Speichere das neue Charakter-Dokument in der Datenbank und gib das gespeicherte Dokument zurück.
+  return await newCharacter.save();
+}
