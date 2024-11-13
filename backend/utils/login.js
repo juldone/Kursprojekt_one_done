@@ -4,14 +4,12 @@ import User from "../data/User.js";
 
 export async function login(req, res) {
   const { email, password } = req.body;
-
+  // Benutzer suchen
   try {
-    // Benutzer suchen
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Ungültige Anmeldedaten" });
     }
-
     // Passwort überprüfen
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {

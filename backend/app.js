@@ -15,6 +15,7 @@ import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
+import { authenticate } from "./routes/authMiddleware.js";
 
 // Initialisiere Express
 const app = express();
@@ -40,6 +41,7 @@ mongoose
 // Routen definieren
 
 // Registrierung und Login
+// Für die Registrierung das Frontend launchen das
 app.post("/register", register);
 app.post("/login", login);
 
@@ -47,7 +49,7 @@ app.post("/login", login);
 app.get("/protected", protect);
 
 // Crafting-System (Zufälliges Item generieren)
-app.get("/craft", (req, res) => {
+app.get("/craft", authenticate, (req, res) => {
   const result = craftRandomItem();
   res.json({
     message: `Du hast ein ${result.rarity} ${result.itemType} erhalten!`,
