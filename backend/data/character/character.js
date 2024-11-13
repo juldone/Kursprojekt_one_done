@@ -5,6 +5,7 @@ const characterSchema = new mongoose.Schema({
   accountId: { type: Number, required: true },
   name: {
     type: String,
+    unique: true,
     required: true,
     minlength: 2,
     maxlength: 12,

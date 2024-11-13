@@ -1,4 +1,4 @@
-const Material = require("./materials"); // Importiert die Materialdaten
+const Material = require("../materials/materials"); // Importiert die Materialdaten
 const CraftingRecipe = require("./crafting"); // Importiert die Rezepte
 
 // Funktion, um zu prüfen, ob genug Materialien für das Rezept vorhanden sind

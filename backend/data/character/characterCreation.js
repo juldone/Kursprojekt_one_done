@@ -2,7 +2,7 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import Character from "../data/character.js"; // Dein Character-Modell
+import Character from "./character.js";
 
 dotenv.config();
 

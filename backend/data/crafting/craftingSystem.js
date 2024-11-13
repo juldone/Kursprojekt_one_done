@@ -1,6 +1,6 @@
 // Importiere die Funktion `getRandomRarity` aus der Datei "chanceTable.js".
 // Diese Funktion wird verwendet, um eine zufällige Seltenheit für das gecraftete Item zu bestimmen.
-import { getRandomRarity } from "./chanceTable.js";
+import { getRandomRarity } from "../../utils/chanceTable.js";
 
 // Definiere ein Array `items`, das die möglichen Arten von gecrafteten Gegenständen enthält.
 // In diesem Fall kann entweder eine "Waffe" oder eine "Rüstung" gecraftet werden.
