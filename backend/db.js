@@ -1,4 +1,3 @@
-// db.js
 import mongoose from "mongoose";
 
 const connectDB = async () => {
@@ -18,4 +17,14 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+// Funktion zum Beenden der Datenbankverbindung
+const disconnectDB = async () => {
+  try {
+    await mongoose.connection.close();
+    console.log("Verbindung zur Datenbank geschlossen");
+  } catch (error) {
+    console.error("Fehler beim Schließen der Datenbankverbindung:", error);
+  }
+};
+
+export { connectDB, disconnectDB };

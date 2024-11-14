@@ -73,5 +73,11 @@
     "id": "5011",
     "type": "shoes",
     "attributes": { "strength": 6, "agility": 9, "intelligence": 1 }
+  },
+  {
+    "name": "Zu krasse Socken",
+    "id": "5442",
+    "type": "shoes",
+    "attributes": { "strength": 2, "agility": 9, "intelligence": 24 }
   }
 ]
