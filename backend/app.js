@@ -9,12 +9,9 @@ import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
 // import { weaponImport } from "./utils/weaponimport.js";
 import { itemImport } from "./utils/itemimport.js";
-<<<<<<< HEAD
-// import { armorImport } from "./utils/armorimport.js";
-=======
+
 import { armorImport } from "./utils/armorimport.js";
 import { materials } from "./utils/materialimport.js";
->>>>>>> 5d9bbe7a45b5899efff03758072f415e2579f405
 
 const app = express();
 app.use(express.json());
