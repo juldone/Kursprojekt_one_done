@@ -34,12 +34,10 @@ export async function weaponImport(req, res) {
 
     // Wenn keine neuen Waffen vorhanden sind
     if (newWeaponData.length === 0) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Keine neuen Waffen zum Importieren, alle IDs existieren bereits.",
-        });
+      return res.status(400).json({
+        message:
+          "Keine neuen Waffen zum Importieren, alle IDs existieren bereits.",
+      });
     }
 
     // Daten in der MongoDB speichern

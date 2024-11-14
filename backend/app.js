@@ -7,7 +7,7 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
-// import { weaponImport } from "./utils/weaponimport.js";
+import { weaponImport } from "./utils/weaponimport.js";
 import { itemImport } from "./utils/itemimport.js";
 
 import { armorImport } from "./utils/armorimport.js";
