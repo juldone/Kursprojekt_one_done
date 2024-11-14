@@ -1,5 +1,3 @@
-// userSchema ist die Datei wie es auf der Datenbank dann aussehen soll.
-
 import mongoose from "mongoose";
 
 // Benutzer-Schema
@@ -21,7 +19,7 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-// Benutzer-Modell exportieren
-const User = mongoose.model("User", userSchema);
+// Verhindert die doppelte Kompilierung des Modells
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

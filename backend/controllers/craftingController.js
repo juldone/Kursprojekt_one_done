@@ -1,64 +1,99 @@
-import User from "../models/User.js";
-import CraftingItem from "../models/craftingItem.js";
+import User from "../models/user.js";
 import { getRandomRarity } from "../utils/chanceTable.js";
-import Weapon from "../models/weapons.js"; // Angepasst, um auf Weapon zuzugreifen
+import fs from "fs";
+import path from "path";
+import Armor from "../data/armor.js";
+import { createCraftingItem } from "../utils/craftingUtils.js"; // Nur createCraftingItem importieren
+import { fileURLToPath } from "url";
 
-export const craftItem = async (userId, itemName) => {
+// Hol den Pfad des aktuellen Moduls
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Der Pfad zur Waffen-Json-Datei (korrekt zusammengesetzt)
+const weaponsPath = path.join(__dirname, "..", "data", "waffen.json");
+
+// Lade die JSON-Datei mit fs und parse sie
+const weapons = JSON.parse(fs.readFileSync(weaponsPath, "utf8"));
+
+// Prüfen, ob der Benutzer genug Materialien hat
+function checkMaterials(userMaterials, materialCost) {
+  for (const material in materialCost) {
+    if (userMaterials[material] < materialCost[material]) {
+      return false; // Nicht genug Materialien
+    }
+  }
+  return true; // Genug Materialien
+}
+
+// Materialien vom Benutzer abziehen
+function deductMaterials(userMaterials, materialCost) {
+  for (const material in materialCost) {
+    userMaterials[material] -= materialCost[material];
+  }
+  return userMaterials;
+}
+
+// Craft-Item Funktion: Erstellen eines Items und Hinzufügen zum Benutzer-Inventar
+export async function craftItem(userId, itemName) {
   try {
-    const craftingItem = await CraftingItem.findOne({ itemName });
-
-    if (!craftingItem) {
-      throw new Error("Item not found for crafting.");
-    }
-
+    // Benutzer aus der Datenbank suchen
     const user = await User.findById(userId);
-
-    for (const [material, amount] of Object.entries(
-      craftingItem.requiredMaterials
-    )) {
-      if (user.materials[material] < amount) {
-        throw new Error(`Insufficient materials: ${material}`);
-      }
+    if (!user) {
+      return { success: false, message: "Benutzer nicht gefunden" };
     }
 
-    for (const [material, amount] of Object.entries(
-      craftingItem.requiredMaterials
-    )) {
-      user.materials[material] -= amount;
+    let item, itemType;
+    let isWeapon = false;
+
+    // Bestimmen, ob das Item eine Waffe oder eine Rüstung ist
+    if (weapons[itemName]) {
+      item = weapons[itemName];
+      itemType = "weapon"; // Wenn es eine Waffe ist
+      isWeapon = true;
+    } else if (Armor[itemName]) {
+      item = Armor[itemName];
+      itemType = "armor"; // Wenn es eine Rüstung ist
+    } else {
+      return { success: false, message: "Item nicht gefunden" };
     }
 
-    const rarity = getRandomRarity();
-
-    const rarityMultipliers = {
-      common: 1,
-      uncommon: 1.5,
-      rare: 2.0,
-      epic: 2.5,
-      legendary: 3.0,
-    };
-
-    // Finde eine zufällige Waffe für das Crafting
-    const weapon = await Weapon.findOne({ name: craftingItem.itemName });
-
-    if (!weapon) {
-      throw new Error("Weapon not found in database.");
+    // Prüfen, ob der Benutzer genug Materialien hat
+    const hasMaterials = checkMaterials(user.materials, item.materialCost);
+    if (!hasMaterials) {
+      return { success: false, message: "Deine Materialien reichen nicht aus" };
     }
 
-    const adjustedAttack = weapon.baseAttack * rarityMultipliers[rarity];
+    // Materialien abziehen
+    user.materials = deductMaterials(user.materials, item.materialCost);
 
-    user.inventory.push({
-      itemName: weapon.name,
-      rarity,
-      attack: adjustedAttack,
+    // Rarität des Items bestimmen
+    const rarity = getRandomRarity(); // Chance-Tabelle für die Rarität verwenden
+
+    // Item erstellen basierend auf der Rarität
+    const craftedItem = createCraftingItem({
+      result: itemName,
+      type: itemType,
+      attack: isWeapon ? item.attack : 0,
+      defense: !isWeapon ? item.defense : 0,
+      recipe: item.materialCost,
     });
 
+    // Das gecraftete Item ins Inventar des Benutzers hinzufügen
+    user.inventory.push({ itemName: craftedItem.name, rarity });
+
+    // Benutzer-Daten speichern
     await user.save();
 
+    // Erfolgreiche Rückmeldung
     return {
       success: true,
-      message: `${itemName} crafted successfully as ${rarity} item!`,
+      message: `Du hast ein ${craftedItem.name} von Qualität ${rarity} hergestellt!`,
+      item: craftedItem,
     };
   } catch (error) {
-    return { success: false, message: error.message };
+    // Fehlerbehandlung
+    console.error("Fehler beim Craften:", error);
+    return { success: false, message: "Fehler beim Craften des Items" };
   }
-};
+}

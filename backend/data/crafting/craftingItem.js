@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
 const craftingItemSchema = new mongoose.Schema({
-  itemName: { type: String, required: true },
-  requiredMaterials: {
-    Holz: { type: Number, required: true, default: 0 },
-    Stein: { type: Number, required: true, default: 0 },
-    Metall: { type: Number, required: true, default: 0 },
-  },
-  rarity: { type: String, default: "common" },
-  type: { type: String, required: true }, // 'weapon' oder 'armor'
-  baseAttack: { type: Number, default: 0 }, // Basisangriff für Waffen
-  baseDefence: { type: Number, default: 0 }, // Basisverteidigung für Rüstung
+  name: { type: String, required: true },
+  type: { type: String, required: true }, // z. B. "Weapon" oder "Armor"
+  recipe: [
+    {
+      material: { type: String, required: true }, // z. B. "Holz"
+      amount: { type: Number, required: true }, // z. B. 5
+    },
+  ],
+  result: { type: String, required: true }, // z. B. "Schwert der Zerstörung"
+  rarity: { type: String, required: true }, // optional, falls nötig
 });
 
 const CraftingItem = mongoose.model("CraftingItem", craftingItemSchema);
