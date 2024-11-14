@@ -110,6 +110,9 @@ app.post("/craft", async (req, res) => {
   }
 });
 
+//app.post("/craft/:1/:1000") => Drachenklauen Axt wird gecraftet
+// Ist ein Seperater Button in dem Crafting Interface ( Seite )
+
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 // Zum Testen der character erstellung
 // {
