@@ -24,6 +24,13 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Brian
 
 ### Julian
+- Fehlerbehebung in Dateien / Datenbanken
+- importe für weapons, armor funktionieren mit messages-codes programmiert. ( kein disconnect ) 
+- importe für enemys fehlterhaft //// importe für items nur mit 1 message nach get-abfrage danach dissconnect backend
+- itemimport überarbeitet: Server response bug gefixed. Problem: 1 Bug ( Postman log benachrichtigt nicht über den Import bestehender item IDS )
+- React im frontend angewendet 
+- Frontend Ordnerstruktur analysiert und versucht aufzubauen
+- Login/Logout Seiten weiterleitung Logik versucht zu überarbeiten
 
 ### Changelog 13.11.24
 
