@@ -3,77 +3,42 @@
     "name": "Schwert der Zerstörung",
     "id": 1000,
     "type": "Schwert",
-    "damage": 120,
-    "attributes": {
-      "strength": 50,
-      "agility": 20,
-      "intelligence": 5
-    }
+    "baseAttack": 120
   },
   {
     "name": "Drachenbogen",
     "id": 1001,
     "type": "Bogen",
-    "damage": 85,
-    "attributes": {
-      "strength": 30,
-      "agility": 50,
-      "intelligence": 10
-    }
+    "baseAttack": 85
   },
   {
     "name": "Stab des Wissens",
     "id": 1002,
     "type": "Stab",
-    "damage": 60,
-    "attributes": {
-      "strength": 10,
-      "agility": 15,
-      "intelligence": 75
-    }
+    "baseAttack": 60
   },
   {
     "name": "Hammer des Kriegers",
     "id": 1003,
     "type": "Hammer",
-    "damage": 150,
-    "attributes": {
-      "strength": 70,
-      "agility": 5,
-      "intelligence": 0
-    }
+    "baseAttack": 150
   },
   {
     "name": "Klaue des Phönix",
     "id": 1004,
     "type": "Axt",
-    "damage": 110,
-    "attributes": {
-      "strength": 40,
-      "agility": 40,
-      "intelligence": 10
-    }
+    "baseAttack": 110
   },
   {
     "name": "Lichtschwert",
     "id": 1005,
     "type": "Schwert",
-    "damage": 95,
-    "attributes": {
-      "strength": 25,
-      "agility": 50,
-      "intelligence": 15
-    }
+    "baseAttack": 95
   },
   {
     "name": "Lichtschwert4000",
     "id": 1006,
     "type": "Schwert",
-    "damage": 95,
-    "attributes": {
-      "strength": 25,
-      "agility": 50,
-      "intelligence": 15
-    }
+    "baseAttack": 95
   }
 ]

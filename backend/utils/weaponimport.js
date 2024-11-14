@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import Weapon from "../data/weapons.js";
+import Weapon from "../models/weapons.js";
 import connectDB from "../db.js"; // Importiere die zentrale DB-Verbindung
 
 const __filename = fileURLToPath(import.meta.url);
@@ -34,12 +34,10 @@ export async function weaponImport(req, res) {
 
     // Wenn keine neuen Waffen vorhanden sind
     if (newWeaponData.length === 0) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Keine neuen Waffen zum Importieren, alle IDs existieren bereits.",
-        });
+      return res.status(400).json({
+        message:
+          "Keine neuen Waffen zum Importieren, alle IDs existieren bereits.",
+      });
     }
 
     // Daten in der MongoDB speichern

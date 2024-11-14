@@ -14,8 +14,8 @@ import { materials } from "./utils/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
-import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { authenticate } from "./routes/authMiddleware.js";
+import { craftItem } from "./controllers/craftingController.js";
 
 // Initialisiere Express
 const app = express();
@@ -85,6 +85,30 @@ app.get("/enemy", enemyImport);
 // }
 
 app.post("/battle", battle);
+
+// Crafting-Route
+// Zum Testen:
+// {
+//   "userId": "user_id_aus_der_datenbank",
+//   "itemName": "Schwert"
+// }
+app.post("/craft", async (req, res) => {
+  const { userId, itemName } = req.body;
+
+  try {
+    const result = await craftItem(userId, itemName);
+    if (result.success) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).json(result);
+    }
+  } catch (error) {
+    console.error("Fehler beim Crafting:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Fehler beim Craften des Items" });
+  }
+});
 
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 // Zum Testen der character erstellung
