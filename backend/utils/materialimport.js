@@ -1,11 +1,11 @@
 import User from "../data/User.js"; // Pfad anpassen
 
 export async function materials(req, res) {
-  const { userId, materialType, amount } = req.body;
+  const { accountId, materialType, amount } = req.body;
 
   try {
-    // Benutzer anhand der userId suchen
-    const user = await User.findOne({ userId });
+    // Benutzer anhand der accountId suchen
+    const user = await User.findOne({ accountId });
     if (!user) {
       return res.status(404).json({ error: "Benutzer nicht gefunden" });
     }

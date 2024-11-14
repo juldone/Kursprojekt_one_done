@@ -1,18 +1,80 @@
-# BaJuTi_Gaming
+
+           
+           _                 _                       _        _                      _                 _                                 _                 _                  _   _                 _              _                   _        
+          / /\              / /\                    /\ \     /\_\                   /\ \              /\ \                              /\ \              / /\               /\_\/\_\ _            /\ \           /\ \     _          /\ \      
+         / /  \            / /  \                   \ \ \   / / /         _         \_\ \             \ \ \                            /  \ \            / /  \             / / / / //\_\          \ \ \         /  \ \   /\_\       /  \ \     
+        / / /\ \          / / /\ \                  /\ \_\  \ \ \__      /\_\       /\__ \            /\ \_\                          / /\ \_\          / / /\ \           /\ \/ \ \/ / /          /\ \_\       / /\ \ \_/ / /      / /\ \_\    
+       / / /\ \ \        / / /\ \ \                / /\/_/   \ \___\    / / /      / /_ \ \          / /\/_/                         / / /\/_/         / / /\ \ \         /  \____\__/ /          / /\/_/      / / /\ \___/ /      / / /\/_/    
+      / / /\ \_\ \      / / /  \ \ \      _       / / /       \__  /   / / /      / / /\ \ \        / / /                           / / / ______      / / /  \ \ \       / /\/________/          / / /        / / /  \/____/      / / / ______  
+     / / /\ \ \___\    / / /___/ /\ \    /\ \    / / /        / / /   / / /      / / /  \/_/       / / /                           / / / /\_____\    / / /___/ /\ \     / / /\/_// / /          / / /        / / /    / / /      / / / /\_____\ 
+    / / /  \ \ \__/   / / /_____/ /\ \   \ \_\  / / /        / / /   / / /      / / /             / / /           ___________     / / /  \/____ /   / / /_____/ /\ \   / / /    / / /          / / /        / / /    / / /      / / /  \/____ / 
+   / / /____\_\ \    / /_________/\ \ \  / / /_/ / /        / / /___/ / /      / / /          ___/ / /__      ___/__________/\   / / /_____/ / /   / /_________/\ \ \ / / /    / / /       ___/ / /__      / / /    / / /      / / /_____/ / /  
+  / / /__________\  / / /_       __\ \_\/ / /__\/ /        / / /____\/ /      /_/ /          /\__\/_/___\    /__________    \ \ / / /______\/ /   / / /_       __\ \_\\/_/    / / /       /\__\/_/___\    / / /    / / /      / / /______\/ /   
+  \/_____________/  \_\___\     /____/_/\/_______/         \/_________/       \_\/           \/_________/    \____\/    \____\/ \/___________/    \_\___\     /____/_/        \/_/        \/_________/    \/_/     \/_/       \/___________/    
+                                                                                                                                                                                                                                                
+
+
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
-### Changelog 13.11.24
+### Changelog 14.11.24
 
 ### Tim
+
+### Brian
+
+### Julian
+
+### Changelog 13.11.24
+
+- ### Tim
 - MongoDB richtig initialisiert
 - lokale Probleme mit MSI-Setup behoben
 - characterCreation.js getestet
 - ordnerstruktur in der Branch erstellt
-- auf Branch auf Merge Vorgang vorbereitet.
+- Branch auf Merge Vorgang vorbereitet.
+- Strukturierungsfehler behoben und die "crafting" Branch in der ich den character ordner 
+  erstellt hatte und an der character.js und characterCreation.js gearbeitet habe zu "character" 
+  umbenannt, den vorerst nicht mehr benötigten branch crafting gelöscht und im Anschluss neu 
+  initialisiert. Funktioniert
+- initialisieren der "crafting"-branch
+- crafting ordner erstellt
+- account.js erstellt
+- crafting.js erstellt
+- craftingController.js erstellt
+- craftingItem.js erstellt
+- auf Testdurchläufe morgen vorbereitet, mit letztem Commit reminder gesetzt
+- Alf Over and Out
+⠀⠀⠀⠀⠀⠀⠀⠀⢠⡖⠀⠀⢀⣠⡤⠶⠶⢦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡄⠀⣰⢻⣇⡴⠛⠉⠀⡀⠀⠀⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣷⢠⡏⢸⢏⠄⠀⡔⠉⣀⡴⢋⣁⣐⣢⡈⢷⡀⠀⠀⠀⠀⠀⠀⠀
+⢀⣀⣀⡀⢸⡟⣿⠀⠈⢸⣀⣮⣤⣤⣟⣰⣷⣶⣶⣌⡙⠦⣝⠲⣤⣤⡀⠀⠀⠀
+⣞⠀⢄⠉⠻⢧⡈⠀⠀⢸⣿⣿⣿⠟⠉⠉⠉⢉⣙⢻⣖⡂⠈⠉⠉⠉⠀⠀⠀⠀
+⢹⡄⠀⠑⣄⠀⠈⠳⣤⣾⣿⣿⠃⠖⠒⣄⠀⡧⢾⡏⢻⡗⠂⠀⠀⠀⠀⠀⠀⠀
+⠀⢳⡀⠀⢸⠳⣄⠀⢸⢿⣿⢿⡀⡚⢹⣿⠀⠀⣘⠷⠶⣷⣤⣀⠀⠀⠀⠀⠀⠀
+⠀⠀⢷⡀⠘⣧⡸⠃⠀⣼⠋⣸⠁⠀⠒⠋⢀⡰⠁⠀⡼⠁⠀⠉⠛⢦⡀⠀⠀⠀
+⠀⠀⣸⠁⠀⡼⠁⠴⢾⡇⢀⡏⠀⠀⠤⠖⢫⡇⠀⢠⠃⠀⠀⣀⣀⣀⠿⢦⡀⠀
+⠀⠀⢹⡀⠀⠁⠀⣾⡿⢁⡞⠀⠀⠀⠀⠀⢸⡅⠀⠘⡄⠀⢸⠁⡶⡄⢺⣳⠹⣆
+⠀⠀⠀⠓⠦⣶⠋⠀⠇⣸⠁⠀⠀⢸⡀⠀⠈⡇⠀⠀⢧⠀⠸⡄⠙⠋⠀⠀⠀⣿
+⠀⠀⠀⠀⢰⣣⠀⠀⠀⣿⠀⠀⠀⠈⣇⠀⠀⢳⠀⠀⠈⢧⡀⢱⣄⠀⠀⠀⢀⡿
+⠀⠀⠀⠀⣸⠃⠀⠀⠀⢹⡄⠀⠀⠀⠘⢦⣄⡠⠷⡖⠲⠚⣍⠙⢏⠓⠦⠴⠛⠁
+⠀⠀⠀⢠⠏⡀⠀⠀⠀⠀⠙⠳⠤⠤⠴⠋⠣⡀⠀⠘⠀⠑⣈⣧⡜⣧⠀⠀⠀⠀
+⠀⠀⠀⣾⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠱⣄⢀⣆⠀⢹⠑⢴⢸⡆⠀⠀⠀
+⠀⠀⠈⢀⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠼⣄⣸⡤⠎⢀⡇⠀⠀⠀
+⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⠄⢀⠀⠀⠀⠀⢀⡤⠟⠀⠀⠀⠀
+⠀⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠐⠛⣺⢿⣾⡤⠴⠚⠋⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠳⣦⡀⣄⣀⠀⠀⠀⢻⣖⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠙⠿⠉⠉⠉⠉⠉⠁⠀⠀⠀
 
 ### Brian
-
+- Fehler behoben in einigen Datein
+- User.js überarbeitet und in der DB überprüft
+- materialsimport.js erstellt und materialen dem spieler hinzugefügt
+- battlecontroller geschrieben damit der user gegen einen bot kämpfen kann.
+- authenticator geschrieben damit man nur zugang zu bestimmten bereichen hat sowohl mit testtoken als auch mit logintoken geprüft
+- ID´s des User accounts angepasst.
+- alle prototyp branches geprüft und in main gemerged und nachträglich nochmal auf funktion gestestet
 ### Julian
 - armor.js items.js und weapons.js überarbeitet / neue ID-Struktur hinzugefügt / Attribute entfernt
 - Datenbanken bearbeitet 
