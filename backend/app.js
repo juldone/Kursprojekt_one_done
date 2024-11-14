@@ -15,6 +15,7 @@ import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
+import characterRoutes from "./routes/characterRoutes.js";
 
 // Initialisiere Express
 const app = express();
@@ -76,6 +77,7 @@ app.post("/createCharacter", createCharacter); // Diese Route ist für die Erste
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
 
+app.use("/character", characterRoutes);
 // Server starten
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

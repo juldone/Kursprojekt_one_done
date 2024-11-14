@@ -1,5 +1,5 @@
 // Importiere die Modelle für den Charakter, den Gegner und den Benutzer
-import Character from "../data/character.js";
+import Character from "../data/character/character.js";
 import Enemy from "../data/enemies/enemy.js";
 import User from "../data/User.js"; // Pfad anpassen
 

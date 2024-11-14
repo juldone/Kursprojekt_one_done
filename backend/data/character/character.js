@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const characterSchema = new mongoose.Schema({
-  _id: { type: String, required: true, unique: true }, // _id als String (UUID)
+  characterId: { type: String, required: true, unique: true }, // _id als String (UUID)
   accountId: { type: Number, required: true },
   name: {
     type: String,
@@ -33,7 +33,8 @@ const characterSchema = new mongoose.Schema({
   },
 });
 
-// Achte darauf, dass du keinen benutzerdefinierten Index auf _id setzt
-const Character = mongoose.model("Character", characterSchema);
+// Überprüfe, ob das Modell bereits existiert, bevor du es erstellst
+const Character =
+  mongoose.models.Character || mongoose.model("Character", characterSchema);
 
 export default Character;
