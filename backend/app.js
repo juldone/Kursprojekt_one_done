@@ -14,7 +14,7 @@ import { materials } from "./utils/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
-import { craftItem } from "./controllers/craftingController.js"; // Angepasst, um die richtige Funktion zu verwenden
+import { craftItem } from "./controllers/craftingController.js";
 import { authenticate } from "./routes/authMiddleware.js";
 
 // Initialisiere Express

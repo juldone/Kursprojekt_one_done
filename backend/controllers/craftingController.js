@@ -1,43 +1,4 @@
-import User from "../models/User.js"; // Importiert das User-Modell, um Benutzer aus der Datenbank abzurufen und zu bearbeiten
-import { getRandomRarity } from "../utils/chanceTable.js"; // Importiert eine Funktion, die eine zufällige Rarität für ein Item bestimmt
-import fs from "fs"; // Importiert das File-System-Modul von Node.js, um auf Dateien zuzugreifen und diese zu bearbeiten
-import path from "path"; // Importiert das Path-Modul von Node.js, um mit Dateipfaden zu arbeiten
-import Armor from "../data/armor.js"; // Importiert die Rüstungsdaten aus einer externen Datei
-import { createCraftingItem } from "../utils/craftingUtils.js"; // Importiert eine Funktion, die Crafting-Items erstellt
-import { fileURLToPath } from "url"; // Importiert die Funktion, die hilft, die Dateipfade in einer ES-Modul-Umgebung zu ermitteln
-
-// Holen des Pfads des aktuellen Moduls (dieser Code hilft, den Pfad zur Datei unabhängig vom Betriebssystem korrekt zu ermitteln)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); // Der Verzeichnisname des aktuellen Moduls (kann genutzt werden, um relativ auf Dateien zuzugreifen)
-
-// Der Pfad zur Waffen-Json-Datei wird mit Hilfe von __dirname und path.join zusammengesetzt
-const weaponsPath = path.join(__dirname, "..", "data", "waffen.json");
-
-// Die JSON-Datei mit Waffeninformationen wird synchron mit fs geladen und geparsed
-const weapons = JSON.parse(fs.readFileSync(weaponsPath, "utf8")); // Liest die Datei und konvertiert sie von JSON in ein JavaScript-Objekt
-
-// Funktion zum Überprüfen, ob der Benutzer genug Materialien hat, um das Item zu craften
-function checkMaterials(userMaterials, materialCost) {
-  for (const material in materialCost) {
-    // Iteriert über jedes Material im Rezept
-    if (userMaterials[material] < materialCost[material]) {
-      // Überprüft, ob der Benutzer genug Material hat
-      return false; // Wenn ein Material fehlt oder nicht genug vorhanden ist, wird false zurückgegeben
-    }
-  }
-  return true; // Wenn alle Materialien ausreichend sind, wird true zurückgegeben
-}
-
-// Funktion zum Abziehen der Materialien vom Benutzer
-function deductMaterials(userMaterials, materialCost) {
-  for (const material in materialCost) {
-    // Iteriert über jedes Material im Rezept
-    userMaterials[material] -= materialCost[material]; // Zieht die Materialmenge ab, die im Rezept benötigt wird
-  }
-  return userMaterials; // Gibt die aktualisierten Materialien des Benutzers zurück
-}
-
-// Hauptfunktion zum Craften eines Items
+// Exportiert die Funktion craftItem aus diesem Modul
 export async function craftItem(userId, itemName) {
   try {
     // Sucht den Benutzer anhand der Benutzer-ID in der Datenbank
