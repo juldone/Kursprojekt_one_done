@@ -1,4 +1,4 @@
-import User from "../models/user.js"; // Importiert das User-Modell, um Benutzer aus der Datenbank abzurufen und zu bearbeiten
+import User from "../models/User.js"; // Importiert das User-Modell, um Benutzer aus der Datenbank abzurufen und zu bearbeiten
 import { getRandomRarity } from "../utils/chanceTable.js"; // Importiert eine Funktion, die eine zufällige Rarität für ein Item bestimmt
 import fs from "fs"; // Importiert das File-System-Modul von Node.js, um auf Dateien zuzugreifen und diese zu bearbeiten
 import path from "path"; // Importiert das Path-Modul von Node.js, um mit Dateipfaden zu arbeiten
