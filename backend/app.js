@@ -115,6 +115,13 @@ app.post("/createCharacter", createCharacter); // Diese Route ist für die Erste
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
 
+//localhost:3000/character/equipWeapon
+//                        /equipArmor
+//                        /removeWeapon
+//                        /removeArmor
+// "characterId" : 1,
+// armor/weaponId id
+
 app.use("/character", characterRoutes);
 // Server starten
 const PORT = process.env.PORT || 3000;
