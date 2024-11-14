@@ -15,6 +15,7 @@ import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
+import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 
 // Initialisiere Express
@@ -41,6 +42,7 @@ mongoose
 // Routen definieren
 
 // Registrierung und Login
+// Für die Registrierung das Frontend launchen das
 app.post("/register", register);
 app.post("/login", login);
 
@@ -48,7 +50,7 @@ app.post("/login", login);
 app.get("/protected", protect);
 
 // Crafting-System (Zufälliges Item generieren)
-app.get("/craft", (req, res) => {
+app.get("/craft", authenticate, (req, res) => {
   const result = craftRandomItem();
   res.json({
     message: `Du hast ein ${result.rarity} ${result.itemType} erhalten!`,
@@ -64,14 +66,50 @@ app.get("/armor", armorImport);
 app.get("/item", itemImport);
 
 // Materialien-Import
+// Zum testen =
+// {
+//   "accountId": 1,
+//   "materialType": "Holz",
+//   "amount": 100
+// }
+
 app.post("/materials", materials);
 
 app.get("/enemy", enemyImport);
 
 // Füge die Kampf-Route hinzu
+// Zum Testen :
+
+// {
+//   "characterId": "charakter_id_aus_der_datenbank",
+//   "enemyId": 6000
+// }
+
 app.post("/battle", battle);
 
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
+// Zum Testen der character erstellung
+// {
+//   "accountId": "1",
+//   "name": "Horst",
+//   "level": 1,
+//   "stats": {
+//     "hp": 150,
+//     "attack": 20,
+//     "defense": 10,
+//     "speed": 8
+//   },
+//   "equipment": {
+//     "weapon": "Schwert",
+//     "armor": {
+//       "head": "Helm",
+//       "chest": "Brustpanzer",
+//       "hands": "Handschuhe",
+//       "legs": "Beinschützer"
+//     }
+//   }
+// }
+
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
