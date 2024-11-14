@@ -25,11 +25,16 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - MongoDB importierung der waffenimport.js in MongoDB hat geklappt
 - craftingController.js Datei mehrmals überarbeitet, Logik evtl. morgen überdenken
 - User.js Datei kleine änderung um die doppelte Kompilierung des Modells zu verhindern
-### Reminder morgen die materialimport.js und armorimport.js so verwenden wie heute die weaponimport.js
-### Rezepte.json schreiben und einbinden
-### Kompletten Crafting Vorgang zum laufen bekommen
+** Reminder morgen die materialimport.js und armorimport.js so verwenden wie heute die weaponimport.js **
+** Rezepte.json schreiben und einbinden **
+** Kompletten Crafting Vorgang zum laufen bekommen **
 
 ### Brian
+- User.js hat ein Inventar bekommen
+- charactercontroller.js erstellt und getestet damit waffen / rüstungen ausgerüstet werden kann oder wieder entfernt wird
+- zusätzlich existiert noch eine statupdater.js um auch die stats neu zu berechnen also dazurechnen oder abziehen
+- dementsprechend auch neue routen zum testen im postman geschaffen
+- neue kommentare hinterlassen damit jeder weiß wie er was benutzen kann in der app.js
 
 ### Julian
 - Fehlerbehebung in Dateien / Datenbanken
