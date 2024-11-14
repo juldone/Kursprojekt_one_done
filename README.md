@@ -21,6 +21,14 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 
 ### Tim
 
+- Crafting System:
+- MongoDB importierung der waffenimport.js in MongoDB hat geklappt
+- craftingController.js Datei mehrmals überarbeitet, Logik evtl. morgen überdenken
+- User.js Datei kleine änderung um die doppelte Kompilierung des Modells zu verhindern
+### Reminder morgen die materialimport.js und armorimport.js so verwenden wie heute die weaponimport.js
+### Rezepte.json schreiben und einbinden
+### Kompletten Crafting Vorgang zum laufen bekommen
+
 ### Brian
 
 ### Julian
