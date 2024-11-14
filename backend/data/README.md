@@ -14,13 +14,10 @@
 ### User und Password
 
 {
-"\_id": "unique_user_id",
+"\_id": "unique*user_id",
 "username": "player1",
 "passwordHash": "hashed_password",
-"characterId": "unique_character_id"
-}
-
-### Character
+"characterId": "unique_character*### Character
 
 {
 "\_id": "unique_character_id",
@@ -40,7 +37,9 @@
 "legs": "item_id_leg_armor"
 },
 "weapon": "item_id_weapon"
-},
+},id"
+}
+
 "inventory": ["item_id_1", "item_id_2", "item_id_3"]
 }
 

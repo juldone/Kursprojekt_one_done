@@ -9,7 +9,12 @@ import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
 // import { weaponImport } from "./utils/weaponimport.js";
 import { itemImport } from "./utils/itemimport.js";
+<<<<<<< HEAD
 // import { armorImport } from "./utils/armorimport.js";
+=======
+import { armorImport } from "./utils/armorimport.js";
+import { materials } from "./utils/materialimport.js";
+>>>>>>> 5d9bbe7a45b5899efff03758072f415e2579f405
 
 const app = express();
 app.use(express.json());
@@ -44,6 +49,9 @@ app.use(express.static(path.resolve("public")));
 //app.get("/armor", armorImport);
 // Route zum Abrufen aller Items
 app.get("/item", itemImport);
+
+// Verbinde die Material-Route
+app.post("/materials", materials);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
