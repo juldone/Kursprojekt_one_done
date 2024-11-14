@@ -10,9 +10,8 @@ const __dirname = path.dirname(__filename);
 
 export async function itemImport(req, res) {
   try {
-    // Verbindung zur DB herstellen
+    // Verbindung zur DB herstellen (nur einmal)
     await connectDB();
-    console.log("Datenbankverbindung erfolgreich hergestellt.");
 
     // Lade die JSON-Datei aus dem angegebenen Verzeichnis
     const itemData = JSON.parse(
@@ -21,9 +20,8 @@ export async function itemImport(req, res) {
         "utf-8"
       )
     );
-    console.log("Item-Daten erfolgreich aus JSON-Datei geladen.");
 
-    // Überprüfen, ob es neue Items gibt, indem IDs verglichen werden
+    // Überprüfen, ob es überhaupt neue Items gibt (Vergleiche IDs in der DB)
     const existingIds = await Item.find({
       id: { $in: itemData.map((item) => item.id) },
     }).select("id");
@@ -31,44 +29,39 @@ export async function itemImport(req, res) {
     const existingIdsSet = new Set(existingIds.map((item) => item.id));
     const newItemData = itemData.filter((item) => !existingIdsSet.has(item.id));
 
-    // Prüfen und Rückmeldung, falls keine neuen Items vorhanden sind
+    // Wenn keine neuen Items vorhanden sind
     if (newItemData.length === 0) {
-      const message =
-        "Alle Items existieren bereits in der Datenbank. Keine neuen Items importiert.";
-      console.log(message);
-      return res.status(400).json({ message }); // Antwort an Postman senden
+      return res.status(200).json({
+        message:
+          "Keine neuen Items zum Importieren, alle IDs existieren bereits.",
+      });
     }
 
-    // Wenn neue Items vorhanden sind, erstelle Bulk-Operationen für die neuen Items
+    // Erstelle ein Array von Update-Operationen für die neuen Items (mit upsert)
     const operations = newItemData.map((item) => ({
       updateOne: {
         filter: { id: item.id }, // Suche nach Items mit der gleichen ID
         update: { $set: item }, // Aktualisiere die Felder
-        upsert: true, // Füge hinzu, falls nicht existierend
+        upsert: true, // Wenn das Item nicht existiert, füge es hinzu
       },
     }));
 
-    // Führe die Bulk-Operation aus, um neue Items hinzuzufügen
+    // Führe die Bulk-Operation aus, um Duplikate zu vermeiden
     const result = await Item.bulkWrite(operations);
 
-    // Erfolgreiche Rückmeldung an den Client und Konsole
-    const successMessage = `Neue Items erfolgreich importiert. Anzahl der importierten Items: ${result.nUpserted}`;
-    console.log(successMessage);
+    // Erfolgreiche Rückmeldung an den Client
     return res.status(200).json({
-      message: successMessage, // Genaue Erfolgsmeldung mit importierten Items
-      importedCount: result.nUpserted, // Anzahl der eingefügten Items
+      message: "Items erfolgreich importiert",
+      result,
     });
   } catch (err) {
-    // Fehler-Rückmeldung an den Client und Konsole
-    const errorMessage = `Fehler beim Importieren der Items: ${err.message}`;
-    console.error(errorMessage);
+    // Fehler-Rückmeldung an den Client
     return res.status(500).json({
       error: "Fehler beim Importieren der Items",
       details: err.message,
     });
   } finally {
-    // Datenbankverbindung schließen und Konsole loggen
+    // Datenbankverbindung schließen und Rückmeldung an den Client geben
     await disconnectDB();
-    console.log("Datenbankverbindung geschlossen.");
   }
 }
