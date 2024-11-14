@@ -2,8 +2,8 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { Weapon } from "../models/weapons.js"; // Benannter Import des Mongoose Modells
-import connectDB from "../db.js"; // Zentrale DB-Verbindung importieren
+import Weapon from "../data/weapons.js";
+import connectDB from "../db.js"; // Importiere die zentrale DB-Verbindung
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,7 +16,7 @@ export async function weaponImport(req, res) {
     // Lade die JSON-Datei aus dem angegebenen Verzeichnis
     const weaponData = JSON.parse(
       await fs.promises.readFile(
-        path.join(__dirname, "..", "data", "waffen.json"), // Pfad zur JSON-Datei
+        path.join(__dirname, "..", "data", "waffen.json"),
         "utf-8"
       )
     );
