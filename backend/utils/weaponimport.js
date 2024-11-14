@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import Weapon from "../models/weapons.js";
+import Weapon from "../data/weapons.js";
 import connectDB from "../db.js"; // Importiere die zentrale DB-Verbindung
 
 const __filename = fileURLToPath(import.meta.url);
