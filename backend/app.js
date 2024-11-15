@@ -96,7 +96,7 @@ app.post("/battle", battle);
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 // Zum Testen der character erstellung
 // {
-//   "accountId": "1",
+//   "accountId": 1,
 //   "name": "Horst",
 //   "level": 1,
 //   "stats": {
@@ -125,9 +125,10 @@ app.use(express.static(path.resolve("public")));
 //                        /equipArmor
 //                        /removeWeapon
 //                        /removeArmor
-// "characterId" : 1,
-// armor/weaponId id
-
+//{
+// "characterId" : "ObjectId",
+// armor/weaponId "ObjectId"
+//}
 app.use("/character", characterRoutes);
 
 // Route im Backend für den Benutzer:
@@ -135,7 +136,7 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
   try {
     const { accountId } = req.params;
     const user = await User.findOne({ accountId });
-
+    // const character = await Character.findOne({characterId})
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
