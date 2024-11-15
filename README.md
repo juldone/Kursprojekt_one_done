@@ -36,6 +36,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Crafting ins Inventory Funktioniert derzeit Prima Equiplogik muss nochmal überarbeitet werden durch anderen approach 
 
 ### Julian
+- Frontend Account.js code überarbeitet. Charactererstellung/button verfügbar, falls eingeloggte ID keinen character hat. Character kann via Button erstellt werden / char_Id wird automatisch zugewiesen und in Mongo_DB importiert
+- mit Hilfe von Brian komplette routevebindung zum char und id frontendimport angepasst &  den "geheimen Token import " überarbeitet und angepasst
+- buttons erweitert und angepasst
+- Char_ID wird nicht unmittelbar nach Char Erstellung angezeigt. ( Only… nach eroflgreichen LogIN ) /// Zurück-Button funktioniert, Go-to Fight, Crafting button erstellt ohne Funktion.
+
 
 ### Changelog 14.11.24
 
