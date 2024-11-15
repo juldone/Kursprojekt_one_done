@@ -6,6 +6,9 @@ const Account = () => {
   });
   const [characters, setCharacters] = useState([]);
   const [error, setError] = useState(null); // Zustand für Fehler
+  const [showCreateForm, setShowCreateForm] = useState(false); // Zustand für das Erstellungsformular
+  const [newCharacterName, setNewCharacterName] = useState(""); // Zustand für den Namen des neuen Charakters
+  const [newCharacterId, setNewCharacterId] = useState(""); // Zustand für die ID des neuen Charakters
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,6 +43,65 @@ const Account = () => {
         setError("Daten konnten nicht geladen werden.");
       });
   }, []);
+
+  const handleCreateCharacter = () => {
+    const token = localStorage.getItem("token");
+    const accountId = localStorage.getItem("accountId");
+
+    if (!accountId || !token || !newCharacterName) {
+      setError("Bitte Namen eingeben.");
+      return;
+    }
+
+    // Generieren einer einzigartigen ID für den Charakter
+    const characterId = `char_${Date.now()}`;
+
+    // API-Aufruf zum Erstellen eines neuen Charakters
+    fetch(`http://localhost:3000/createCharacter`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        accountId: accountId,
+        name: newCharacterName,
+        level: 1,
+        stats: {
+          hp: 100,
+          attack: 10,
+          defense: 5,
+          speed: 5,
+        },
+        equipment: {
+          weapon: "Basis-Schwert",
+          armor: {
+            head: "Basis-Helm",
+            chest: "Basis-Brustpanzer",
+            hands: "Basis-Handschuhe",
+            legs: "Basis-Beinschützer",
+          },
+        },
+        characterId: characterId, // Automatisch vergebene ID
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Charakter konnte nicht erstellt werden.");
+        }
+        return response.json();
+      })
+      .then((newCharacter) => {
+        // Aktualisieren der Charakterliste
+        setCharacters((prevCharacters) => [...prevCharacters, newCharacter]);
+        setShowCreateForm(false); // Verstecke das Formular nach der Erstellung
+        setNewCharacterName(""); // Leere den Namenszustand
+      })
+      .catch((error) => {
+        console.error("Fehler beim Erstellen des Charakters:", error);
+        setError("Charakter konnte nicht erstellt werden.");
+      });
+  };
 
   if (error) {
     return <div>{error}</div>;
@@ -101,7 +163,30 @@ const Account = () => {
           </div>
         ))
       ) : (
-        <p>Keine Charaktere gefunden.</p>
+        <div>
+          <p>Keine Charaktere gefunden.</p>
+          <button onClick={() => setShowCreateForm(true)}>
+            Create Character
+          </button>
+        </div>
+      )}
+
+      {/* Erstellungsformular für einen neuen Charakter */}
+      {showCreateForm && (
+        <div>
+          <h3>Neuen Charakter erstellen</h3>
+          <input
+            type="text"
+            placeholder="Charaktername"
+            value={newCharacterName}
+            onChange={(e) => setNewCharacterName(e.target.value)}
+          />
+          <p>
+            Automatisch vergebene ID: {newCharacterId || `char_${Date.now()}`}
+          </p>
+          <button onClick={handleCreateCharacter}>Charakter erstellen</button>
+          <button onClick={() => setShowCreateForm(false)}>Abbrechen</button>
+        </div>
       )}
     </div>
   );
