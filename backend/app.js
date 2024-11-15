@@ -167,7 +167,7 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
       weapopninventory: user.weaponinventory, // Dein Inventar
-      armorinventory: user.weaponinventory,
+      armorinventory: user.armorinventory,
     });
   } catch (error) {
     console.error("Fehler beim Abrufen der Benutzerdaten:", error);

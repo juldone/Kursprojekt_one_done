@@ -45,6 +45,10 @@ export const weaponcraftItem = async (req, res) => {
 
     /*
     hier muss eine switch case oder if else das den armor.def nimmt und * x multipliziert 
+    if(rarity == common ){
+    recipe.damage * 1; }
+    ifelse(rarity == uncommon) {
+     recipe.damage * 1.5;}
     */
 
     // Erstelle das Item (beispielhaft eine Waffe)
