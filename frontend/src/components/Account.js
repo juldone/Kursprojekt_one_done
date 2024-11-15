@@ -13,9 +13,10 @@ const Account = () => {
 
     if (!token) {
       window.location.href = "/";
+      return;
     }
 
-    // Abruf von Benutzerdaten
+    // Abruf von Benutzerdaten inklusive Charaktere
     fetch(`http://localhost:3000/user/${accountId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -26,32 +27,17 @@ const Account = () => {
         return response.json();
       })
       .then((data) => {
-        setUserData((prevData) => ({
-          ...prevData,
-          ...data,
-        }));
+        setUserData({
+          username: data.username,
+          accountId: data.accountId,
+          materials: data.materials,
+          inventory: data.inventory,
+        });
+        setCharacters(data.characters || []); // Setzt die Charaktere
       })
       .catch((error) => {
         console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-        setError("Benutzerdaten konnten nicht geladen werden.");
-      });
-
-    // Abruf von Charakterdaten
-    fetch(`http://localhost:3000/user/${accountId}/characters`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Fehler: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCharacters(data);
-      })
-      .catch((error) => {
-        console.error("Fehler beim Abrufen der Charakterdaten:", error);
-        setError("Charakterdaten konnten nicht geladen werden.");
+        setError("Daten konnten nicht geladen werden.");
       });
   }, []);
 

@@ -132,62 +132,38 @@ app.use(express.static(path.resolve("public")));
 //}
 app.use("/character", characterRoutes);
 
-// Route im Backend für den Benutzer:
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {
     const { accountId } = req.params;
+
+    // Abruf des Benutzers
     const user = await User.findOne({ accountId });
-    // const character = await Character.findOne({characterId})
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
 
-    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+    // Abruf der Charaktere des Benutzers
+    const characters = await Character.find({ accountId });
+
+    console.log("Benutzerdaten aus der Datenbank:", user); // Debug-Ausgabe
+    console.log("Charakterdaten aus der Datenbank:", characters); // Debug-Ausgabe
 
     res.json({
       accountId: user.accountId,
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
       inventory: user.inventory, // Dein Inventar
-    });
-  } catch (error) {
-    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
-  }
-});
-
-// Route zum Abrufen der Charaktere eines Benutzers
-app.get("/user/:accountId/characters", authenticate, async (req, res) => {
-  try {
-    const { accountId } = req.params;
-
-    // Suche den Benutzer anhand der accountId
-    const user = await User.findOne({ accountId }).populate("characters");
-
-    if (!user) {
-      return res.status(404).json({ message: "Benutzer nicht gefunden" });
-    }
-
-    // Charaktere des Benutzers abrufen
-    const characters = await Character.find({ accountId });
-
-    if (!characters.length) {
-      return res.status(404).json({ message: "Keine Charaktere gefunden" });
-    }
-
-    // Charakterdaten zurückgeben
-    res.json(
-      characters.map((char) => ({
+      characters: characters.map((char) => ({
         id: char._id,
         name: char.name,
         level: char.level,
         stats: char.stats,
         equipment: char.equipment,
-      }))
-    );
+      })), // Charakterdaten
+    });
   } catch (error) {
-    console.error("Fehler beim Abrufen der Charakterdaten:", error);
-    res.status(500).json({ message: "Fehler beim Abrufen der Charakterdaten" });
+    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
   }
 });
 
