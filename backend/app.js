@@ -18,6 +18,7 @@ import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nac
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
+import Character from "./data/character/character.js";
 
 // Initialisiere Express
 const app = express();
@@ -152,6 +153,41 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
   } catch (error) {
     console.error("Fehler beim Abrufen der Benutzerdaten:", error);
     res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+  }
+});
+
+// Route zum Abrufen der Charaktere eines Benutzers
+app.get("/user/:accountId/characters", authenticate, async (req, res) => {
+  try {
+    const { accountId } = req.params;
+
+    // Suche den Benutzer anhand der accountId
+    const user = await User.findOne({ accountId }).populate("characters");
+
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    // Charaktere des Benutzers abrufen
+    const characters = await Character.find({ accountId });
+
+    if (!characters.length) {
+      return res.status(404).json({ message: "Keine Charaktere gefunden" });
+    }
+
+    // Charakterdaten zurückgeben
+    res.json(
+      characters.map((char) => ({
+        id: char._id,
+        name: char.name,
+        level: char.level,
+        stats: char.stats,
+        equipment: char.equipment,
+      }))
+    );
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Charakterdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Charakterdaten" });
   }
 });
 
