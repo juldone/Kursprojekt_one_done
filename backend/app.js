@@ -18,6 +18,8 @@ import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nac
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
+import characterRoutes from "./routes/characterRoutes.js";
+import User from "./data/User.js";
 
 // Initialisiere Express
 const app = express();
@@ -25,6 +27,14 @@ const app = express();
 // Middleware, um JSON-Daten zu verarbeiten
 app.use(express.json());
 
+// CORS konfigurieren
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Frontend URL anpassen
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // CORS konfigurieren
 app.use(
   cors({
@@ -120,6 +130,40 @@ app.post("/createCharacter", createCharacter); // Diese Route ist für die Erste
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
+
+//localhost:3000/character/equipWeapon
+//                        /equipArmor
+//                        /removeWeapon
+//                        /removeArmor
+//{
+// "characterId" : "ObjectId",
+// armor/weaponId "ObjectId"
+//}
+app.use("/character", characterRoutes);
+
+// Route im Backend für den Benutzer:
+app.get("/user/:accountId", authenticate, async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const user = await User.findOne({ accountId });
+    // const character = await Character.findOne({characterId})
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+
+    res.json({
+      accountId: user.accountId,
+      username: user.userName,
+      materials: user.materials, // Materialien aus der Datenbank
+      inventory: user.inventory, // Dein Inventar
+    });
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+  }
+});
 
 //localhost:3000/character/equipWeapon
 //                        /equipArmor

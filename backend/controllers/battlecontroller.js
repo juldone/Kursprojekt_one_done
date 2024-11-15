@@ -1,7 +1,7 @@
 // Importiere die Modelle für den Charakter, den Gegner und den Benutzer
 import Character from "../data/character/character.js";
 import Enemy from "../data/enemies/enemy.js";
-import User from "../models/User.js"; // Pfad anpassen
+import User from "../data/User.js"; // Pfad anpassen
 
 export async function battle(req, res) {
   try {
