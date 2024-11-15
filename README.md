@@ -17,13 +17,41 @@
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
-### Changelog 14.11.24
+### Changelog 15.11.24
 
 ### Tim
 
 ### Brian
 
 ### Julian
+
+### Changelog 14.11.24
+
+### Tim
+
+- Crafting System:
+- MongoDB importierung der waffenimport.js in MongoDB hat geklappt
+- craftingController.js Datei mehrmals überarbeitet, Logik evtl. morgen überdenken
+- User.js Datei kleine änderung um die doppelte Kompilierung des Modells zu verhindern
+- ** Reminder morgen die materialimport.js und armorimport.js so verwenden wie heute die weaponimport.js **
+- ** Rezepte.json schreiben und einbinden **
+- ** Kompletten Crafting Vorgang zum laufen bekommen **
+
+### Brian
+- User.js hat ein Inventar bekommen
+- charactercontroller.js erstellt und getestet damit waffen / rüstungen ausgerüstet werden kann oder wieder entfernt wird
+- zusätzlich existiert noch eine statupdater.js um auch die stats neu zu berechnen also dazurechnen oder abziehen
+- dementsprechend auch neue routen zum testen im postman geschaffen
+- neue kommentare hinterlassen damit jeder weiß wie er was benutzen kann in der app.js
+
+### Julian
+- Fehlerbehebung in Dateien / Datenbanken
+- importe für weapons, armor funktionieren mit messages-codes programmiert. ( kein disconnect ) 
+- importe für enemys fehlterhaft //// importe für items nur mit 1 message nach get-abfrage danach dissconnect backend
+- itemimport überarbeitet: Server response bug gefixed. Problem: 1 Bug ( Postman log benachrichtigt nicht über den Import bestehender item IDS )
+- React im frontend angewendet 
+- Frontend Ordnerstruktur analysiert und versucht aufzubauen
+- Login/Logout Seiten weiterleitung Logik versucht zu überarbeiten
 
 ### Changelog 13.11.24
 

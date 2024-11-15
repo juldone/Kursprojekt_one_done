@@ -1,7 +1,6 @@
-// RegisterForm.js
 import React, { useState } from "react";
 
-const RegisterForm = ({ setMessage }) => {
+const RegisterForm = ({ setMessage, setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setuserName] = useState("");
@@ -15,9 +14,13 @@ const RegisterForm = ({ setMessage }) => {
         body: JSON.stringify({ email, password, userName }),
       });
       const data = await response.json();
-      setMessage(
-        response.ok ? data.message : data.message || "Registration failed"
-      );
+      if (response.ok) {
+        setMessage("Registration successful!");
+        setToken(data.token);
+        setAccountId(data.accountId);
+      } else {
+        setMessage(data.message || "Registration failed");
+      }
     } catch (error) {
       setMessage("Error: " + error.message);
     }
@@ -25,6 +28,7 @@ const RegisterForm = ({ setMessage }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1>Registrierung</h1>
       <label>Email:</label>
       <input
         type="email"
@@ -32,9 +36,9 @@ const RegisterForm = ({ setMessage }) => {
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      <label>User Name:</label>
+      <label>Username:</label>
       <input
-        type="userName"
+        type="text"
         value={userName}
         onChange={(e) => setuserName(e.target.value)}
         required
@@ -46,7 +50,7 @@ const RegisterForm = ({ setMessage }) => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit">Register</button>
+      <button type="submit">Registrieren</button>
     </form>
   );
 };
