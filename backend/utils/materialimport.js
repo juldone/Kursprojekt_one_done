@@ -1,4 +1,4 @@
-import User from "../models/User.js"; // Pfad anpassen
+import User from "../data/User.js"; // Pfad anpassen
 
 export async function materials(req, res) {
   const { accountId, materialType, amount } = req.body;

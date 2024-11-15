@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import User from "../models/User.js";
+import User from "../data/User.js";
 import Counter from "../data/counter.js";
 
 export async function register(req, res) {
