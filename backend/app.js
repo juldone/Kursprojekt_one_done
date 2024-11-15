@@ -16,6 +16,8 @@ import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { authenticate } from "./routes/authMiddleware.js";
+import characterRoutes from "./routes/characterRoutes.js";
+import User from "./data/User.js";
 
 // Initialisiere Express
 const app = express();
@@ -23,9 +25,14 @@ const app = express();
 // Middleware, um JSON-Daten zu verarbeiten
 app.use(express.json());
 
-// CORS konfigurieren, falls erforderlich
-app.use(cors());
-
+// CORS konfigurieren
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Frontend URL anpassen
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -89,7 +96,7 @@ app.post("/battle", battle);
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 // Zum Testen der character erstellung
 // {
-//   "accountId": "1",
+//   "accountId": 1,
 //   "name": "Horst",
 //   "level": 1,
 //   "stats": {
@@ -113,6 +120,40 @@ app.post("/createCharacter", createCharacter); // Diese Route ist für die Erste
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
+
+//localhost:3000/character/equipWeapon
+//                        /equipArmor
+//                        /removeWeapon
+//                        /removeArmor
+//{
+// "characterId" : "ObjectId",
+// armor/weaponId "ObjectId"
+//}
+app.use("/character", characterRoutes);
+
+// Route im Backend für den Benutzer:
+app.get("/user/:accountId", authenticate, async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const user = await User.findOne({ accountId });
+    // const character = await Character.findOne({characterId})
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+
+    res.json({
+      accountId: user.accountId,
+      username: user.userName,
+      materials: user.materials, // Materialien aus der Datenbank
+      inventory: user.inventory, // Dein Inventar
+    });
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+  }
+});
 
 // Server starten
 const PORT = process.env.PORT || 3000;
