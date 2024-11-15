@@ -20,6 +20,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 15.11.24
 
 ### Tim
+- waffen_recipeschema.js mit Brian ausgearbeitet, so wie waffen_rezepte.json befüllt
+- armor_rezepte.json befüllt, armor_recipeschema.js geschrieben
+- armor_recipeimport.js und waffen_recipeimport.js geschrieben
+- Datenbankfehler behoben bei dem im Import von Waffen/Armor zwei mal Recipe importiert werden wollte was zu einem Fehler führte nicht zwei mal der gleiche Import durchgeführt werden kann.
+- 
 
 ### Brian
 - Frontend erstellt und eine Route geschaffen von Login zu Accountdetails
