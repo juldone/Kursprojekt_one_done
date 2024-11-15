@@ -22,6 +22,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Tim
 
 ### Brian
+- Frontend erstellt und eine Route geschaffen von Login zu Accountdetails
+- Dementsprechend app.js angepasst darunter  cors() funktion
+- authMiddleware angepasst
+- 
 
 ### Julian
 
