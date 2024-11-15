@@ -1,11 +1,10 @@
-import User from "../data/User.js";
-import WeaponRecipe from "../data/crafting/Weapon/waffen_recipeimport.js"; // Dein Rezept-Modell
-import { getRandomRarity } from "../utils/chanceTable.js"; // Deine Chance-Tabelle
-
+import User from "../User.js";
+import WeaponRecipe from "./Weapon/waffen_recipeschema.js";
+import { getRandomRarity } from "../../utils/chanceTable.js";
 export const craftItem = async (req, res) => {
   try {
-    const { userId, recipeId } = req.body; // User-ID und Recipe-ID vom Client
-    const user = await User.findOne({ accountId: userId }); // Hole den User aus der DB
+    const { accountId, recipeId } = req.body; // User-ID und Recipe-ID vom Client
+    const user = await User.findOne({ accountId }); // Hole den User aus der DB
 
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });

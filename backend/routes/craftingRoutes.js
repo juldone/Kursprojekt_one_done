@@ -1,5 +1,5 @@
 import express from "express";
-import { craftItem } from "../data/crafting/craftingfunc";
+import { craftItem } from "../data/crafting/craftingfunc.js";
 
 const router = express.Router();
 
