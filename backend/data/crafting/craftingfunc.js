@@ -43,19 +43,33 @@ export const weaponcraftItem = async (req, res) => {
     // Bestimme die Seltenheit des Items basierend auf der Chance-Tabelle
     const rarity = getRandomRarity();
 
-    /*
-    hier muss eine switch case oder if else das den armor.def nimmt und * x multipliziert 
-    if(rarity == common ){
-    recipe.damage * 1; }
-    ifelse(rarity == uncommon) {
-     recipe.damage * 1.5;}
-    */
+    // Berechnung des Schadens basierend auf der Seltenheit
+    let damage;
+    switch (rarity) {
+      case "common":
+        damage = recipe.damage * 1;
+        break;
+      case "uncommon":
+        damage = recipe.damage * 1.5;
+        break;
+      case "rare":
+        damage = recipe.damage * 2.0;
+        break;
+      case "epic":
+        damage = recipe.damage * 3.0;
+        break;
+      case "legendary":
+        damage = recipe.damage * 4.0;
+        break;
+      default:
+        damage = recipe.damage; // Fallback
+    }
 
-    // Erstelle das Item (beispielhaft eine Waffe)
+    // Erstelle das gecraftete Item
     const craftedItem = {
       itemName: recipe.name,
       rarity,
-      damage: recipe.damage, // hier muss noch die atk dazukommen.
+      damage, // Verwendet den berechneten Wert
     };
 
     // Füge das Item dem Inventar des Users hinzu
@@ -114,15 +128,33 @@ export const armorcraftItem = async (req, res) => {
     // Bestimme die Seltenheit des Items basierend auf der Chance-Tabelle
     const rarity = getRandomRarity();
 
-    /*
-    hier muss eine switch case oder if else das den armor.def nimmt und * x multipliziert 
-    */
+    // Berechnung der Verteidigung basierend auf der Seltenheit
+    let defense;
+    switch (rarity) {
+      case "common":
+        defense = recipe.armor * 1;
+        break;
+      case "uncommon":
+        defense = recipe.armor * 1.5;
+        break;
+      case "rare":
+        defense = recipe.armor * 2.0;
+        break;
+      case "epic":
+        defense = recipe.armor * 3.0;
+        break;
+      case "legendary":
+        defense = recipe.armor * 4.0;
+        break;
+      default:
+        defense = recipe.armor; // Fallback
+    }
 
-    // Erstelle das Item (beispielhaft eine Waffe)
+    // Erstelle das gecraftete Item
     const craftedItem = {
       itemName: recipe.name,
       rarity,
-      armor: recipe.armor, // hier muss noch die defense dazukommen !!
+      defense, // Verwendet den berechneten Wert
     };
 
     // Füge das Item dem Inventar des Users hinzu
