@@ -6,7 +6,7 @@ const recipeSchema = new mongoose.Schema({
   name: { type: String, required: true },
   type: { type: String, required: true },
   damage: { type: Number, required: true },
-  rarity: { type: String, required: true },
+  rarity: { type: String },
   materials: {
     Holz: { type: Number, default: 0 },
     Stein: { type: Number, default: 0 },
@@ -15,6 +15,7 @@ const recipeSchema = new mongoose.Schema({
 });
 
 // Modell für Waffen erstellen und exportieren
-const Recipe = mongoose.model("Recipe", recipeSchema);
+const WeaponRecipe =
+  mongoose.models.WeaponRecipe || mongoose.model("WeaponRecipe", recipeSchema);
 
-export default Recipe;
+export default WeaponRecipe;

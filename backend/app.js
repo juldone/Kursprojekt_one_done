@@ -14,12 +14,12 @@ import { materials } from "./utils/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
-import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
-import characterRoutes from "./routes/characterRoutes.js";
-import User from "./data/User.js";
+import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
+import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
+import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
 
 // Initialisiere Express
 const app = express();
@@ -57,6 +57,9 @@ mongoose
 
 // Routen definieren
 
+// Registriere die Crafting-Routen
+app.use("/crafting", craftingRoutes);
+
 // Registrierung und Login
 // Für die Registrierung das Frontend launchen das
 app.post("/register", register);
@@ -75,6 +78,12 @@ app.get("/craft", authenticate, (req, res) => {
 
 // Waffen-Import
 app.get("/weapons", weaponImport);
+
+// Waffen-Rezepte Import
+app.get("/wrezepte", weaponrecipeImport);
+
+// Armor-Rezepte Import
+app.get("/arezepte", armorrecipeImport);
 
 // Armor-Import
 app.get("/armor", armorImport);
