@@ -25,7 +25,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Frontend erstellt und eine Route geschaffen von Login zu Accountdetails
 - Dementsprechend app.js angepasst darunter  cors() funktion
 - authMiddleware angepasst
-- 
+- mit Tim zusammen recipes für Waffen und Armor besprochen erstellt und programmiert
+- User.js unterscheidung zwischen Waffen und Armor Inventory umgebaut
+- Mit Julian weiteres vorgehen des Frontend besprochen in der Account.js im Frontend versucht die Inventare zu unterscheiden
+- Crafting ins Inventory Funktioniert derzeit Prima Equiplogik muss nochmal überarbeitet werden durch anderen approach 
 
 ### Julian
 
