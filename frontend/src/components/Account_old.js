@@ -100,17 +100,7 @@ const Account = () => {
 
   const handleShowCreateForm = () => {
     setShowCreateForm(true);
-    setNewCharacterId(`char_${Date.now()}`);
-  };
-
-  const goToFight = () => {
-    // Navigation zur Kampfseite
-    window.location.href = "/fight";
-  };
-
-  const goToCrafting = () => {
-    // Navigation zur Crafting-Seite
-    window.location.href = "/crafting";
+    setNewCharacterId(`char_${Date.now()}`); // Generiere ID, wenn Formular geöffnet wird
   };
 
   if (error) {
@@ -122,13 +112,12 @@ const Account = () => {
   }
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ color: "#333" }}>Account Information</h1>
+    <div>
+      <h1>Account Information</h1>
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
-
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Materialien:</h2>
-      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+      <p>Materialien:</p>
+      <ul>
         {userData.materials && (
           <>
             <li>Holz: {userData.materials.Holz || 0}</li>
@@ -137,9 +126,8 @@ const Account = () => {
           </>
         )}
       </ul>
-
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
-      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+      <h2>Inventar:</h2>
+      <ul>
         {userData.inventory &&
           userData.inventory.map((item, index) => (
             <li key={index}>
@@ -147,32 +135,22 @@ const Account = () => {
             </li>
           ))}
       </ul>
-
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Charaktere:</h2>
+      <h2>Charaktere:</h2>
       {characters.length ? (
         characters.map((char) => (
-          <div
-            key={char.id}
-            style={{
-              border: "1px solid #ddd",
-              padding: "10px",
-              borderRadius: "5px",
-              marginTop: "10px",
-              backgroundColor: "#f9f9f9",
-            }}
-          >
-            <h3 style={{ color: "#333" }}>{char.name}</h3>
+          <div key={char.id}>
+            <h3>{char.name}</h3>
             <p>Char_ID: {char.id}</p>
             <p>Level: {char.level}</p>
             <p>Stats:</p>
-            <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+            <ul>
               <li>HP: {char.stats.hp}</li>
               <li>Angriff: {char.stats.attack}</li>
               <li>Verteidigung: {char.stats.defense}</li>
               <li>Geschwindigkeit: {char.stats.speed}</li>
             </ul>
             <p>Ausrüstung:</p>
-            <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+            <ul>
               <li>Waffe: {char.equipment.weapon}</li>
               <li>Rüstung:</li>
               <ul>
@@ -186,97 +164,27 @@ const Account = () => {
         ))
       ) : (
         <div>
-          <p style={{ color: "#888" }}>Keine Charaktere gefunden.</p>
-          <button style={buttonStyle} onClick={handleShowCreateForm}>
-            Charakter erstellen
-          </button>
-        </div>
-      )}
-
-      {characters.length > 0 && (
-        <div style={{ marginTop: "20px" }}>
-          <button style={buttonStyle} onClick={goToFight}>
-            Go to Fight
-          </button>
-          <button
-            style={{ ...buttonStyle, marginLeft: "10px" }}
-            onClick={goToCrafting}
-          >
-            Crafting
-          </button>
+          <p>Keine Charaktere gefunden.</p>
+          <button onClick={handleShowCreateForm}>Create Character</button>
         </div>
       )}
 
       {showCreateForm && (
-        <div
-          style={{
-            marginTop: "20px",
-            border: "1px solid #ddd",
-            padding: "15px",
-            borderRadius: "5px",
-            backgroundColor: "#1e90ff",
-          }}
-        >
-          <h3 style={{ color: "#555" }}>Neuen Charakter erstellen</h3>
+        <div>
+          <h3>Neuen Charakter erstellen</h3>
           <input
             type="text"
             placeholder="Charaktername"
             value={newCharacterName}
             onChange={(e) => setNewCharacterName(e.target.value)}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              marginBottom: "10px",
-              display: "block",
-              width: "100%",
-              boxSizing: "border-box",
-            }}
           />
           <p>Automatisch vergebene ID: {newCharacterId}</p>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button style={buttonStyle} onClick={handleCreateCharacter}>
-              Charakter erstellen
-            </button>
-            <button
-              style={buttonStyle}
-              onClick={() => setShowCreateForm(false)}
-            >
-              Abbrechen
-            </button>
-          </div>
+          <button onClick={handleCreateCharacter}>Charakter erstellen</button>
+          <button onClick={() => setShowCreateForm(false)}>Abbrechen</button>
         </div>
       )}
-
-      <button
-        style={{
-          ...buttonStyle,
-          marginTop: "20px",
-          backgroundColor: "#1e90ff",
-          color: "#fff",
-        }}
-        onClick={() => window.history.back()}
-      >
-        Zurück
-      </button>
     </div>
   );
-};
-
-const buttonStyle = {
-  padding: "10px 15px",
-  border: "none",
-  borderRadius: "5px",
-  backgroundColor: "#ddd",
-  color: "#333",
-  fontSize: "16px",
-  cursor: "pointer",
-  transition: "all 0.3s ease",
-  textAlign: "center",
-};
-
-buttonStyle[":hover"] = {
-  backgroundColor: "#ccc",
 };
 
 export default Account;
