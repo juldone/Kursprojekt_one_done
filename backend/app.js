@@ -17,6 +17,7 @@ import { createCharacter } from "./data/character/characterCreation.js"; // Pfad
 import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
+import User from "./data/User.js";
 
 // Initialisiere Express
 const app = express();
@@ -24,9 +25,14 @@ const app = express();
 // Middleware, um JSON-Daten zu verarbeiten
 app.use(express.json());
 
-// CORS konfigurieren, falls erforderlich
-app.use(cors());
-
+// CORS konfigurieren
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Frontend URL anpassen
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -123,6 +129,31 @@ app.use(express.static(path.resolve("public")));
 // armor/weaponId id
 
 app.use("/character", characterRoutes);
+
+// Route im Backend für den Benutzer:
+app.get("/user/:accountId", authenticate, async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const user = await User.findOne({ accountId });
+
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+
+    res.json({
+      accountId: user.accountId,
+      username: user.userName,
+      materials: user.materials, // Materialien aus der Datenbank
+      inventory: user.inventory, // Dein Inventar
+    });
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+  }
+});
+
 // Server starten
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
