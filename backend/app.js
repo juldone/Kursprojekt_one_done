@@ -17,11 +17,9 @@ import { createCharacter } from "./data/character/characterCreation.js"; // Pfad
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
-
 import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
 import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
 import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
-
 import Character from "./data/character/character.js";
 
 // Initialisiere Express
@@ -34,7 +32,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3001", // Frontend URL anpassen
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -136,6 +134,34 @@ app.post("/battle", battle);
 // }
 
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
+app.delete("/user/character", async (req, res) => {
+  const { accountId, characterId } = req.body;
+
+  // Überprüfen, ob accountId und characterId übergeben wurden
+  if (!accountId || !characterId) {
+    return res
+      .status(400)
+      .json({ message: "accountId und characterId sind erforderlich." });
+  }
+
+  try {
+    // Benutzer finden und den gewünschten Charakter aus dem characters-Array entfernen
+    const user = await User.findOneAndUpdate(
+      { accountId: accountId }, // Benutzer anhand der accountId finden
+      { $pull: { characters: { characterId: characterId } } }, // Entferne den Charakter mit der gegebenen characterId
+      { new: true } // Gibt den aktualisierten Benutzer zurück
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden." });
+    }
+
+    res.status(200).json({ message: "Charakter erfolgreich gelöscht.", user });
+  } catch (error) {
+    console.error("Fehler beim Löschen des Charakters:", error);
+    res.status(500).json({ message: "Fehler beim Löschen des Charakters." });
+  }
+});
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
