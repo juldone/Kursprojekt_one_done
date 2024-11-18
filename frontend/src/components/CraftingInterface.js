@@ -34,7 +34,7 @@ const CraftingInterface = () => {
 
   const craftItem = (recipeId, type) => {
     const endpoint =
-      type === "Rüstung"
+      type === "Kopf" || type === "Brust" || type === "Hand" || type === "Füße"
         ? `http://localhost:3000/user/${accountId}/crafting/armcraft`
         : `http://localhost:3000/user/${accountId}/crafting/wpncraft`;
 

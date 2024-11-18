@@ -7,10 +7,8 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
-import { weaponImport } from "./utils/weaponimport.js";
-import { itemImport } from "./utils/itemimport.js";
-import { armorImport } from "./utils/armorimport.js";
-import { materials } from "./utils/materialimport.js";
+import { itemImport } from "./utils/Import/itemimport.js";
+import { materials } from "./utils/Import/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
