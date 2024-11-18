@@ -110,8 +110,12 @@ const Account = () => {
   };
 
   const goToCrafting = () => {
-    // Navigation zur Crafting-Seite
-    window.location.href = "/crafting";
+    const accountId = localStorage.getItem("accountId");
+    if (accountId) {
+      window.location.href = `/user/${accountId}/crafting`;
+    } else {
+      console.error("Account ID fehlt. Navigation zu Crafting nicht möglich.");
+    }
   };
 
   if (error) {
