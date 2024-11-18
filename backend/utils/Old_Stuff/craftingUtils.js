@@ -1,5 +1,5 @@
 // craftingUtils.js
-import { getRandomRarity } from "./chanceTable.js"; // Importiere die Chance-Tabelle
+import { getRandomRarity } from "../chanceTable.js"; // Importiere die Chance-Tabelle
 
 // Funktion zum Erstellen eines Crafting-Ergebnisses
 export const createCraftingItem = (recipe) => {

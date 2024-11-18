@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import connectDB from "../db.js"; // Importiere die zentrale DB-Verbindung
+import connectDB from "../../db.js"; // Importiere die zentrale DB-Verbindung
 import Armor from "../data/armor.js";
 
 const __filename = fileURLToPath(import.meta.url);
