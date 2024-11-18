@@ -66,10 +66,16 @@ const Account = () => {
       </ul>
       <h2>Inventar:</h2>
       <ul>
-        {userData.inventory &&
-          userData.inventory.map((item, index) => (
+        {userData.weaponinventory &&
+          userData.weaponinventory.map((item, index) => (
             <li key={index}>
-              {item.itemName} - {item.rarity}
+              {item.itemName} - {item.rarity} - {item.damage}
+            </li>
+          ))}
+        {userData.armorinventory &&
+          userData.armorinventory.map((item, index) => (
+            <li key={index}>
+              {item.itemName} - {item.rarity} - {item.damage}
             </li>
           ))}
       </ul>

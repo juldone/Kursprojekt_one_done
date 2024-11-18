@@ -1,0 +1,62 @@
+[
+  {
+    "recipeId": 1000,
+    "name": "Holzschild",
+    "type": "Rüstung",
+    "armor": 10,
+    "rarity": "",
+    "materials": {
+      "Holz": 5,
+      "Stein": 0,
+      "Metall": 0
+    }
+  },
+  {
+    "recipeId": 1001,
+    "name": "Steinpanzerrüstung",
+    "type": "Rüstung",
+    "armor": 25,
+    "rarity": "",
+    "materials": {
+      "Holz": 2,
+      "Stein": 10,
+      "Metall": 0
+    }
+  },
+  {
+    "recipeId": 1002,
+    "name": "Metallhelm",
+    "type": "Rüstung",
+    "armor": 40,
+    "rarity": "",
+    "materials": {
+      "Holz": 0,
+      "Stein": 0,
+      "Metall": 15
+    }
+  },
+  {
+    "recipeId": 1003,
+    "name": "Eisenplattenrüstung",
+    "type": "Rüstung",
+    "armor": 60,
+    "rarity": "",
+    "materials": {
+      "Holz": 5,
+      "Stein": 5,
+      "Metall": 20
+    }
+  },
+  {
+    "recipeId": 1004,
+    "name": "Legendärer Drachenpanzer",
+    "type": "Rüstung",
+    "armor": 100,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  }
+]

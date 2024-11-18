@@ -1,0 +1,62 @@
+[
+  {
+    "recipeId": 1,
+    "name": "Eichenbogen",
+    "type": "Fernkampf",
+    "damage": 25,
+    "rarity": "",
+    "materials": {
+      "Holz": 10,
+      "Stein": 5,
+      "Metall": 0
+    }
+  },
+  {
+    "recipeId": 2,
+    "name": "Stahlschwert",
+    "type": "1H",
+    "damage": 35,
+    "rarity": "",
+    "materials": {
+      "Holz": 0,
+      "Stein": 0,
+      "Metall": 10
+    }
+  },
+  {
+    "recipeId": 3,
+    "name": "Magischer Stab",
+    "type": "Magisch",
+    "damage": 40,
+    "rarity": "",
+    "materials": {
+      "Holz": 5,
+      "Stein": 5,
+      "Metall": 10
+    }
+  },
+  {
+    "recipeId": 4,
+    "name": "Kriegshammer",
+    "type": "2H",
+    "damage": 45,
+    "rarity": "",
+    "materials": {
+      "Holz": 0,
+      "Stein": 20,
+      "Metall": 10
+    }
+  },
+  {
+    "recipeId": 5,
+    "name": "Dolch der Schatten",
+    "type": "1H",
+    "damage": 50,
+    "rarity": "",
+    "materials": {
+      "Holz": 2,
+      "Stein": 0,
+      "Metall": 15
+    }
+  }
+]
