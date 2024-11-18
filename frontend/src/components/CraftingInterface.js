@@ -92,7 +92,7 @@ const CraftingInterface = () => {
         <div>
           <h3>Ausgewähltes Rezept: {selectedRecipe.name}</h3>
           <p>Typ: {selectedRecipe.type}</p>
-          <p>Materialien:</p>
+          <p>Material kosten :</p>
           <ul>
             {Object.entries(selectedRecipe.materials).map(
               ([material, amount]) => (
@@ -102,24 +102,6 @@ const CraftingInterface = () => {
               )
             )}
           </ul>
-
-          {/* Eingabe der Materialien */}
-          <h4>Materialien bereitstellen:</h4>
-          {Object.keys(selectedRecipe.materials).map((material) => (
-            <div key={material}>
-              <label>{material}: </label>
-              <input
-                type="number"
-                value={materials[material] || 0}
-                onChange={(e) =>
-                  setMaterials({
-                    ...materials,
-                    [material]: parseInt(e.target.value, 10),
-                  })
-                }
-              />
-            </div>
-          ))}
 
           {/* Crafting-Button */}
           <button

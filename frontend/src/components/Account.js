@@ -55,7 +55,6 @@ const Account = () => {
     }
   };
 
-  // Handler für die Charaktererstellung
   const handleCreateCharacter = async () => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
@@ -101,15 +100,13 @@ const Account = () => {
       const data = await response.json();
       console.log("Charakter erstellt:", data.character);
 
-      // Aktualisiere die Benutzer-Daten und blendet den Button aus
       setUserData((prevData) => ({
         ...prevData,
         characters: [...prevData.characters, data.character],
       }));
 
-      // Button ausblenden, wenn Charakter erfolgreich erstellt wurde
       setIsCreatingCharacter(false);
-      setNewCharacterName(""); // Name zurücksetzen
+      setNewCharacterName("");
     } catch (error) {
       console.error("Fehler bei der Charaktererstellung:", error);
       alert("Fehler bei der Erstellung des Charakters");
@@ -125,12 +122,11 @@ const Account = () => {
       return;
     }
 
-    // Bestätigungs-Prompt
     const isConfirmed = window.confirm(
       "Bist du sicher, dass du diesen Charakter löschen möchtest?"
     );
     if (!isConfirmed) {
-      return; // Abbrechen, wenn der Benutzer nicht bestätigt
+      return;
     }
 
     try {
@@ -153,7 +149,6 @@ const Account = () => {
       const data = await response.json();
       console.log(data.message);
 
-      // Entferne den Charakter aus der Liste im Frontend
       setUserData((prevData) => ({
         ...prevData,
         characters: prevData.characters.filter(
@@ -191,7 +186,7 @@ const Account = () => {
         )}
       </ul>
 
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
+      <h2 style={{ marginTop: "20px", color: "#555" }}>Waffen:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.weaponinventory &&
           userData.weaponinventory.map((item, index) => (
@@ -200,6 +195,9 @@ const Account = () => {
               {item.damage} Schaden
             </li>
           ))}
+      </ul>
+      <h2 style={{ marginTop: "20px", color: "#555" }}>Rüstung:</h2>
+      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.armorinventory &&
           userData.armorinventory.map((item, index) => (
             <li key={`armor-${index}`}>
