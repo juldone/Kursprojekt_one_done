@@ -4,7 +4,7 @@ const CraftingInterface = () => {
   const [weaponRecipes, setWeaponRecipes] = useState([]);
   const [armorRecipes, setArmorRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [materials, setMaterials] = useState({ Holz: 0, Stein: 0, Metall: 0 });
+  const [materials] = useState({ Holz: 0, Stein: 0, Metall: 0 });
 
   const accountId = localStorage.getItem("accountId");
 
