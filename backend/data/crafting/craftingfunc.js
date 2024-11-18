@@ -129,32 +129,32 @@ export const armorcraftItem = async (req, res) => {
     const rarity = getRandomRarity();
 
     // Berechnung der Verteidigung basierend auf der Seltenheit
-    let defense;
+    let armor;
     switch (rarity) {
       case "common":
-        defense = recipe.armor * 1;
+        armor = recipe.armor * 1;
         break;
       case "uncommon":
-        defense = recipe.armor * 1.5;
+        armor = recipe.armor * 1.5;
         break;
       case "rare":
-        defense = recipe.armor * 2.0;
+        armor = recipe.armor * 2.0;
         break;
       case "epic":
-        defense = recipe.armor * 3.0;
+        armor = recipe.armor * 3.0;
         break;
       case "legendary":
-        defense = recipe.armor * 4.0;
+        armor = recipe.armor * 4.0;
         break;
       default:
-        defense = recipe.armor; // Fallback
+        armor = recipe.armor; // Fallback
     }
 
     // Erstelle das gecraftete Item
     const craftedItem = {
       itemName: recipe.name,
       rarity,
-      defense, // Verwendet den berechneten Wert
+      armor, // Verwendet den berechneten Wert
     };
 
     // Füge das Item dem Inventar des Users hinzu
