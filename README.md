@@ -24,6 +24,12 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Brian
 
 ### Julian
+- Frontend überarbeitet
+- Hauptproblem bearbeitet, dass nach einem Login, der Account alle "Neu Registrierten" CHaractere anhand eines Chard-ID checks anzeigt. In der Entwicklerconsole wurden mir      die CharIDS angezeigt, jedoch nicht im Frontend. Leider ohne Erfolg. 
+- User_js verändert, characters hinzugefuegt //  Account_js bearbeitet, regeln fuer 1 charactererstellung pro Acc. ID hinzugefuegt // Bug: in der Entwicklerconsole wird die 
+  CharID angezeigt und ausgelesen, aber das Frontend setzt diese Regel nicht um.
+- stand: funktionfähig mit dem BUG das der char nicht angezeigt wird.
+- GoToFight Button erstellt, dahinterliegendes Backend erstellt mit FightRouting.js, Fight.js. 
 
 ### Changelog 15.11.24
 
