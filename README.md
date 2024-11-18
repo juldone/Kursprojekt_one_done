@@ -20,12 +20,22 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 18.11.24
 
 ### Tim 
+### Tim 
 - Crafting Branch in Main gemerged (yes!)
 - armor_rezepte.json mit Sets gefüllt. (Holzset: Kopf, Hand, Brust, Füße, Steinset: Kopf, Hand, Brust, Füße, Metallset: Kopf, Hand, Brust, Füße)
 - enemy.json -> Gegner Schema befüllt und in die Datenbank eingespeißt.
 - Readme.txt für Enemies erstellt und Beschreibungen der einzelnen Charaktere eingefügt. (Maybe Eastereggs?)
+- craftingfunc.js überarbeitet, diese wählt jetzt einen random gegner aus sobald der kampf gestartet wird.
+- ABER: vorerst eingestellt, da in der User.js inventory daten eingebunden werden und in die user datei erst noch verknüpfungen kommen müssen mit denen ich weiter arbeiten kann
 
 ### Brian
+- Funktionen auf den Branches getestet und gemerged
+- Craftingfunc und app.js routen überarbeitet
+- Crack geraucht
+- CraftingInterface erstellt und in Betrieb genommen funktioniert super Waffen udn Rüstungsrezepte werden per get request ins Frontend gerendert.
+- Mehere kleine Bugs gefixt
+- Character Creation läuft jetzt auch Character kann erstellt werden wenn keiner vorhanden ist und bleibt dann auch dort vorhanden , keiner neuer char kann erstellt werden nur wenn man seinen Character löschen tut
+- Demensprechend wurde auch eine neue Route hinzugefügt damit der Character auch gelöscht werden kann.
 
 ### Julian
 - Frontend überarbeitet
