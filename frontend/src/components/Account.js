@@ -33,7 +33,8 @@ const Account = () => {
           username: data.username,
           accountId: data.accountId,
           materials: data.materials,
-          inventory: data.inventory,
+          weaponinventory: data.weaponinventory,
+          armorinventory: data.armorinventory,
         });
         setCharacters(data.characters || []);
       })
@@ -137,27 +138,26 @@ const Account = () => {
           </>
         )}
       </ul>
-      <h2>Inventar:</h2>
-      <ul>
-        {userData.weaponinventory &&
-          userData.weaponinventory.map((item, index) => (
-            <li key={index}>
-              {item.itemName} - {item.rarity} - {item.damage}
-            </li>
-          ))}
-        {userData.armorinventory &&
-          userData.armorinventory.map((item, index) => (
-
       <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
-        {userData.inventory &&
-          userData.inventory.map((item, index) => (
-            <li key={index}>
-              {item.itemName} - {item.rarity} - {item.damage}
+        {/* Waffen-Inventar */}
+        {userData.weaponinventory &&
+          userData.weaponinventory.map((item, index) => (
+            <li key={`weapon-${index}`}>
+              <strong>Waffe:</strong> {item.itemName} - {item.rarity} -{" "}
+              {item.damage} Schaden
+            </li>
+          ))}
+
+        {/* Rüstungs-Inventar */}
+        {userData.armorinventory &&
+          userData.armorinventory.map((item, index) => (
+            <li key={`armor-${index}`}>
+              <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
+              {item.armor} Verteidigung
             </li>
           ))}
       </ul>
-
       <h2 style={{ marginTop: "20px", color: "#555" }}>Charaktere:</h2>
       {characters.length ? (
         characters.map((char) => (
