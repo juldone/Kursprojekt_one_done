@@ -138,6 +138,7 @@ const Account = () => {
           </>
         )}
       </ul>
+      <h2>Inventar:</h2>
       <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {/* Waffen-Inventar */}
@@ -154,7 +155,7 @@ const Account = () => {
           userData.armorinventory.map((item, index) => (
             <li key={`armor-${index}`}>
               <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
-              {item.armor} Verteidigung
+              {item.defense} Verteidigung
             </li>
           ))}
       </ul>
