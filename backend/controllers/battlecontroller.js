@@ -25,7 +25,7 @@ export async function battle(req, res) {
     const enemy = EnemyData[randomIndex];
 
     // Lade den Benutzer basierend auf der `accountId` des Charakters
-    const user = await User.findOne({ accountId: character.accountId });
+    const user = await User.findOne({ accountId });
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
