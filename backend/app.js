@@ -24,7 +24,6 @@ import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-
 
 import Character from "./data/character/character.js";
 
-
 // Initialisiere Express
 const app = express();
 
@@ -62,6 +61,10 @@ mongoose
 // Routen definieren
 
 // Registriere die Crafting-Routen
+
+// /crafting/wpncraft
+// /crafting/armcraft
+
 app.use("/crafting", craftingRoutes);
 
 // Registrierung und Login
