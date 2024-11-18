@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 const Account = () => {
-  const [userData, setUserData] = useState({
-    username: localStorage.getItem("userName") || "",
-  });
-  const [characters, setCharacters] = useState([]);
-  const [error, setError] = useState(null);
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newCharacterName, setNewCharacterName] = useState("");
-  const [newCharacterId, setNewCharacterId] = useState("");
+  const [userData, setUserData] = useState(null); // User-Daten
+  const [characters, setCharacters] = useState([]); // Charakterliste
+  const [error, setError] = useState(null); // Fehlerzustand
+  const [showCreateForm, setShowCreateForm] = useState(false); // Formularanzeige
+  const [newCharacterName, setNewCharacterName] = useState(""); // Name des neuen Charakters
+  const [newCharacterId, setNewCharacterId] = useState(""); // ID des neuen Charakters
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
 
     if (!token) {
-      window.location.href = "/";
+      window.location.href = "/"; // Weiterleitung wenn kein Token vorhanden ist
       return;
     }
 
@@ -29,6 +27,8 @@ const Account = () => {
         return response.json();
       })
       .then((data) => {
+        console.log("API-Daten:", data); // Debug: Alle API-Daten loggen
+
         setUserData({
           username: data.username,
           accountId: data.accountId,
@@ -36,13 +36,21 @@ const Account = () => {
           weaponinventory: data.weaponinventory,
           armorinventory: data.armorinventory,
         });
-        setCharacters(data.characters || []);
+
+        // Setzen der Charaktere basierend auf den Daten von der API
+        if (data.characters && Array.isArray(data.characters)) {
+          console.log("Charaktere aus der API:", data.characters); // Debugging: Charaktere loggen
+          setCharacters(data.characters); // setze die Charaktere aus den API-Daten
+        } else {
+          console.log("Keine Charaktere gefunden");
+          setCharacters([]); // Sicherstellen, dass der State ein leeres Array ist, wenn keine Charaktere vorhanden sind
+        }
       })
       .catch((error) => {
         console.error("Fehler beim Abrufen der Benutzerdaten:", error);
         setError("Daten konnten nicht geladen werden.");
       });
-  }, []);
+  }, []); // Die leere Abhängigkeitsliste sorgt dafür, dass der Effekt nur einmal beim Initialisieren des Components ausgeführt wird
 
   const handleCreateCharacter = () => {
     const token = localStorage.getItem("token");
@@ -50,6 +58,12 @@ const Account = () => {
 
     if (!accountId || !token || !newCharacterName) {
       setError("Bitte Namen eingeben.");
+      return;
+    }
+
+    // Überprüfen, ob bereits ein Charakter existiert
+    if (characters.length > 0) {
+      setError("Du hast bereits einen Charakter!");
       return;
     }
 
@@ -88,7 +102,8 @@ const Account = () => {
         return response.json();
       })
       .then((newCharacter) => {
-        setCharacters((prevCharacters) => [...prevCharacters, newCharacter]);
+        console.log("Neuer Charakter erstellt:", newCharacter);
+        setCharacters([newCharacter]); // Setzen des neuen Charakters
         setShowCreateForm(false);
         setNewCharacterName("");
         setNewCharacterId("");
@@ -105,7 +120,6 @@ const Account = () => {
   };
 
   const goToFight = () => {
-    // Navigation zur Kampfseite
     window.location.href = "/fight";
   };
 
@@ -116,6 +130,7 @@ const Account = () => {
     } else {
       console.error("Account ID fehlt. Navigation zu Crafting nicht möglich.");
     }
+    window.location.href = "/crafting";
   };
 
   if (error) {
@@ -142,10 +157,8 @@ const Account = () => {
           </>
         )}
       </ul>
-      <h2>Inventar:</h2>
       <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
-        {/* Waffen-Inventar */}
         {userData.weaponinventory &&
           userData.weaponinventory.map((item, index) => (
             <li key={`weapon-${index}`}>
@@ -153,8 +166,6 @@ const Account = () => {
               {item.damage} Schaden
             </li>
           ))}
-
-        {/* Rüstungs-Inventar */}
         {userData.armorinventory &&
           userData.armorinventory.map((item, index) => (
             <li key={`armor-${index}`}>
@@ -163,11 +174,12 @@ const Account = () => {
             </li>
           ))}
       </ul>
+
       <h2 style={{ marginTop: "20px", color: "#555" }}>Charaktere:</h2>
-      {characters.length ? (
+      {characters.length > 0 ? (
         characters.map((char) => (
           <div
-            key={char.id}
+            key={char.characterId}
             style={{
               border: "1px solid #ddd",
               padding: "10px",
@@ -177,7 +189,7 @@ const Account = () => {
             }}
           >
             <h3 style={{ color: "#333" }}>{char.name}</h3>
-            <p>Char_ID: {char.id}</p>
+            <p>Charakter ID: {char.characterId}</p>
             <p>Level: {char.level}</p>
             <p>Stats:</p>
             <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
@@ -201,7 +213,9 @@ const Account = () => {
         ))
       ) : (
         <div>
-          <p style={{ color: "#888" }}>Keine Charaktere gefunden.</p>
+          <p style={{ color: "#888" }}>
+            Du hast keinen Charakter, klicke auf neuen Charakter erstellen
+          </p>
           <button style={buttonStyle} onClick={handleShowCreateForm}>
             Charakter erstellen
           </button>
@@ -249,49 +263,24 @@ const Account = () => {
             }}
           />
           <p>Automatisch vergebene ID: {newCharacterId}</p>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button style={buttonStyle} onClick={handleCreateCharacter}>
-              Charakter erstellen
-            </button>
-            <button
-              style={buttonStyle}
-              onClick={() => setShowCreateForm(false)}
-            >
-              Abbrechen
-            </button>
-          </div>
+          <button style={buttonStyle} onClick={handleCreateCharacter}>
+            Erstellen
+          </button>
         </div>
       )}
-
-      <button
-        style={{
-          ...buttonStyle,
-          marginTop: "20px",
-          backgroundColor: "#1e90ff",
-          color: "#fff",
-        }}
-        onClick={() => window.history.back()}
-      >
-        Zurück
-      </button>
     </div>
   );
 };
 
 const buttonStyle = {
-  padding: "10px 15px",
-  border: "none",
-  borderRadius: "5px",
-  backgroundColor: "#ddd",
-  color: "#333",
+  padding: "10px 20px",
   fontSize: "16px",
+  borderRadius: "5px",
+  border: "none",
+  backgroundColor: "#1e90ff",
+  color: "#fff",
   cursor: "pointer",
-  transition: "all 0.3s ease",
-  textAlign: "center",
-};
-
-buttonStyle[":hover"] = {
-  backgroundColor: "#ccc",
+  marginTop: "10px",
 };
 
 export default Account;

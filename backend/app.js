@@ -176,6 +176,7 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
     res.json({
       accountId: user.accountId,
       username: user.userName,
+      character_id: characters,
       materials: user.materials, // Materialien aus der Datenbank
       weapopninventory: user.weaponinventory, // Dein Inventar
       armorinventory: user.armorinventory,
@@ -213,7 +214,7 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
       inventory: user.inventory, // Dein Inventar
-      characters: characters.map((char) => ({
+      characters: characterRoutes((char) => ({
         id: char._id,
         name: char.name,
         level: char.level,
