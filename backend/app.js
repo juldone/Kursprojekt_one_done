@@ -105,7 +105,6 @@ app.get("/enemy", enemyImport);
 
 // {
 //   "characterId": "charakter_id_aus_der_datenbank",
-//   "enemyId": 6000
 // }
 
 app.post("/battle", battle);

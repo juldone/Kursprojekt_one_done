@@ -31,6 +31,7 @@ Echidna: Ein legendäres Mischwesen, das mit einer Geschwindigkeit angreift, die
 Wer in ihren Blick gerät, ist schon verloren.
 Brianos, Herr Des Chaos: Ein Magier von unvorstellbarer Macht, der die Ordnung der Welt mit einem einzigen Gedanken zerstören kann. 
 Der Meister des Wissens und der Zerstörung.
+Julz, Aufseher der Toten: Der Herrscher der Toten der ganze Landstriche mit Pestflüchen belegen kann. 
 Patrickos, Wächter der Arena: Der letzte Verteidiger der Arena – ein eiserner Krieger, dessen Stärke und Loyalität zu einem unfassbaren Kampfgeist verschmelzen. 
 Wenn er kämpft, bleibt kein Zweifel: Nur der Stärkste wird siegen.
 Jakobos, Bezwinger der Titanen: Der Titanenjäger, der keine Herausforderung scheut. 
