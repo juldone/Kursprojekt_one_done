@@ -137,13 +137,23 @@ const Account = () => {
           </>
         )}
       </ul>
+      <h2>Inventar:</h2>
+      <ul>
+        {userData.weaponinventory &&
+          userData.weaponinventory.map((item, index) => (
+            <li key={index}>
+              {item.itemName} - {item.rarity} - {item.damage}
+            </li>
+          ))}
+        {userData.armorinventory &&
+          userData.armorinventory.map((item, index) => (
 
       <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.inventory &&
           userData.inventory.map((item, index) => (
             <li key={index}>
-              {item.itemName} - {item.rarity}
+              {item.itemName} - {item.rarity} - {item.damage}
             </li>
           ))}
       </ul>

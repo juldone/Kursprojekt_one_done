@@ -14,11 +14,16 @@ import { materials } from "./utils/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
-import { craftRandomItem } from "./data/crafting/craftingSystem.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
+
+import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
+import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
+import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
+
 import Character from "./data/character/character.js";
+
 
 // Initialisiere Express
 const app = express();
@@ -26,6 +31,14 @@ const app = express();
 // Middleware, um JSON-Daten zu verarbeiten
 app.use(express.json());
 
+// CORS konfigurieren
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Frontend URL anpassen
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // CORS konfigurieren
 app.use(
   cors({
@@ -48,6 +61,9 @@ mongoose
 
 // Routen definieren
 
+// Registriere die Crafting-Routen
+app.use("/crafting", craftingRoutes);
+
 // Registrierung und Login
 // Für die Registrierung das Frontend launchen das
 app.post("/register", register);
@@ -66,6 +82,12 @@ app.get("/craft", authenticate, (req, res) => {
 
 // Waffen-Import
 app.get("/weapons", weaponImport);
+
+// Waffen-Rezepte Import
+app.get("/wrezepte", weaponrecipeImport);
+
+// Armor-Rezepte Import
+app.get("/arezepte", armorrecipeImport);
 
 // Armor-Import
 app.get("/armor", armorImport);
@@ -147,6 +169,41 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
 
     console.log("Benutzerdaten aus der Datenbank:", user); // Debug-Ausgabe
     console.log("Charakterdaten aus der Datenbank:", characters); // Debug-Ausgabe
+
+    res.json({
+      accountId: user.accountId,
+      username: user.userName,
+      materials: user.materials, // Materialien aus der Datenbank
+      weapopninventory: user.weaponinventory, // Dein Inventar
+      armorinventory: user.armorinventory,
+    });
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+  }
+});
+
+//localhost:3000/character/equipWeapon
+//                        /equipArmor
+//                        /removeWeapon
+//                        /removeArmor
+//{
+// "characterId" : "ObjectId",
+// armor/weaponId "ObjectId"
+//}
+app.use("/character", characterRoutes);
+
+// Route im Backend für den Benutzer:
+app.get("/user/:accountId", authenticate, async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const user = await User.findOne({ accountId });
+    // const character = await Character.findOne({characterId})
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
 
     res.json({
       accountId: user.accountId,
