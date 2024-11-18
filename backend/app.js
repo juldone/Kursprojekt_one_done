@@ -60,13 +60,6 @@ mongoose
 
 // Routen definieren
 
-// Registriere die Crafting-Routen
-
-// /crafting/wpncraft
-// /crafting/armcraft
-
-app.use("/crafting", craftingRoutes);
-
 // Registrierung und Login
 // Für die Registrierung das Frontend launchen das
 app.post("/register", register);
@@ -156,6 +149,13 @@ app.use(express.static(path.resolve("public")));
 // armor/weaponId "ObjectId"
 //}
 app.use("/character", characterRoutes);
+
+// Registriere die Crafting-Routen
+
+// /crafting/wpncraft
+// /crafting/armcraft
+
+app.use("/user/:accountId/crafting", craftingRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {

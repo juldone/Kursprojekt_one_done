@@ -3,6 +3,30 @@ import WeaponRecipe from "./Weapon/waffen_recipeschema.js";
 import ArmorRecipe from "./Armor/armor_recipeschema.js";
 import { getRandomRarity } from "../../utils/chanceTable.js";
 
+// Rüstungsrezepte abrufen
+export const getArmorRecipes = async (req, res) => {
+  try {
+    const recipes = await ArmorRecipe.find();
+    res.status(200).json(recipes);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Fehler beim Abrufen der Rüstungsrezepte", error });
+  }
+};
+
+// Waffenrezepte abrufen
+export const getWeaponRecipes = async (req, res) => {
+  try {
+    const recipes = await WeaponRecipe.find();
+    res.status(200).json(recipes);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Fehler beim Abrufen der Waffenrezepte", error });
+  }
+};
+
 export const weaponcraftItem = async (req, res) => {
   try {
     const { accountId, recipeId } = req.body; // User-ID und Recipe-ID vom Client

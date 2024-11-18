@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   userName: { type: String, required: true, unique: true },
   accountId: { type: Number, required: true, unique: true },
-  characterId: { type: Number, required: true, unique: true },
   materials: {
     Holz: { type: Number, default: 0 },
     Stein: { type: Number, default: 0 },
