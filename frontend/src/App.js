@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm"; // Die RegisterForm-Komponente
 import Account from "./components/Account";
-import Crafting from "./components/CraftingInterface.js"; // Importiere die Crafting-Komponente
 import "./App.css"; // Oder der Pfad, den du für das CSS verwendest
 import CraftingInterface from "./components/CraftingInterface.js";
 
