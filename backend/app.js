@@ -203,7 +203,7 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
       accountId: user.accountId,
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
-      weapopninventory: user.weaponinventory, // Dein Inventar
+      weaponinventory: user.weaponinventory, // Dein Inventar
       armorinventory: user.armorinventory,
       characters: user.characters,
     });
@@ -223,36 +223,37 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
 //}
 app.use("/character", characterRoutes);
 
-// Route im Backend für den Benutzer:
-app.get("/user/:accountId", authenticate, async (req, res) => {
-  try {
-    const { accountId } = req.params;
-    const user = await User.findOne({ accountId });
-    // const character = await Character.findOne({characterId})
-    if (!user) {
-      return res.status(404).json({ message: "Benutzer nicht gefunden" });
-    }
+// // Route im Backend für den Benutzer:
+// app.get("/user/:accountId", authenticate, async (req, res) => {
+//   try {
+//     const { accountId } = req.params;
+//     const user = await User.findOne({ accountId });
+//     // const character = await Character.findOne({characterId})
+//     if (!user) {
+//       return res.status(404).json({ message: "Benutzer nicht gefunden" });
+//     }
 
-    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+//     console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
 
-    res.json({
-      accountId: user.accountId,
-      username: user.userName,
-      materials: user.materials, // Materialien aus der Datenbank
-      inventory: user.inventory, // Dein Inventar
-      characters: characterRoutes((char) => ({
-        id: char._id,
-        name: char.name,
-        level: char.level,
-        stats: char.stats,
-        equipment: char.equipment,
-      })), // Charakterdaten
-    });
-  } catch (error) {
-    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
-  }
-});
+//     res.json({
+//       accountId: user.accountId,
+//       username: user.userName,
+//       materials: user.materials, // Materialien aus der Datenbank
+//       weaponinventory: user.weaponinventory,
+//       armorinventory: user.armorinventory, // Dein Inventar
+//       characters: characterRoutes((char) => ({
+//         id: char._id,
+//         name: char.name,
+//         level: char.level,
+//         stats: char.stats,
+//         equipment: char.equipment,
+//       })), // Charakterdaten
+//     });
+//   } catch (error) {
+//     console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+//     res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+//   }
+// });
 
 // Server starten
 const PORT = process.env.PORT || 3000;
