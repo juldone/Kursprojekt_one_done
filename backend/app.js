@@ -17,13 +17,10 @@ import { createCharacter } from "./data/character/characterCreation.js"; // Pfad
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
-
 import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
 import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
 import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
-
 import Character from "./data/character/character.js";
-
 
 // Initialisiere Express
 const app = express();
@@ -111,7 +108,6 @@ app.get("/enemy", enemyImport);
 
 // {
 //   "characterId": "charakter_id_aus_der_datenbank",
-//   "enemyId": 6000
 // }
 
 app.post("/battle", battle);
