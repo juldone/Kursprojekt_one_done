@@ -1,8 +1,8 @@
 [
   {
     "recipeId": 1000,
-    "name": "Holzschild",
-    "type": "Rüstung",
+    "name": "Holzhelm",
+    "type": "Kopf",
     "armor": 10,
     "rarity": "",
     "materials": {
@@ -13,9 +13,9 @@
   },
   {
     "recipeId": 1001,
-    "name": "Steinpanzerrüstung",
-    "type": "Rüstung",
-    "armor": 25,
+    "name": "Holzhandschuhe",
+    "type": "Hand",
+    "armor": 5,
     "rarity": "",
     "materials": {
       "Holz": 2,
@@ -25,9 +25,9 @@
   },
   {
     "recipeId": 1002,
-    "name": "Metallhelm",
-    "type": "Rüstung",
-    "armor": 40,
+    "name": "Holzrüstung",
+    "type": "Brust",
+    "armor": 50,
     "rarity": "",
     "materials": {
       "Holz": 0,
@@ -37,9 +37,9 @@
   },
   {
     "recipeId": 1003,
-    "name": "Eisenplattenrüstung",
-    "type": "Rüstung",
-    "armor": 60,
+    "name": "Holzschuhe",
+    "type": "Füße",
+    "armor": 10,
     "rarity": "",
     "materials": {
       "Holz": 5,
@@ -49,9 +49,93 @@
   },
   {
     "recipeId": 1004,
-    "name": "Legendärer Drachenpanzer",
-    "type": "Rüstung",
+    "name": "Steinhelm",
+    "type": "Kopf",
+    "armor": 20,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1005,
+    "name": "Steinhandschuhe",
+    "type": "Hand",
+    "armor": 10,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1006,
+    "name": "Steinrüstung",
+    "type": "Brust",
     "armor": 100,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1007,
+    "name": "Steinschuhe",
+    "type": "Füße",
+    "armor": 20,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1008,
+    "name": "Metallhelm",
+    "type": "Kopf",
+    "armor": 40,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1009,
+    "name": "Metallhandschuhe",
+    "type": "Hand",
+    "armor": 20,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1010,
+    "name": "Metallrüstung",
+    "type": "Brust",
+    "armor": 200,
+    "rarity": "",
+    "materials": {
+      "Holz": 15,
+      "Stein": 15,
+      "Metall": 40
+    }
+  },
+  {
+    "recipeId": 1011,
+    "name": "Metallschuhe",
+    "type": "Füße",
+    "armor": 40,
     "rarity": "",
     "materials": {
       "Holz": 15,
