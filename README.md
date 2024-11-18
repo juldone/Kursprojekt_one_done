@@ -20,10 +20,13 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 18.11.24
 
 ### Tim 
+### Tim 
 - Crafting Branch in Main gemerged (yes!)
 - armor_rezepte.json mit Sets gefüllt. (Holzset: Kopf, Hand, Brust, Füße, Steinset: Kopf, Hand, Brust, Füße, Metallset: Kopf, Hand, Brust, Füße)
 - enemy.json -> Gegner Schema befüllt und in die Datenbank eingespeißt.
 - Readme.txt für Enemies erstellt und Beschreibungen der einzelnen Charaktere eingefügt. (Maybe Eastereggs?)
+- craftingfunc.js überarbeitet, diese wählt jetzt einen random gegner aus sobald der kampf gestartet wird.
+- ABER: vorerst eingestellt, da in der User.js inventory daten eingebunden werden und in die user datei erst noch verknüpfungen kommen müssen mit denen ich weiter arbeiten kann
 
 ### Brian
 - Funktionen auf den Branches getestet und gemerged
