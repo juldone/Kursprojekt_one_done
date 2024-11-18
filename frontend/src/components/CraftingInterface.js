@@ -34,18 +34,27 @@ const CraftingInterface = () => {
 
   const craftItem = (recipeId, type) => {
     const endpoint =
-      type === "armor"
+      type === "Rüstung"
         ? `http://localhost:3000/user/${accountId}/crafting/armcraft`
         : `http://localhost:3000/user/${accountId}/crafting/wpncraft`;
 
     fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recipeId, materials }),
+      body: JSON.stringify({
+        accountId: accountId, // accountId hier im Body
+        recipeId: recipeId,
+        materials: materials,
+      }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Serverfehler: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        alert(data.message);
+        alert(data.message); // Antwort vom Backend anzeigen
       })
       .catch((err) => console.error("Fehler beim Craften:", err));
   };
