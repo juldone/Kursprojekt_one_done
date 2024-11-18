@@ -20,6 +20,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 18.11.24
 
 ### Tim 
+- Crafting Branch in Main gemerged (yes!)
+- armor_rezepte.json mit Sets gefüllt. (Holzset: Kopf, Hand, Brust, Füße, Steinset: Kopf, Hand, Brust, Füße, Metallset: Kopf, Hand, Brust, Füße)
+- enemy.json -> Gegner Schema befüllt und in die Datenbank eingespeißt.
+- Readme.txt für Enemies erstellt und Beschreibungen der einzelnen Charaktere eingefügt. (Maybe Eastereggs?)
 
 ### Brian
 
