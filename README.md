@@ -26,6 +26,13 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Readme.txt für Enemies erstellt und Beschreibungen der einzelnen Charaktere eingefügt. (Maybe Eastereggs?)
 
 ### Brian
+- Funktionen auf den Branches getestet und gemerged
+- Craftingfunc und app.js routen überarbeitet
+- Crack geraucht
+- CraftingInterface erstellt und in Betrieb genommen funktioniert super Waffen udn Rüstungsrezepte werden per get request ins Frontend gerendert.
+- Mehere kleine Bugs gefixt
+- Character Creation läuft jetzt auch Character kann erstellt werden wenn keiner vorhanden ist und bleibt dann auch dort vorhanden , keiner neuer char kann erstellt werden nur wenn man seinen Character löschen tut
+- Demensprechend wurde auch eine neue Route hinzugefügt damit der Character auch gelöscht werden kann.
 
 ### Julian
 - Frontend überarbeitet
