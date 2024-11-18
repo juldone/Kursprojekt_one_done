@@ -17,13 +17,10 @@ import { createCharacter } from "./data/character/characterCreation.js"; // Pfad
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
-
 import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
 import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
 import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
-
 import Character from "./data/character/character.js";
-
 
 // Initialisiere Express
 const app = express();
@@ -35,7 +32,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3001", // Frontend URL anpassen
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -60,9 +57,6 @@ mongoose
   .catch((error) => console.error("MongoDB Verbindungsfehler:", error));
 
 // Routen definieren
-
-// Registriere die Crafting-Routen
-app.use("/crafting", craftingRoutes);
 
 // Registrierung und Login
 // Für die Registrierung das Frontend launchen das
@@ -140,6 +134,34 @@ app.post("/battle", battle);
 // }
 
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
+app.delete("/user/character", async (req, res) => {
+  const { accountId, characterId } = req.body;
+
+  // Überprüfen, ob accountId und characterId übergeben wurden
+  if (!accountId || !characterId) {
+    return res
+      .status(400)
+      .json({ message: "accountId und characterId sind erforderlich." });
+  }
+
+  try {
+    // Benutzer finden und den gewünschten Charakter aus dem characters-Array entfernen
+    const user = await User.findOneAndUpdate(
+      { accountId: accountId }, // Benutzer anhand der accountId finden
+      { $pull: { characters: { characterId: characterId } } }, // Entferne den Charakter mit der gegebenen characterId
+      { new: true } // Gibt den aktualisierten Benutzer zurück
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden." });
+    }
+
+    res.status(200).json({ message: "Charakter erfolgreich gelöscht.", user });
+  } catch (error) {
+    console.error("Fehler beim Löschen des Charakters:", error);
+    res.status(500).json({ message: "Fehler beim Löschen des Charakters." });
+  }
+});
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
@@ -153,6 +175,13 @@ app.use(express.static(path.resolve("public")));
 // armor/weaponId "ObjectId"
 //}
 app.use("/character", characterRoutes);
+
+// Registriere die Crafting-Routen
+
+// /crafting/wpncraft
+// /crafting/armcraft
+
+app.use("/user/:accountId/crafting", craftingRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {
@@ -174,8 +203,9 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
       accountId: user.accountId,
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
-      weapopninventory: user.weaponinventory, // Dein Inventar
+      weaponinventory: user.weaponinventory, // Dein Inventar
       armorinventory: user.armorinventory,
+      characters: user.characters,
     });
   } catch (error) {
     console.error("Fehler beim Abrufen der Benutzerdaten:", error);
@@ -193,36 +223,37 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
 //}
 app.use("/character", characterRoutes);
 
-// Route im Backend für den Benutzer:
-app.get("/user/:accountId", authenticate, async (req, res) => {
-  try {
-    const { accountId } = req.params;
-    const user = await User.findOne({ accountId });
-    // const character = await Character.findOne({characterId})
-    if (!user) {
-      return res.status(404).json({ message: "Benutzer nicht gefunden" });
-    }
+// // Route im Backend für den Benutzer:
+// app.get("/user/:accountId", authenticate, async (req, res) => {
+//   try {
+//     const { accountId } = req.params;
+//     const user = await User.findOne({ accountId });
+//     // const character = await Character.findOne({characterId})
+//     if (!user) {
+//       return res.status(404).json({ message: "Benutzer nicht gefunden" });
+//     }
 
-    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+//     console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
 
-    res.json({
-      accountId: user.accountId,
-      username: user.userName,
-      materials: user.materials, // Materialien aus der Datenbank
-      inventory: user.inventory, // Dein Inventar
-      characters: characters.map((char) => ({
-        id: char._id,
-        name: char.name,
-        level: char.level,
-        stats: char.stats,
-        equipment: char.equipment,
-      })), // Charakterdaten
-    });
-  } catch (error) {
-    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
-  }
-});
+//     res.json({
+//       accountId: user.accountId,
+//       username: user.userName,
+//       materials: user.materials, // Materialien aus der Datenbank
+//       weaponinventory: user.weaponinventory,
+//       armorinventory: user.armorinventory, // Dein Inventar
+//       characters: characterRoutes((char) => ({
+//         id: char._id,
+//         name: char.name,
+//         level: char.level,
+//         stats: char.stats,
+//         equipment: char.equipment,
+//       })), // Charakterdaten
+//     });
+//   } catch (error) {
+//     console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+//     res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+//   }
+// });
 
 // Server starten
 const PORT = process.env.PORT || 3000;

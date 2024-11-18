@@ -25,6 +25,28 @@ const userSchema = new mongoose.Schema({
       rarity: { type: String }, // optional, falls es eine Rarität gibt
     },
   ],
+  characters: [
+    {
+      characterId: { type: String, required: true }, // ID des Charakters
+      name: { type: String, required: true, unique: true }, // Name des Charakters
+      level: { type: Number, required: true, default: 1 }, // Level des Charakters
+      stats: {
+        hp: { type: Number, required: true, default: 100 }, // HP des Charakters
+        attack: { type: Number, required: true, default: 10 }, // Angriffskraft
+        defense: { type: Number, required: true, default: 5 }, // Verteidigungskraft
+        speed: { type: Number, required: true, default: 5 }, // Geschwindigkeit
+      },
+      equipment: {
+        weapon: { type: String, required: true, default: "Basis-Schwert" }, // Standardwaffe
+        armor: {
+          head: { type: String, required: true, default: "Basis-Helm" }, // Helm
+          chest: { type: String, required: true, default: "Basis-Brustpanzer" }, // Brustpanzer
+          hands: { type: String, required: true, default: "Basis-Handschuhe" }, // Handschuhe
+          legs: { type: String, required: true, default: "Basis-Beinschützer" }, // Beinschützer
+        },
+      },
+    },
+  ],
 });
 
 // Verhindert die doppelte Kompilierung des Modells
