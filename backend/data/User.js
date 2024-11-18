@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   characters: [
     {
       characterId: { type: String, required: true }, // ID des Charakters
-      name: { type: String, required: true }, // Name des Charakters
+      name: { type: String, required: true, unique: true }, // Name des Charakters
       level: { type: Number, required: true, default: 1 }, // Level des Charakters
       stats: {
         hp: { type: Number, required: true, default: 100 }, // HP des Charakters
