@@ -176,10 +176,10 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
     res.json({
       accountId: user.accountId,
       username: user.userName,
-      character_id: characters,
       materials: user.materials, // Materialien aus der Datenbank
       weapopninventory: user.weaponinventory, // Dein Inventar
       armorinventory: user.armorinventory,
+      characters: user.characters,
     });
   } catch (error) {
     console.error("Fehler beim Abrufen der Benutzerdaten:", error);

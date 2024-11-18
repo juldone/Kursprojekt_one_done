@@ -1,49 +1,43 @@
-// characterCreation.js
-import dotenv from "dotenv";
+import User from "../../data/User.js"; // Der Pfad kann je nach Struktur des Projekts variieren
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
-import Character from "./character.js";
-
-dotenv.config();
-
-export async function createCharacter(req, res) {
+// Funktion zur Erstellung eines Charakters
+export const createCharacter = async (req, res) => {
   try {
-    const { accountId, name, level = 1, stats, equipment } = req.body;
+    // Benutzerdaten aus der Anfrage
+    const { accountId, name, level, stats, equipment } = req.body;
 
-    const defaultStats = {
-      hp: 100,
-      attack: 10,
-      defense: 5,
-      speed: 5,
-      ...stats,
-    };
+    // Überprüfen, ob der Benutzer existiert
+    const user = await User.findOne({ accountId });
 
-    const defaultEquipment = {
-      armor: { head: null, chest: null, hands: null, legs: null },
-      weapon: equipment?.weapon || null,
-    };
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
 
-    const uniqueCharacterID = uuidv4(); // Erzeuge eine UUID für den Charakter
+    // Erstelle eine neue Charakter-ID
+    const newCharacterId = new mongoose.Types.ObjectId().toString();
 
-    const newCharacter = new Character({
-      characterId: uniqueCharacterID,
-      accountId,
+    // Erstelle das Charakter-Objekt
+    const newCharacter = {
+      characterId: newCharacterId,
       name,
       level,
-      stats: defaultStats,
-      equipment: defaultEquipment,
+      stats,
+      equipment,
+    };
+
+    // Füge den neuen Charakter zum Benutzer hinzu
+    user.characters.push(newCharacter);
+
+    // Speichere den Benutzer mit dem neuen Charakter
+    await user.save();
+
+    // Erfolgsantwort zurückgeben
+    res.status(201).json({
+      message: "Charakter erfolgreich erstellt",
+      character: newCharacter,
     });
-
-    // Validierung des Charakters
-    await newCharacter.validate();
-
-    const savedCharacter = await newCharacter.save();
-    return res.status(201).json(savedCharacter);
   } catch (error) {
-    console.error("Fehler beim Erstellen des Charakters:", error); // Vollständiger Fehler wird hier geloggt
-    return res.status(500).json({
-      message: "Fehler beim Erstellen des Charakters",
-      error: error.message,
-    });
+    console.error("Fehler bei der Charaktererstellung:", error);
+    res.status(500).json({ message: "Fehler bei der Charaktererstellung" });
   }
-}
+};
