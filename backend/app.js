@@ -74,17 +74,12 @@ app.get("/craft", authenticate, (req, res) => {
   });
 });
 
-// Waffen-Import
-app.get("/weapons", weaponImport);
-
 // Waffen-Rezepte Import
 app.get("/wrezepte", weaponrecipeImport);
 
 // Armor-Rezepte Import
 app.get("/arezepte", armorrecipeImport);
 
-// Armor-Import
-app.get("/armor", armorImport);
 // Route zum Abrufen aller Items
 app.get("/item", itemImport);
 
@@ -105,7 +100,6 @@ app.get("/enemy", enemyImport);
 
 // {
 //   "characterId": "charakter_id_aus_der_datenbank",
-//   "enemyId": 6000
 // }
 
 app.post("/battle", battle);
@@ -165,16 +159,6 @@ app.delete("/user/character", async (req, res) => {
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
-
-//localhost:3000/character/equipWeapon
-//                        /equipArmor
-//                        /removeWeapon
-//                        /removeArmor
-//{
-// "characterId" : "ObjectId",
-// armor/weaponId "ObjectId"
-//}
-app.use("/character", characterRoutes);
 
 // Registriere die Crafting-Routen
 
