@@ -17,13 +17,39 @@
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
-### Changelog 15.11.24
+### Changelog 18.11.24
 
-### Tim
+### Tim 
 
 ### Brian
 
 ### Julian
+
+### Changelog 15.11.24
+
+### Tim
+- waffen_recipeschema.js mit Brian ausgearbeitet, so wie waffen_rezepte.json befüllt
+- armor_rezepte.json befüllt, armor_recipeschema.js geschrieben
+- armor_recipeimport.js und waffen_recipeimport.js geschrieben
+- Datenbankfehler behoben bei dem im Import von Waffen/Armor zwei mal Recipe importiert werden wollte was zu einem Fehler führte nicht zwei mal der gleiche Import durchgeführt werden kann.
+- switch-anweisung in der craftingfunc.js geschrieben
+- ### REMINDER AM WOCHENENDE MIT NEUEM USER CRAFTING TESTEN OB SKALIERUNG FUNKTIONIERT, Habe gerade Brainlag
+
+### Brian
+- Frontend erstellt und eine Route geschaffen von Login zu Accountdetails
+- Dementsprechend app.js angepasst darunter  cors() funktion
+- authMiddleware angepasst
+- mit Tim zusammen recipes für Waffen und Armor besprochen erstellt und programmiert
+- User.js unterscheidung zwischen Waffen und Armor Inventory umgebaut
+- Mit Julian weiteres vorgehen des Frontend besprochen in der Account.js im Frontend versucht die Inventare zu unterscheiden
+- Crafting ins Inventory Funktioniert derzeit Prima Equiplogik muss nochmal überarbeitet werden durch anderen approach 
+
+### Julian
+- Frontend Account.js code überarbeitet. Charactererstellung/button verfügbar, falls eingeloggte ID keinen character hat. Character kann via Button erstellt werden / char_Id wird automatisch zugewiesen und in Mongo_DB importiert
+- mit Hilfe von Brian komplette routevebindung zum char und id frontendimport angepasst &  den "geheimen Token import " überarbeitet und angepasst
+- buttons erweitert und angepasst
+- Char_ID wird nicht unmittelbar nach Char Erstellung angezeigt. ( Only… nach eroflgreichen LogIN ) /// Zurück-Button funktioniert, Go-to Fight, Crafting button erstellt ohne Funktion.
+
 
 ### Changelog 14.11.24
 

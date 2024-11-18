@@ -17,9 +17,13 @@ import { createCharacter } from "./data/character/characterCreation.js"; // Pfad
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
+
 import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
 import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
 import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
+
+import Character from "./data/character/character.js";
+
 
 // Initialisiere Express
 const app = express();
@@ -150,17 +154,21 @@ app.use(express.static(path.resolve("public")));
 //}
 app.use("/character", characterRoutes);
 
-// Route im Backend für den Benutzer:
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {
     const { accountId } = req.params;
+
+    // Abruf des Benutzers
     const user = await User.findOne({ accountId });
-    // const character = await Character.findOne({characterId})
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
 
-    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+    // Abruf der Charaktere des Benutzers
+    const characters = await Character.find({ accountId });
+
+    console.log("Benutzerdaten aus der Datenbank:", user); // Debug-Ausgabe
+    console.log("Charakterdaten aus der Datenbank:", characters); // Debug-Ausgabe
 
     res.json({
       accountId: user.accountId,
@@ -202,6 +210,13 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
       inventory: user.inventory, // Dein Inventar
+      characters: characters.map((char) => ({
+        id: char._id,
+        name: char.name,
+        level: char.level,
+        stats: char.stats,
+        equipment: char.equipment,
+      })), // Charakterdaten
     });
   } catch (error) {
     console.error("Fehler beim Abrufen der Benutzerdaten:", error);

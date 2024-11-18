@@ -4,6 +4,7 @@ const Account = () => {
   const [userData, setUserData] = useState({
     username: localStorage.getItem("userName") || "",
   });
+  const [characters, setCharacters] = useState([]);
   const [error, setError] = useState(null); // Zustand für Fehler
 
   useEffect(() => {
@@ -12,34 +13,31 @@ const Account = () => {
 
     if (!token) {
       window.location.href = "/";
+      return;
     }
 
+    // Abruf von Benutzerdaten inklusive Charaktere
     fetch(`http://localhost:3000/user/${accountId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // Der Token wird korrekt im Header übergeben
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
         if (!response.ok) {
-          setError(
-            `Fehler: Netzwerkantwort war nicht OK. Status: ${response.status}`
-          );
-          throw new Error(
-            `Netzwerkantwort war nicht OK. Status: ${response.status}`
-          );
+          throw new Error(`Fehler: ${response.status} ${response.statusText}`);
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Benutzerdaten aus der API-Antwort:", data);
-        setUserData((prevData) => ({
-          ...prevData,
-          ...data,
-        }));
+        setUserData({
+          username: data.username,
+          accountId: data.accountId,
+          materials: data.materials,
+          inventory: data.inventory,
+        });
+        setCharacters(data.characters || []); // Setzt die Charaktere
       })
       .catch((error) => {
         console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-        setError("Fehler beim Abrufen der Benutzerdaten.");
+        setError("Daten konnten nicht geladen werden.");
       });
   }, []);
 
@@ -81,6 +79,36 @@ const Account = () => {
             </li>
           ))}
       </ul>
+      <h2>Charaktere:</h2>
+      {characters.length ? (
+        characters.map((char) => (
+          <div key={char.id}>
+            <h3>{char.name}</h3>
+            <p>ID: {char.id}</p>
+            <p>Level: {char.level}</p>
+            <p>Stats:</p>
+            <ul>
+              <li>HP: {char.stats.hp}</li>
+              <li>Angriff: {char.stats.attack}</li>
+              <li>Verteidigung: {char.stats.defense}</li>
+              <li>Geschwindigkeit: {char.stats.speed}</li>
+            </ul>
+            <p>Ausrüstung:</p>
+            <ul>
+              <li>Waffe: {char.equipment.weapon}</li>
+              <li>Rüstung:</li>
+              <ul>
+                <li>Kopf: {char.equipment.armor.head}</li>
+                <li>Brust: {char.equipment.armor.chest}</li>
+                <li>Hände: {char.equipment.armor.hands}</li>
+                <li>Beine: {char.equipment.armor.legs}</li>
+              </ul>
+            </ul>
+          </div>
+        ))
+      ) : (
+        <p>Keine Charaktere gefunden.</p>
+      )}
     </div>
   );
 };
