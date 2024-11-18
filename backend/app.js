@@ -61,6 +61,10 @@ mongoose
 // Routen definieren
 
 // Registriere die Crafting-Routen
+
+// /crafting/wpncraft
+// /crafting/armcraft
+
 app.use("/crafting", craftingRoutes);
 
 // Registrierung und Login
