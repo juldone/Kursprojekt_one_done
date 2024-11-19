@@ -16,6 +16,18 @@
 
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
+### Changelog 19.11.24
+### Tim
+
+### Brian
+
+### Julian 
+- Hauptsächlich Front und Backend bearbeitet
+- FightRouting_js erstellt // Account_js überarbeitet // Fight_js erstellt // Codes überarbeitet
+- app_js überarbeitet_fighting_route überarbeitet
+- Buttons erstellt und bearbeitet
+- neue componente Fight.js zsm. mit Brian geroutet
+- Fight_js erweitert durch neues "fightwindow" eigener_char links, gegner rechts angeordnet, in die mitte ein fight button. BUG: nach klick auf Fight werden namen nicht         aktualisiert ansonsten funktioniert die Kampflogik 
 
 ### Changelog 18.11.24
 
