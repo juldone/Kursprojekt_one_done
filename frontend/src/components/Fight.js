@@ -4,14 +4,11 @@ const Fight = () => {
   const [accountId, setAccountId] = useState(null); // Account ID
   const [characterId, setCharacterId] = useState(""); // Charakter-ID
   const [characters, setCharacters] = useState([]); // Liste der Charaktere
-  const [battleResult, setBattleResult] = useState(null); // Kampfergebnis
-  const [loading, setLoading] = useState(false); // Ladezustand
-  const [error, setError] = useState(null); // Fehlerzustand
   const [loadingCharacters, setLoadingCharacters] = useState(true); // Ladezustand für Charaktere
   const [token, setToken] = useState(""); // JWT Token
+  const [error, setError] = useState(null); // Fehlerzustand
 
   useEffect(() => {
-    // Hole die accountId und den Token aus dem localStorage
     const storedAccountId = localStorage.getItem("accountId");
     const storedToken = localStorage.getItem("token");
 
@@ -22,7 +19,6 @@ const Fight = () => {
     }
   }, []);
 
-  // Hole die Charaktere für den Account
   const fetchCharacters = async (accountId, token) => {
     setLoadingCharacters(true);
     try {
@@ -36,9 +32,8 @@ const Fight = () => {
 
       const data = await response.json();
 
-      // Überprüfen, ob die Antwort die erwarteten Daten enthält
       if (data && data.characters) {
-        setCharacters(data.characters); // Setze die erhaltenen Charaktere
+        setCharacters(data.characters);
       } else {
         throw new Error("Keine Charaktere gefunden.");
       }
@@ -49,46 +44,139 @@ const Fight = () => {
     }
   };
 
-  const handleFight = async () => {
+  const handleFight = () => {
     if (!characterId) {
       setError("Bitte wähle einen Charakter aus.");
       return;
     }
 
-    setLoading(true);
-    setError(null);
-    setBattleResult(null);
+    const selectedCharacter = characters.find(
+      (character) => character._id === characterId
+    );
 
-    try {
-      // Logge den characterId und accountId, um zu prüfen, ob sie korrekt sind
-      console.log("Sending fight request with accountId:", accountId);
-      console.log("Sending fight request with characterId:", characterId);
+    const opponent = {
+      name: "Zufälliger Gegner",
+      level: Math.floor(Math.random() * 50) + 1,
+      hp: Math.floor(Math.random() * 100) + 50,
+    };
 
-      // Sende die Anfrage an den Backend-Endpunkt
-      const response = await fetch("http://localhost:3000/battle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // JWT Token hinzufügen
-        },
-        body: JSON.stringify({
-          accountId, // accountId aus dem State
-          characterId, // characterId aus dem State
-        }),
-      });
+    const playerHp = Math.floor(Math.random() * 100) + 50;
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Ein Fehler ist aufgetreten.");
-      }
+    let fightWindow = window.open("", "fightWindow", "width=800,height=500");
 
-      const data = await response.json();
-      setBattleResult(data); // Ergebnis speichern
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!fightWindow || fightWindow.closed) {
+      fightWindow = window.open("", "fightWindow", "width=800,height=500");
     }
+
+    fightWindow.document.body.innerHTML = `
+      <html>
+      <head>
+        <title>Kampf</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            height: 100%;
+            margin: 0;
+          }
+          .character {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+          }
+          .fight-button {
+            flex: 1;
+            text-align: center;
+          }
+          button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+          }
+          button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+          }
+          h2 {
+            margin: 10px 0;
+          }
+          .hp {
+            color: green;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="character" id="player">
+          <h2>Dein Charakter</h2>
+          <p><strong>Name:</strong> ${selectedCharacter.name}</p>
+          <p><strong>Level:</strong> ${selectedCharacter.level}</p>
+          <p><strong>HP:</strong> <span class="hp">${playerHp}</span></p>
+        </div>
+
+        <div class="fight-button">
+          <button id="fightButton">Let's Fight!</button>
+          <div id="result" style="margin-top: 20px;"></div>
+        </div>
+
+        <div class="character" id="opponent">
+          <h2>Gegner</h2>
+          <p><strong>Name:</strong> ${opponent.name}</p>
+          <p><strong>Level:</strong> ${opponent.level}</p>
+          <p><strong>HP:</strong> <span class="hp">${opponent.hp}</span></p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const fightButton = fightWindow.document.getElementById("fightButton");
+    const resultDiv = fightWindow.document.getElementById("result");
+
+    fightButton.addEventListener("click", async () => {
+      resultDiv.textContent = "Kampf wird ausgelöst...";
+      try {
+        const response = await fetch("http://localhost:3000/battle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            accountId,
+            characterId,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Fehler beim Kampf.");
+        }
+
+        const data = await response.json();
+        resultDiv.innerHTML = `
+          <h3>Kampfergebnis:</h3>
+          <p>${data.message}</p>
+          ${
+            data.drops
+              ? `<h4>Erhaltene Drops:</h4>
+                 <ul>${data.drops
+                   .map((drop) => `<li>${drop.quantity}x ${drop.material}</li>`)
+                   .join("")}</ul>`
+              : ""
+          }
+        `;
+      } catch (err) {
+        resultDiv.textContent = `Fehler: ${err.message}`;
+      }
+    });
   };
 
   return (
@@ -99,7 +187,6 @@ const Fight = () => {
         starten!
       </p>
 
-      {/* Dropdown-Menü für Charaktere */}
       {loadingCharacters ? (
         <p>Charaktere werden geladen...</p>
       ) : (
@@ -115,15 +202,11 @@ const Fight = () => {
             }}
           >
             <option value="">Wähle einen Charakter</option>
-            {characters && characters.length > 0 ? (
-              characters.map((character) => (
-                <option key={character._id} value={character._id}>
-                  {character.name} (Level {character.level})
-                </option>
-              ))
-            ) : (
-              <option disabled>Keine Charaktere verfügbar</option>
-            )}
+            {characters.map((character) => (
+              <option key={character._id} value={character._id}>
+                {character.name} (Level {character.level})
+              </option>
+            ))}
           </select>
         </div>
       )}
@@ -131,60 +214,23 @@ const Fight = () => {
       <div style={{ marginBottom: "20px" }}>
         <button
           onClick={handleFight}
-          disabled={!selectedCharacter}
+          disabled={!characterId}
           style={{
             marginLeft: "10px",
             padding: "10px 20px",
             fontSize: "16px",
-            backgroundColor: selectedCharacter ? "#007bff" : "#ccc",
+            backgroundColor: characterId ? "#007bff" : "#ccc",
             color: "white",
             border: "none",
             borderRadius: "5px",
-            cursor: selectedCharacter ? "pointer" : "not-allowed",
+            cursor: characterId ? "pointer" : "not-allowed",
           }}
         >
           Kämpfen!
         </button>
       </div>
 
-      {loading && <p>Lädt... Der Kampf beginnt!</p>}
-
       {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
-
-      {battleResult && (
-        <div style={{ marginTop: "20px", lineHeight: "1.6" }}>
-          <h2>Kampfergebnis</h2>
-          <p>{battleResult.message}</p>
-
-          {battleResult.drops && battleResult.drops.length > 0 && (
-            <>
-              <h3>Erhaltene Drops:</h3>
-              <ul>
-                {battleResult.drops.map((drop, index) => (
-                  <li key={index}>
-                    {drop.quantity}x {drop.material}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {battleResult.userMaterials && (
-            <>
-              <h3>Aktualisierte Materialien:</h3>
-              <ul>
-                {Object.entries(battleResult.userMaterials).map(
-                  ([material, quantity]) => (
-                    <li key={material}>
-                      {material}: {quantity}
-                    </li>
-                  )
-                )}
-              </ul>
-            </>
-          )}
-        </div>
-      )}
     </div>
   );
 };
