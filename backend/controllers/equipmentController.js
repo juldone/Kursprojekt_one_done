@@ -16,6 +16,11 @@ export const equipItem = async (req, res) => {
       (char) => char.characterName === characterName
     );
     if (!character) {
+      console.log("Vallah ich bin ", typeof character);
+      console.log("User:", user);
+      console.log("User.characters:", user.characters);
+      console.log("Gesuchter Charaktername:", typeof characterName);
+
       return res.status(404).json({ message: "Charakter nicht gefunden!" });
     }
 
@@ -41,11 +46,11 @@ export const equipItem = async (req, res) => {
     }
 
     // Überprüfen, ob der Slot bereits belegt ist
-    if (category === "weapon" && character.equipment.weapon) {
+    if (type === "Fernkampf" && character.equipment.weapon) {
       return res
         .status(400)
         .json({ message: "Dieser Slot ist bereits belegt!" });
-    } else if (category === "armor" && character.equipment.armor[slot]) {
+    } else if (type === "armor" && character.equipment.armor) {
       return res
         .status(400)
         .json({ message: "Dieser Slot ist bereits belegt!" });
@@ -62,42 +67,30 @@ export const equipItem = async (req, res) => {
     } else if (type === "Kopf") {
       character.equipment.armor.head = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) =>
-          armor.itemName !==
-          itemName(
-            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
-            (character.stats.armor += item.armor)
-          )
+        (armor) => armor.itemName !== itemName,
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (character.stats.defense += item.armor)
       );
     } else if (type === "Brust") {
       character.equipment.armor.chest = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) =>
-          armor.itemName !==
-          itemName(
-            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
-            (character.stats.armor += item.armor)
-          )
+        (armor) => armor.itemName !== itemName,
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (character.stats.defense += item.armor)
       );
     } else if (type === "Hand") {
       character.equipment.armor.hands = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) =>
-          armor.itemName !==
-          itemName(
-            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
-            (character.stats.armor += item.armor)
-          )
+        (armor) => armor.itemName !== itemName,
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (character.stats.defense += item.armor)
       );
     } else if (type === "Füße") {
       character.equipment.armor.legs = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) =>
-          armor.itemName !==
-          itemName(
-            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
-            (character.stats.armor += item.armor)
-          )
+        (armor) => armor.itemName !== itemName,
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (character.stats.defense += item.armor)
       );
     } else {
       return res.status(400).json({ message: "Ungültige Kategorie!" });
@@ -115,5 +108,3 @@ export const equipItem = async (req, res) => {
     res.status(500).json({ message: "Interner Serverfehler!" });
   }
 };
-
-export const unequipItem = async (req, res) => {};
