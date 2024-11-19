@@ -2,23 +2,26 @@
 import User from "../data/User.js";
 import fs from "fs/promises"; // Verwende fs.promises für Promises
 import path from "path";
-
 const enemyDataPath = path.resolve("data/enemies/enemy.json"); // Pfad zur JSON-Datei
 
 export async function battle(req, res) {
   try {
     const { characterId, accountId } = req.body;
 
-    // Lade den Benutzer basierend auf accountId
+    // Logge die empfangenen Werte
+    console.log("Received accountId:", accountId);
+    console.log("Received characterId:", characterId);
+
+    // Hole den Benutzer mit der accountId
     const user = await User.findOne({ accountId });
 
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
 
-    // Finde den Charakter im Benutzer-Dokument
+    // Überprüfe, ob der Charakter mit characterId existiert
     const character = user.characters.find(
-      (char) => char.characterId === characterId
+      (char) => char._id.toString() === characterId // Vergewissere dich, dass die ID als String verglichen wird
     );
 
     if (!character) {

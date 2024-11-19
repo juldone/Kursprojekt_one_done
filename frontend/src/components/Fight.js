@@ -1,56 +1,80 @@
 import React, { useState, useEffect } from "react";
 
 const Fight = () => {
-  const [characters, setCharacters] = useState([]); // Liste der verfügbaren Charaktere
-  const [selectedCharacter, setSelectedCharacter] = useState(null); // Ausgewählter Charakter
+  const [accountId, setAccountId] = useState(null); // Account ID
+  const [characterId, setCharacterId] = useState(""); // Charakter-ID
+  const [characters, setCharacters] = useState([]); // Liste der Charaktere
   const [battleResult, setBattleResult] = useState(null); // Kampfergebnis
   const [loading, setLoading] = useState(false); // Ladezustand
   const [error, setError] = useState(null); // Fehlerzustand
+  const [loadingCharacters, setLoadingCharacters] = useState(true); // Ladezustand für Charaktere
+  const [token, setToken] = useState(""); // JWT Token
 
-  // Beispiel-Token (ersetze dies durch tatsächliche Logik, um den Token zu speichern/abrufen)
-  const token = localStorage.getItem("authToken");
-
-  // Charaktere laden
   useEffect(() => {
-    const fetchCharacters = async () => {
-      try {
-        const response = await fetch("http://localhost:3000", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Token im Authorization-Header
-          },
-        });
+    // Hole die accountId und den Token aus dem localStorage
+    const storedAccountId = localStorage.getItem("accountId");
+    const storedToken = localStorage.getItem("token");
 
-        if (!response.ok) {
-          throw new Error("Fehler beim Abrufen der Charaktere");
-        }
+    if (storedAccountId && storedToken) {
+      setAccountId(storedAccountId);
+      setToken(storedToken);
+      fetchCharacters(storedAccountId, storedToken); // Hole die Charaktere für den Account
+    }
+  }, []);
 
-        const data = await response.json();
-        setCharacters(data.characters); // `data.characters` sollte ein Array von Charakteren sein
-      } catch (err) {
-        console.error("Fehler beim Abrufen der Charaktere:", err.message);
-        setError("Charaktere konnten nicht geladen werden.");
+  // Hole die Charaktere für den Account
+  const fetchCharacters = async (accountId, token) => {
+    setLoadingCharacters(true);
+    try {
+      const response = await fetch(`http://localhost:3000/user/${accountId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error("Fehler beim Abrufen der Charaktere.");
       }
-    };
 
-    fetchCharacters();
-  }, [token]);
+      const data = await response.json();
 
-  // Kampf starten
+      // Überprüfen, ob die Antwort die erwarteten Daten enthält
+      if (data && data.characters) {
+        setCharacters(data.characters); // Setze die erhaltenen Charaktere
+      } else {
+        throw new Error("Keine Charaktere gefunden.");
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingCharacters(false);
+    }
+  };
+
   const handleFight = async () => {
-    if (!selectedCharacter) return;
+    if (!characterId) {
+      setError("Bitte wähle einen Charakter aus.");
+      return;
+    }
 
     setLoading(true);
     setError(null);
     setBattleResult(null);
 
     try {
+      // Logge den characterId und accountId, um zu prüfen, ob sie korrekt sind
+      console.log("Sending fight request with accountId:", accountId);
+      console.log("Sending fight request with characterId:", characterId);
+
+      // Sende die Anfrage an den Backend-Endpunkt
       const response = await fetch("http://localhost:3000/battle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Token im Authorization-Header
+          Authorization: `Bearer ${token}`, // JWT Token hinzufügen
         },
-        body: JSON.stringify({ characterId: selectedCharacter.id }),
+        body: JSON.stringify({
+          accountId, // accountId aus dem State
+          characterId, // characterId aus dem State
+        }),
       });
 
       if (!response.ok) {
@@ -71,39 +95,40 @@ const Fight = () => {
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1>Kampfmodus</h1>
       <p>
-        Wähle deinen Charakter aus und starte den Kampf gegen einen zufälligen
-        Gegner!
+        Wähle einen Charakter aus und drücke auf Kämpfen, um den Kampf zu
+        starten!
       </p>
 
-      <div style={{ marginBottom: "20px" }}>
-        <label>
-          Wähle deinen Charakter:
+      {/* Dropdown-Menü für Charaktere */}
+      {loadingCharacters ? (
+        <p>Charaktere werden geladen...</p>
+      ) : (
+        <div style={{ marginBottom: "20px" }}>
           <select
-            value={selectedCharacter?.id || ""}
-            onChange={(e) => {
-              const selectedId = e.target.value;
-              const character = characters.find(
-                (char) => char.id === selectedId
-              );
-              setSelectedCharacter(character || null);
-            }}
+            value={characterId}
+            onChange={(e) => setCharacterId(e.target.value)}
             style={{
-              marginLeft: "10px",
-              padding: "5px",
+              padding: "10px 20px",
               fontSize: "16px",
               borderRadius: "5px",
-              border: "1px solid #ccc",
+              cursor: "pointer",
             }}
           >
-            <option value="">-- Charakter auswählen --</option>
-            {characters.map((character) => (
-              <option key={character.id} value={character.id}>
-                {character.name} (Level: {character.level})
-              </option>
-            ))}
+            <option value="">Wähle einen Charakter</option>
+            {characters && characters.length > 0 ? (
+              characters.map((character) => (
+                <option key={character._id} value={character._id}>
+                  {character.name} (Level {character.level})
+                </option>
+              ))
+            ) : (
+              <option disabled>Keine Charaktere verfügbar</option>
+            )}
           </select>
-        </label>
+        </div>
+      )}
 
+      <div style={{ marginBottom: "20px" }}>
         <button
           onClick={handleFight}
           disabled={!selectedCharacter}
