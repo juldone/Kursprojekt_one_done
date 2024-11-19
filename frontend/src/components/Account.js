@@ -182,7 +182,16 @@ const Account = () => {
       <h1 style={{ color: "#333" }}>Account Information</h1>
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
-
+      <p>Materialien:</p>
+      <ul>
+        {userData.materials && (
+          <>
+            <li>Holz: {userData.materials.Holz || 0}</li>
+            <li>Stein: {userData.materials.Stein || 0}</li>
+            <li>Metall: {userData.materials.Metall || 0}</li>
+          </>
+        )}
+      </ul>
       <h2
         style={{ marginTop: "20px", color: "#ebebeb", cursor: "pointer" }}
         onClick={() => setIsWeaponsVisible((prev) => !prev)}

@@ -8,12 +8,13 @@ const Fight = () => {
   const [loading, setLoading] = useState(false); // Ladezustand
   const [error, setError] = useState(null); // Fehlerzustand
   const [loadingCharacters, setLoadingCharacters] = useState(true); // Ladezustand für Charaktere
-  const [token, setToken] = useState(""); // Token
+  const [token, setToken] = useState(""); // JWT Token
 
   useEffect(() => {
-    // Hole die accountId und den token aus dem localStorage
+    // Hole die accountId und den Token aus dem localStorage
     const storedAccountId = localStorage.getItem("accountId");
     const storedToken = localStorage.getItem("token");
+
     if (storedAccountId && storedToken) {
       setAccountId(storedAccountId);
       setToken(storedToken);
@@ -35,13 +36,11 @@ const Fight = () => {
 
       const data = await response.json();
 
-      // Sicherstellen, dass die zurückgegebenen Daten ein Array sind
-      if (Array.isArray(data)) {
-        setCharacters(data); // Setze die erhaltenen Charaktere
+      // Überprüfen, ob die Antwort die erwarteten Daten enthält
+      if (data && data.characters) {
+        setCharacters(data.characters); // Setze die erhaltenen Charaktere
       } else {
-        throw new Error(
-          "Die erhaltenen Daten sind keine gültige Liste von Charakteren."
-        );
+        throw new Error("Keine Charaktere gefunden.");
       }
     } catch (err) {
       setError(err.message);
@@ -61,7 +60,11 @@ const Fight = () => {
     setBattleResult(null);
 
     try {
-      // Sende POST-Anfrage an den Backend-Endpunkt
+      // Logge den characterId und accountId, um zu prüfen, ob sie korrekt sind
+      console.log("Sending fight request with accountId:", accountId);
+      console.log("Sending fight request with characterId:", characterId);
+
+      // Sende die Anfrage an den Backend-Endpunkt
       const response = await fetch("http://localhost:3000/battle", {
         method: "POST",
         headers: {
@@ -114,9 +117,7 @@ const Fight = () => {
             }}
           >
             <option value="">Wähle einen Charakter</option>
-            {characters &&
-            Array.isArray(characters) &&
-            characters.length > 0 ? (
+            {characters && characters.length > 0 ? (
               characters.map((character) => (
                 <option key={character._id} value={character._id}>
                   {character.name} (Level {character.level})
