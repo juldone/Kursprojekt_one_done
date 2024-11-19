@@ -5,6 +5,7 @@ import RegisterForm from "./components/RegisterForm"; // Die RegisterForm-Kompon
 import Account from "./components/Account";
 import "./App.css"; // Oder der Pfad, den du für das CSS verwendest
 import CraftingInterface from "./components/CraftingInterface.js";
+import Fight from "./components/Fight.js";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -61,8 +62,7 @@ const App = () => {
           path="/user/:accountId/crafting"
           element={<CraftingInterface />}
         />
-
-        {/* Neue Crafting-Route */}
+        <Route path="/battle" element={<Fight />} />
       </Routes>
     </Router>
   );

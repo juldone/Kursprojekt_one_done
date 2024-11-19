@@ -164,7 +164,7 @@ const Account = () => {
   };
 
   const goToFight = () => {
-    navigate("/Fight"); // Navigation zur Fight-Seite mit navigate
+    navigate("/battle"); // Navigation zur Fight-Seite mit navigate
   };
 
   if (error) {

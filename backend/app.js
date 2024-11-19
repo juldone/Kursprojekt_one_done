@@ -7,9 +7,7 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
-
 import { itemImport } from "./utils/Import/itemimport.js";
-
 import { materials } from "./utils/Import/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
@@ -36,14 +34,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-// CORS konfigurieren
-app.use(
-  cors({
-    origin: "http://localhost:3001", // Frontend URL anpassen
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -164,6 +155,8 @@ app.use(express.static(path.resolve("public")));
 
 // /crafting/wpncraft
 // /crafting/armcraft
+
+// localhost:3000/user/5/crafting/
 
 app.use("/user/:accountId/crafting", craftingRoutes);
 
