@@ -6,6 +6,8 @@ const Account = () => {
   const [error, setError] = useState(null); // Fehlerzustand
   const [isCreatingCharacter, setIsCreatingCharacter] = useState(false); // Verfolgt, ob der Benutzer gerade einen Charakter erstellt
   const [newCharacterName, setNewCharacterName] = useState(""); // Name des neuen Charakters
+  const [isWeaponsVisible, setIsWeaponsVisible] = useState(false); // Waffen ein-/ausklappen
+  const [isArmorVisible, setIsArmorVisible] = useState(false); // Rüstung ein-/ausklappen
   const navigate = useNavigate(); // useNavigate korrekt benutzen
 
   useEffect(() => {
@@ -181,39 +183,42 @@ const Account = () => {
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
 
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Materialien:</h2>
-      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
-        {userData.materials && (
-          <>
-            <li>Holz: {userData.materials.Holz || 0}</li>
-            <li>Stein: {userData.materials.Stein || 0}</li>
-            <li>Metall: {userData.materials.Metall || 0}</li>
-          </>
-        )}
-      </ul>
+      <h2
+        style={{ marginTop: "20px", color: "#ebebeb", cursor: "pointer" }}
+        onClick={() => setIsWeaponsVisible((prev) => !prev)}
+      >
+        Waffen: {isWeaponsVisible ? "▼" : "▶"}
+      </h2>
+      {isWeaponsVisible && (
+        <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+          {userData.weaponinventory &&
+            userData.weaponinventory.map((item, index) => (
+              <li key={`weapon-${index}`}>
+                <strong>Waffe:</strong> {item.itemName} - {item.rarity} -{" "}
+                {item.damage} Schaden
+              </li>
+            ))}
+        </ul>
+      )}
 
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Waffen:</h2>
-      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
-        {userData.weaponinventory &&
-          userData.weaponinventory.map((item, index) => (
-            <li key={`weapon-${index}`}>
-              <strong>Waffe:</strong> {item.itemName} - {item.rarity} -{" "}
-              {item.damage} Schaden
-            </li>
-          ))}
-      </ul>
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Rüstung:</h2>
-      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
-        {userData.armorinventory &&
-          userData.armorinventory.map((item, index) => (
-            <li key={`armor-${index}`}>
-              <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
-              {item.armor} Verteidigung
-            </li>
-          ))}
-      </ul>
-
-      <h2 style={{ marginTop: "20px", color: "#555" }}>Charaktere:</h2>
+      <h2
+        style={{ marginTop: "20px", color: "#ebebeb", cursor: "pointer" }}
+        onClick={() => setIsArmorVisible((prev) => !prev)}
+      >
+        Rüstung: {isArmorVisible ? "▼" : "▶"}
+      </h2>
+      {isArmorVisible && (
+        <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+          {userData.armorinventory &&
+            userData.armorinventory.map((item, index) => (
+              <li key={`armor-${index}`}>
+                <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
+                {item.armor} Verteidigung
+              </li>
+            ))}
+        </ul>
+      )}
+      <h2 style={{ marginTop: "20px", color: "#ebebeb" }}>Charaktere:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.characters && userData.characters.length > 0 ? (
           userData.characters.map((character, index) => (
