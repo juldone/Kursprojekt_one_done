@@ -131,16 +131,16 @@ const Fight = () => {
       <div style={{ marginBottom: "20px" }}>
         <button
           onClick={handleFight}
-          disabled={!selectedCharacter}
+          disabled={!characterId}
           style={{
             marginLeft: "10px",
             padding: "10px 20px",
             fontSize: "16px",
-            backgroundColor: selectedCharacter ? "#007bff" : "#ccc",
+            backgroundColor: characterId ? "#007bff" : "#ccc",
             color: "white",
             border: "none",
             borderRadius: "5px",
-            cursor: selectedCharacter ? "pointer" : "not-allowed",
+            cursor: characterId ? "pointer" : "not-allowed",
           }}
         >
           Kämpfen!
