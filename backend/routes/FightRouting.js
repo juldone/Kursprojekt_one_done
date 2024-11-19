@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Account from "./../../frontend/src/components/Account.js";
 import Fight from "./../../frontend/src/components/Fight.js"; // Beispiel für eine mögliche Fight-Komponente
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
@@ -14,6 +14,6 @@ const App = () => {
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
