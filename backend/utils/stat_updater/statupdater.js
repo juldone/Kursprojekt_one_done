@@ -1,7 +1,4 @@
 import Character from "../../data/character/character.js";
-import Weapon from "../../data/weapons.js";
-import Armor from "../../data/armor.js";
-
 // Funktion zum Ausrüsten einer Rüstung
 export async function equipArmor(characterId, armorId) {
   const character = await Character.findById(characterId);
