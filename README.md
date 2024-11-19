@@ -27,6 +27,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### REMINDER - Morgen als erstes Stat Changes für Armor zum laufen bringen -> Dann testen -> Rdy To Merge (Meiner Meinung nach)
 
 ### Brian
+- Tägliche Besprechung für weiteres vorgehen geplant
+- Equipmentlogik mit Tim überarbeitet
+- Bugs gefixt ( Equipmentcontroller wieder zum laufen bekommen , Fight.js hat falschen Wert genommen als im Backend)
+- Userstruktur ein weiteres mal überarbeitet
+- Battle-Arena für den Interaktiven Kampf angefangen ist aber noch Fehlerbehaftet
 
 ### Julian 
 - Hauptsächlich Front und Backend bearbeitet
@@ -38,7 +43,6 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 
 ### Changelog 18.11.24
 
-### Tim 
 ### Tim 
 - Crafting Branch in Main gemerged (yes!)
 - armor_rezepte.json mit Sets gefüllt. (Holzset: Kopf, Hand, Brust, Füße, Steinset: Kopf, Hand, Brust, Füße, Metallset: Kopf, Hand, Brust, Füße)
