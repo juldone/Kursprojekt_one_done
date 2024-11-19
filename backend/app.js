@@ -167,7 +167,7 @@ app.use(express.static(path.resolve("public")));
 app.use("/user/:accountId/crafting", craftingRoutes);
 
 // Einbinden der equipmentRoute
-app.use("/api/equipment", equipmentRoutes);
+app.use("/equipment", equipmentRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {

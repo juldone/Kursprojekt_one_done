@@ -188,8 +188,8 @@ const Account = () => {
           {userData.weaponinventory &&
             userData.weaponinventory.map((item, index) => (
               <li key={`weapon-${index}`}>
-                <strong>Waffe:</strong> {item.itemName} - {item.rarity} -{" "}
-                {item.damage} Schaden
+                <strong>Waffe:</strong> {item.itemName} - {item.type} -{" "}
+                {item.rarity} - {item.damage} Schaden
               </li>
             ))}
         </ul>
@@ -206,8 +206,8 @@ const Account = () => {
           {userData.armorinventory &&
             userData.armorinventory.map((item, index) => (
               <li key={`armor-${index}`}>
-                <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
-                {item.armor} Verteidigung
+                <strong>Rüstung:</strong> {item.itemName} - {item.type} -{" "}
+                {item.rarity} - {item.armor} Verteidigung
               </li>
             ))}
         </ul>

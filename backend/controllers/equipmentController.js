@@ -2,7 +2,7 @@ import User from "../data/User.js";
 
 // Funktion: Ausrüstung wechseln
 export const equipItem = async (req, res) => {
-  const { accountId, characterId, itemId, slot, category } = req.body;
+  const { accountId, characterName, itemName, type } = req.body;
 
   try {
     // Benutzer finden
@@ -13,7 +13,7 @@ export const equipItem = async (req, res) => {
 
     // Charakter finden
     const character = user.characters.find(
-      (char) => char.characterId === characterId
+      (char) => char.characterName === characterName
     );
     if (!character) {
       return res.status(404).json({ message: "Charakter nicht gefunden!" });
@@ -21,10 +21,17 @@ export const equipItem = async (req, res) => {
 
     // Inventar durchsuchen
     let item;
-    if (category === "weapon") {
-      item = user.weaponinventory.find((weapon) => weapon.itemName === itemId);
-    } else if (category === "armor") {
-      item = user.armorinventory.find((armor) => armor.itemName === itemId);
+    if (type === "Fernkampf") {
+      item = user.weaponinventory.find(
+        (weapon) => weapon.itemName === itemName
+      );
+    } else if (
+      type === "Kopf" ||
+      type === "Brust" ||
+      type === "Hand" ||
+      type === "Füße"
+    ) {
+      item = user.armorinventory.find((armor) => armor.itemName === itemName);
     }
 
     if (!item) {
@@ -34,20 +41,39 @@ export const equipItem = async (req, res) => {
     }
 
     // Ausrüsten
-    if (category === "weapon") {
+    if (type === "Fernkampf") {
       character.equipment.weapon = item.itemName;
       user.weaponinventory = user.weaponinventory.filter(
-        (weapon) => weapon.itemName !== itemId
+        (weapon) => weapon.itemName !== itemName,
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (character.stats.attack += item.damage)
       );
-    } else if (category === "armor" && slot) {
-      character.equipment.armor[slot] = item.itemName;
+    } else if (type === "Kopf") {
+      character.equipment.armor.head = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) => armor.itemName !== itemId
+        (armor) => armor.itemName !== itemName
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+      );
+    } else if (type === "Brust") {
+      character.equipment.armor.chest = item.itemName;
+      user.armorinventory = user.armorinventory.filter(
+        (armor) => armor.itemName !== itemName
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+      );
+    } else if (type === "Hand") {
+      character.equipment.armor.hands = item.itemName;
+      user.armorinventory = user.armorinventory.filter(
+        (armor) => armor.itemName !== itemName
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+      );
+    } else if (type === "Füße") {
+      character.equipment.armor.legs = item.itemName;
+      user.armorinventory = user.armorinventory.filter(
+        (armor) => armor.itemName !== itemName
+        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
       );
     } else {
-      return res
-        .status(400)
-        .json({ message: "Ungültige Kategorie oder Slot!" });
+      return res.status(400).json({ message: "Ungültige Kategorie!" });
     }
 
     // Benutzer speichern
@@ -62,3 +88,5 @@ export const equipItem = async (req, res) => {
     res.status(500).json({ message: "Interner Serverfehler!" });
   }
 };
+
+export const unequipItem = async (req, res) => {};

@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
   weaponinventory: [
     {
       itemName: { type: String, required: true },
+      type: { type: String, required: true },
       damage: { type: Number, required: true },
       rarity: { type: String }, // optional, falls es eine Rarität gibt
     },
@@ -21,6 +22,7 @@ const userSchema = new mongoose.Schema({
   armorinventory: [
     {
       itemName: { type: String, required: true },
+      type: { type: String, required: true },
       armor: { type: Number, required: true },
       rarity: { type: String }, // optional, falls es eine Rarität gibt
     },
