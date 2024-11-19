@@ -1,24 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Fight = () => {
-  const [characterId, setCharacterId] = useState(""); // ID des Charakters
+  const [characters, setCharacters] = useState([]); // Liste der verfügbaren Charaktere
+  const [selectedCharacter, setSelectedCharacter] = useState(null); // Ausgewählter Charakter
   const [battleResult, setBattleResult] = useState(null); // Kampfergebnis
   const [loading, setLoading] = useState(false); // Ladezustand
   const [error, setError] = useState(null); // Fehlerzustand
 
+  // Beispiel-Token (ersetze dies durch tatsächliche Logik, um den Token zu speichern/abrufen)
+  const token = localStorage.getItem("authToken");
+
+  // Charaktere laden
+  useEffect(() => {
+    const fetchCharacters = async () => {
+      try {
+        const response = await fetch("http://localhost:3000", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Token im Authorization-Header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Fehler beim Abrufen der Charaktere");
+        }
+
+        const data = await response.json();
+        setCharacters(data.characters); // `data.characters` sollte ein Array von Charakteren sein
+      } catch (err) {
+        console.error("Fehler beim Abrufen der Charaktere:", err.message);
+        setError("Charaktere konnten nicht geladen werden.");
+      }
+    };
+
+    fetchCharacters();
+  }, [token]);
+
+  // Kampf starten
   const handleFight = async () => {
+    if (!selectedCharacter) return;
+
     setLoading(true);
     setError(null);
     setBattleResult(null);
 
     try {
-      // Sende POST-Anfrage an den Backend-Endpunkt
-      const response = await fetch("http://localhost:5000/api/battle", {
+      const response = await fetch("http://localhost:3000/battle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Token im Authorization-Header
         },
-        body: JSON.stringify({ characterId }),
+        body: JSON.stringify({ characterId: selectedCharacter.id }),
       });
 
       if (!response.ok) {
@@ -27,9 +59,7 @@ const Fight = () => {
       }
 
       const data = await response.json();
-
-      // Ergebnis speichern
-      setBattleResult(data);
+      setBattleResult(data); // Ergebnis speichern
     } catch (err) {
       setError(err.message);
     } finally {
@@ -47,29 +77,45 @@ const Fight = () => {
 
       <div style={{ marginBottom: "20px" }}>
         <label>
-          Charakter-ID:
-          <input
-            type="text"
-            value={characterId}
-            onChange={(e) => setCharacterId(e.target.value)}
+          Wähle deinen Charakter:
+          <select
+            value={selectedCharacter?.id || ""}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              const character = characters.find(
+                (char) => char.id === selectedId
+              );
+              setSelectedCharacter(character || null);
+            }}
             style={{
               marginLeft: "10px",
               padding: "5px",
               fontSize: "16px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
             }}
-          />
+          >
+            <option value="">-- Charakter auswählen --</option>
+            {characters.map((character) => (
+              <option key={character.id} value={character.id}>
+                {character.name} (Level: {character.level})
+              </option>
+            ))}
+          </select>
         </label>
+
         <button
           onClick={handleFight}
+          disabled={!selectedCharacter}
           style={{
             marginLeft: "10px",
             padding: "10px 20px",
             fontSize: "16px",
-            backgroundColor: "#007bff",
+            backgroundColor: selectedCharacter ? "#007bff" : "#ccc",
             color: "white",
             border: "none",
             borderRadius: "5px",
-            cursor: "pointer",
+            cursor: selectedCharacter ? "pointer" : "not-allowed",
           }}
         >
           Kämpfen!
