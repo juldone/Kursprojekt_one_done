@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
+import BattleArena from "./BattleArena.js"; // Die BattleArena-Komponente importieren
 
 const Fight = () => {
-  const [accountId, setAccountId] = useState(null); // Account ID
-  const [characterId, setCharacterId] = useState(""); // Charakter-ID
-  const [characters, setCharacters] = useState([]); // Liste der Charaktere
-  const [loadingCharacters, setLoadingCharacters] = useState(true); // Ladezustand für Charaktere
-  const [token, setToken] = useState(""); // JWT Token
-  const [error, setError] = useState(null); // Fehlerzustand
+  const [accountId, setAccountId] = useState(null);
+  const [characterId, setCharacterId] = useState("");
+  const [characters, setCharacters] = useState([]);
+  const [battleResult, setBattleResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [loadingCharacters, setLoadingCharacters] = useState(true);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     const storedAccountId = localStorage.getItem("accountId");
     const storedToken = localStorage.getItem("token");
-
+    const storedCharacterId = localStorage.getItem("chracterId");
     if (storedAccountId && storedToken) {
       setAccountId(storedAccountId);
       setToken(storedToken);
-      fetchCharacters(storedAccountId, storedToken); // Hole die Charaktere für den Account
+      setCharacterId(storedCharacterId);
+
+      fetchCharacters(storedAccountId, storedToken);
     }
   }, []);
 
@@ -31,7 +36,6 @@ const Fight = () => {
       }
 
       const data = await response.json();
-
       if (data && data.characters) {
         setCharacters(data.characters);
       } else {
@@ -44,139 +48,44 @@ const Fight = () => {
     }
   };
 
-  const handleFight = () => {
+  const handleFight = async () => {
     if (!characterId) {
       setError("Bitte wähle einen Charakter aus.");
       return;
     }
 
-    const selectedCharacter = characters.find(
-      (character) => character._id === characterId
-    );
+    setLoading(true);
+    setError(null);
+    setBattleResult(null);
 
-    const opponent = {
-      name: "Zufälliger Gegner",
-      level: Math.floor(Math.random() * 50) + 1,
-      hp: Math.floor(Math.random() * 100) + 50,
-    };
+    // Sicherstellen, dass characterId als String übergeben wird
+    const characterIdString = characterId.toString(); // Umwandlung in String
 
-    const playerHp = Math.floor(Math.random() * 100) + 50;
+    try {
+      const response = await fetch("http://localhost:3000/battle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          accountId,
+          characterId: characterIdString, // characterId als String übergeben
+        }),
+      });
 
-    let fightWindow = window.open("", "fightWindow", "width=800,height=500");
-
-    if (!fightWindow || fightWindow.closed) {
-      fightWindow = window.open("", "fightWindow", "width=800,height=500");
-    }
-
-    fightWindow.document.body.innerHTML = `
-      <html>
-      <head>
-        <title>Kampf</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            height: 100%;
-            margin: 0;
-          }
-          .character {
-            flex: 1;
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-          }
-          .fight-button {
-            flex: 1;
-            text-align: center;
-          }
-          button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-          }
-          button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-          }
-          h2 {
-            margin: 10px 0;
-          }
-          .hp {
-            color: green;
-            font-weight: bold;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="character" id="player">
-          <h2>Dein Charakter</h2>
-          <p><strong>Name:</strong> ${selectedCharacter.name}</p>
-          <p><strong>Level:</strong> ${selectedCharacter.level}</p>
-          <p><strong>HP:</strong> <span class="hp">${playerHp}</span></p>
-        </div>
-
-        <div class="fight-button">
-          <button id="fightButton">Let's Fight!</button>
-          <div id="result" style="margin-top: 20px;"></div>
-        </div>
-
-        <div class="character" id="opponent">
-          <h2>Gegner</h2>
-          <p><strong>Name:</strong> ${opponent.name}</p>
-          <p><strong>Level:</strong> ${opponent.level}</p>
-          <p><strong>HP:</strong> <span class="hp">${opponent.hp}</span></p>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const fightButton = fightWindow.document.getElementById("fightButton");
-    const resultDiv = fightWindow.document.getElementById("result");
-
-    fightButton.addEventListener("click", async () => {
-      resultDiv.textContent = "Kampf wird ausgelöst...";
-      try {
-        const response = await fetch("http://localhost:3000/battle", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            accountId,
-            characterId,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Fehler beim Kampf.");
-        }
-
-        const data = await response.json();
-        resultDiv.innerHTML = `
-          <h3>Kampfergebnis:</h3>
-          <p>${data.message}</p>
-          ${
-            data.drops
-              ? `<h4>Erhaltene Drops:</h4>
-                 <ul>${data.drops
-                   .map((drop) => `<li>${drop.quantity}x ${drop.material}</li>`)
-                   .join("")}</ul>`
-              : ""
-          }
-        `;
-      } catch (err) {
-        resultDiv.textContent = `Fehler: ${err.message}`;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Ein Fehler ist aufgetreten.");
       }
-    });
+
+      const data = await response.json();
+      setBattleResult(data); // Setze das Kampfergebnis
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -202,11 +111,18 @@ const Fight = () => {
             }}
           >
             <option value="">Wähle einen Charakter</option>
-            {characters.map((character) => (
-              <option key={character._id} value={character._id}>
-                {character.name} (Level {character.level})
-              </option>
-            ))}
+            {characters && characters.length > 0 ? (
+              characters.map((character) => (
+                <option
+                  key={character.characterId}
+                  value={character.characterId}
+                >
+                  {character.name} (Level {character.level})
+                </option>
+              ))
+            ) : (
+              <option disabled>Keine Charaktere verfügbar</option>
+            )}
           </select>
         </div>
       )}
@@ -230,7 +146,17 @@ const Fight = () => {
         </button>
       </div>
 
+      {loading && <p>Lädt... Der Kampf beginnt!</p>}
       {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
+
+      {battleResult && (
+        <BattleArena
+          player={battleResult.player} // Hier werden die Spieler- und Gegnerdaten übergeben
+          enemy={battleResult.enemy}
+          battleLog={battleResult.log} // Das Kampflog wird weitergegeben
+          onFight={handleFight} // Der Kampfbefehl wird weitergegeben, um die nächste Runde zu starten
+        />
+      )}
     </div>
   );
 };

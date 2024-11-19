@@ -21,7 +21,7 @@ export async function battle(req, res) {
 
     // Überprüfe, ob der Charakter mit characterId existiert
     const character = user.characters.find(
-      (char) => char._id.toString() === characterId // Vergewissere dich, dass die ID als String verglichen wird
+      (char) => char.characterId.toString() === characterId // Vergewissere dich, dass die ID als String verglichen wird
     );
 
     if (!character) {
@@ -46,7 +46,7 @@ export async function battle(req, res) {
       const characterAttack = character.stats.attack - enemy.stats.defense;
       enemyHp -= Math.max(0, characterAttack); // Verhindert negativen Schaden
 
-      // Überprüfen, ob der Gegner besiegt ist
+      // Innerhalb der while-Schleife, nach dem Kampf
       if (enemyHp <= 0) {
         const materialDrops = [];
         enemy.drops.forEach((drop) => {
@@ -78,11 +78,42 @@ export async function battle(req, res) {
 
         return res.status(200).json({
           message: `${character.name} hat ${enemy.name} besiegt!`,
+          characters: {
+            name: character.name,
+            stats: character.stats, // Sende die vollständigen Stats des Charakters
+          },
+          enemy: {
+            name: enemy.name,
+            stats: {
+              health: enemy.stats.health,
+              attack: enemy.stats.attack,
+              defense: enemy.stats.defense,
+            },
+          },
           drops: materialDrops,
           userMaterials: user.materials,
         });
       }
 
+      if (characterHp <= 0) {
+        return res.status(200).json({
+          message: `${enemy.name} hat ${character.name} besiegt DRECK!!`,
+          characters: {
+            name: character.name,
+            stats: character.stats,
+          },
+          enemy: {
+            name: enemy.name,
+            stats: {
+              health: enemy.stats.health,
+              attack: enemy.stats.attack,
+              defense: enemy.stats.defense,
+            },
+          },
+        });
+      }
+
+      // Gegner greift an
       const enemyAttack = enemy.stats.attack - character.stats.defense;
       characterHp -= Math.max(0, enemyAttack);
 

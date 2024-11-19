@@ -117,7 +117,10 @@ const Fight = () => {
             <option value="">Wähle einen Charakter</option>
             {characters && characters.length > 0 ? (
               characters.map((character) => (
-                <option key={character._id} value={character._id}>
+                <option
+                  key={character.characterId}
+                  value={character.characterId}
+                >
                   {character.name} (Level {character.level})
                 </option>
               ))
