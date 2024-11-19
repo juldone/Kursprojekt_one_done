@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate korrekt importieren
 
 const Account = () => {
   const [userData, setUserData] = useState(null); // User-Daten
   const [error, setError] = useState(null); // Fehlerzustand
+  const navigate = useNavigate(); // useNavigate korrekt benutzen
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,10 +45,14 @@ const Account = () => {
   const goToCrafting = () => {
     const accountId = localStorage.getItem("accountId");
     if (accountId) {
-      window.location.href = `/user/${accountId}/crafting`;
+      navigate(`/user/${accountId}/crafting`); // Navigation mit navigate
     } else {
       console.error("Account ID fehlt. Navigation zu Crafting nicht möglich.");
     }
+  };
+
+  const goToFight = () => {
+    navigate("/Fight"); // Navigation zur Fight-Seite mit navigate
   };
 
   if (error) {
@@ -133,6 +139,23 @@ const Account = () => {
         onClick={goToCrafting}
       >
         Crafting
+      </button>
+
+      {/* GoToFight Button */}
+      <button
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          borderRadius: "5px",
+          border: "none",
+          backgroundColor: "#ff6347",
+          color: "#fff",
+          cursor: "pointer",
+          marginTop: "20px",
+        }}
+        onClick={goToFight}
+      >
+        GoToFight
       </button>
     </div>
   );
