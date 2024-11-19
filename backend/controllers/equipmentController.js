@@ -62,26 +62,42 @@ export const equipItem = async (req, res) => {
     } else if (type === "Kopf") {
       character.equipment.armor.head = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) => armor.itemName !== itemName
-        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (armor) =>
+          armor.itemName !==
+          itemName(
+            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+            (character.stats.armor += item.armor)
+          )
       );
     } else if (type === "Brust") {
       character.equipment.armor.chest = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) => armor.itemName !== itemName
-        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (armor) =>
+          armor.itemName !==
+          itemName(
+            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+            (character.stats.armor += item.armor)
+          )
       );
     } else if (type === "Hand") {
       character.equipment.armor.hands = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) => armor.itemName !== itemName
-        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (armor) =>
+          armor.itemName !==
+          itemName(
+            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+            (character.stats.armor += item.armor)
+          )
       );
     } else if (type === "Füße") {
       character.equipment.armor.legs = item.itemName;
       user.armorinventory = user.armorinventory.filter(
-        (armor) => armor.itemName !== itemName
-        // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+        (armor) =>
+          armor.itemName !==
+          itemName(
+            // Hier wird ausgerüstet also müssen die stats noch auf den Char übertragen werden!!!!
+            (character.stats.armor += item.armor)
+          )
       );
     } else {
       return res.status(400).json({ message: "Ungültige Kategorie!" });
