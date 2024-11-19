@@ -93,7 +93,7 @@ app.get("/enemy", enemyImport);
 //   "characterId": "charakter_id_aus_der_datenbank",
 // }
 
-app.post("/battle", battle);
+app.post("/battle", authenticate, battle);
 
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 // Zum Testen der character erstellung

@@ -2,7 +2,6 @@
 import User from "../data/User.js";
 import fs from "fs/promises"; // Verwende fs.promises für Promises
 import path from "path";
-
 const enemyDataPath = path.resolve("data/enemies/enemy.json"); // Pfad zur JSON-Datei
 
 export async function battle(req, res) {
