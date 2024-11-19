@@ -33,6 +33,17 @@ export const equipItem = async (req, res) => {
         .json({ message: "Item nicht im Inventar gefunden!" });
     }
 
+    // Überprüfen, ob der Slot bereits belegt ist
+    if (category === "weapon" && character.equipment.weapon) {
+      return res
+        .status(400)
+        .json({ message: "Dieser Slot ist bereits belegt!" });
+    } else if (category === "armor" && character.equipment.armor[slot]) {
+      return res
+        .status(400)
+        .json({ message: "Dieser Slot ist bereits belegt!" });
+    }
+
     // Ausrüsten
     if (category === "weapon") {
       character.equipment.weapon = item.itemName;
