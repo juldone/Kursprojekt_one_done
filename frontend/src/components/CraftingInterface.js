@@ -59,6 +59,10 @@ const CraftingInterface = () => {
       .catch((err) => console.error("Fehler beim Craften:", err));
   };
 
+  const goBack = () => {
+    window.history.back(); // Zurück zur vorherigen Seite
+  };
+
   if (!accountId) {
     return <div>Bitte logge dich ein!</div>; // Hier wird dem Benutzer eine Nachricht angezeigt, wenn kein AccountId vorhanden ist
   }
@@ -66,6 +70,22 @@ const CraftingInterface = () => {
   return (
     <div>
       <h1>Crafting Interface</h1>
+
+      {/* Zurück-Button */}
+      <button
+        onClick={goBack}
+        style={{
+          backgroundColor: "#007bff",
+          color: "white",
+          padding: "10px 20px",
+          margin: "20px 0",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Zurück
+      </button>
 
       {/* Waffenrezepte */}
       <h2>Waffenrezepte</h2>

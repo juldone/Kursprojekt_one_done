@@ -30,7 +30,7 @@ app.use(express.json());
 // CORS konfigurieren
 app.use(
   cors({
-    origin: ["http://localhost:3001", "http://localhost:3001"], // Erlaubt die Frontend-Origin
+    origin: ["http://localhost:3001", "http://localhost:3000"], // Erlaubt die Frontend-Origin
     methods: ["GET", "USE", "POST", "PUT", "DELETE"], // Erlaubte HTTP-Methoden
     credentials: true, // Falls Cookies oder Authentifizierungsdaten benötigt werden
   })
@@ -161,10 +161,6 @@ app.use("/user/:accountId/crafting", craftingRoutes);
 
 // Einbinden der equipmentRoute
 // Notiz an mich selber, um diese Route auszuführen muss ich Localhost:3000/equipment/equip zuhören aka fetch
-
-// localhost:3000/equipment/equip
-// localhost:3000/equipment/unequip
-
 app.use("/equipment", equipmentRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
