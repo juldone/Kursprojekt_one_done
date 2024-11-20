@@ -29,12 +29,12 @@
   },
   {
     "enemyid": 6001,
-    "name": "Kobold",
-    "level": 1,
+    "name": "Goblinkrieger",
+    "level": 2,
     "stats": {
-      "health": 55,
-      "attack": 12,
-      "defense": 6,
+      "health": 65,
+      "attack": 14,
+      "defense": 7,
       "speed": 6
     },
     "drops": [
@@ -88,9 +88,9 @@
     "name": "Minotaurus",
     "level": 3,
     "stats": {
-      "health": 120,
-      "attack": 25,
-      "defense": 15,
+      "health": 80,
+      "attack": 10,
+      "defense": 10,
       "speed": 4
     },
     "drops": [
@@ -144,10 +144,10 @@
     "name": "Zentaur",
     "level": 3,
     "stats": {
-      "health": 100,
-      "attack": 20,
-      "defense": 12,
-      "speed": 14
+      "health": 90,
+      "attack": 15,
+      "defense": 5,
+      "speed": 10
     },
     "drops": [
       {
@@ -172,8 +172,8 @@
     "name": "Chimäre",
     "level": 4,
     "stats": {
-      "health": 140,
-      "attack": 30,
+      "health": 90,
+      "attack": 15,
       "defense": 15,
       "speed": 8
     },
@@ -200,7 +200,7 @@
     "name": "Hydra",
     "level": 4,
     "stats": {
-      "health": 160,
+      "health": 80,
       "attack": 25,
       "defense": 18,
       "speed": 6
@@ -228,9 +228,9 @@
     "name": "Mantikor",
     "level": 5,
     "stats": {
-      "health": 180,
-      "attack": 35,
-      "defense": 20,
+      "health": 60,
+      "attack": 15,
+      "defense": 10,
       "speed": 12
     },
     "drops": [
@@ -256,9 +256,9 @@
     "name": "Gorgone",
     "level": 5,
     "stats": {
-      "health": 150,
-      "attack": 28,
-      "defense": 22,
+      "health": 95,
+      "attack": 15,
+      "defense": 15,
       "speed": 10
     },
     "drops": [
@@ -284,10 +284,10 @@
     "name": "Phönix",
     "level": 5,
     "stats": {
-      "health": 200,
-      "attack": 40,
-      "defense": 18,
-      "speed": 15
+      "health": 90,
+      "attack": 15,
+      "defense": 12,
+      "speed": 11
     },
     "drops": [
       {
@@ -312,9 +312,9 @@
     "name": "Aliciara, Wächterin der Berge",
     "level": 5,
     "stats": {
-      "health": 250,
-      "attack": 45,
-      "defense": 25,
+      "health": 105,
+      "attack": 25,
+      "defense": 15,
       "speed": 10
     },
     "drops": [
@@ -340,10 +340,10 @@
     "name": "Lillia die Sturmgeborene",
     "level": 6,
     "stats": {
-      "health": 180,
-      "attack": 50,
+      "health": 120,
+      "attack": 25,
       "defense": 15,
-      "speed": 20
+      "speed": 13
     },
     "drops": [
       {
@@ -368,9 +368,9 @@
     "name": "Basilisk",
     "level": 6,
     "stats": {
-      "health": 220,
-      "attack": 40,
-      "defense": 30,
+      "health": 85,
+      "attack": 15,
+      "defense": 10,
       "speed": 8
     },
     "drops": [
@@ -396,9 +396,9 @@
     "name": "Zyklop",
     "level": 7,
     "stats": {
-      "health": 300,
-      "attack": 60,
-      "defense": 35,
+      "health": 90,
+      "attack": 20,
+      "defense": 15,
       "speed": 5
     },
     "drops": [
@@ -424,9 +424,9 @@
     "name": "Krakon",
     "level": 8,
     "stats": {
-      "health": 350,
-      "attack": 55,
-      "defense": 40,
+      "health": 120,
+      "attack": 15,
+      "defense": 20,
       "speed": 12
     },
     "drops": [
@@ -452,9 +452,9 @@
     "name": "Echidna",
     "level": 8,
     "stats": {
-      "health": 400,
-      "attack": 65,
-      "defense": 45,
+      "health": 120,
+      "attack": 20,
+      "defense": 20,
       "speed": 8
     },
     "drops": [
@@ -480,10 +480,10 @@
     "name": "Brianos, Herr des Chaos",
     "level": 8,
     "stats": {
-      "health": 450,
-      "attack": 70,
-      "defense": 50,
-      "speed": 15
+      "health": 150,
+      "attack": 10,
+      "defense": 5,
+      "speed": 8
     },
     "drops": [
       {
@@ -508,10 +508,10 @@
     "name": "Julz, Aufseher der Toten",
     "level": 9,
     "stats": {
-      "health": 500,
-      "attack": 75,
-      "defense": 60,
-      "speed": 12
+      "health": 85,
+      "attack": 15,
+      "defense": 12,
+      "speed": 10
     },
     "drops": [
       {
@@ -536,7 +536,7 @@
     "name": "Patrickos, Wächter der Arena",
     "level": 9,
     "stats": {
-      "health": 550,
+      "health": 140,
       "attack": 80,
       "defense": 65,
       "speed": 10
@@ -564,9 +564,9 @@
     "name": "Jakobos, Bezwinger der Titanen",
     "level": 10,
     "stats": {
-      "health": 600,
-      "attack": 90,
-      "defense": 70,
+      "health": 180,
+      "attack": 33,
+      "defense": 40,
       "speed": 12
     },
     "drops": [
@@ -592,7 +592,7 @@
     "name": "Ahmetos, Gott der Herausforderung",
     "level": 10,
     "stats": {
-      "health": 750,
+      "health": 200,
       "attack": 100,
       "defense": 80,
       "speed": 15
@@ -620,8 +620,8 @@
     "name": "Typhon, Zerstörer der Welten",
     "level": 10,
     "stats": {
-      "health": 800,
-      "attack": 110,
+      "health": 400,
+      "attack": 100,
       "defense": 90,
       "speed": 10
     },
