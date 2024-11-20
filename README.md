@@ -20,6 +20,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 20.11.24
 
 ### Tim
+- in der waffen_rezepte.json bei allen rezepten den type zu "Waffe" geändert. (Datenbank struktur)
+- equipmentController.js if (type === "Fernkampf") zu if (type === "Waffe") geändert
+- Testing gestartet, bis zur Funktion Rüstung ablegen gekommen
+- Rest des equipmentControllers mit Brian Debugged, Items an und ablegen funktioniert. (Kleiner Bug - unendliches Armor Scaling möglich, beim Rüstung ablegen werden alle Stats in die Rüstung geschoben) - Erstmal hinnehmen, Funktion gegeben. Äh und ist n´Feature.
 
 ### Brian
 
