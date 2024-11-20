@@ -98,18 +98,6 @@ export async function battle(req, res) {
       if (characterHp <= 0) {
         return res.status(200).json({
           message: `${enemy.name} hat ${character.name} besiegt DRECK!!`,
-          characters: {
-            name: character.name,
-            stats: character.stats,
-          },
-          enemy: {
-            name: enemy.name,
-            stats: {
-              health: enemy.stats.health,
-              attack: enemy.stats.attack,
-              defense: enemy.stats.defense,
-            },
-          },
         });
       }
 
@@ -119,7 +107,7 @@ export async function battle(req, res) {
 
       if (characterHp <= 0) {
         return res.status(200).json({
-          message: `${enemy.name} hat ${character.name} besiegt!`,
+          message: `${enemy.name} hat ${character.name} besiegt DRECK!!`,
         });
       }
     }
