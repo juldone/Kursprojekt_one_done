@@ -11,18 +11,51 @@ export const equipItem = async (req, res) => {
       return res.status(404).json({ message: "Benutzer nicht gefunden!" });
     }
 
-    // Charakter finden
-    const character = user.characters.find(
-      (char) => char.characterName === characterName
+    // Charakter finden mit erweitertem Debugging
+    console.log("Debugging beginnt:");
+    console.log("Gesuchter Charaktername (aus Request):", characterName);
+    console.log(
+      "Alle Charaktere im User-Objekt:",
+      JSON.stringify(user.characters, null, 2)
     );
+
+    // Schritt-für-Schritt-Überprüfung
+    user.characters.forEach((char, index) => {
+      console.log(`Charakter ${index + 1}:`);
+      console.log(`Name: "${char.name}"`);
+      console.log(
+        `Vergleich mit "${characterName}":`,
+        char.name === characterName
+      );
+      console.log(
+        `toLowerCase Vergleich: "${char.name.toLowerCase()}" === "${characterName.toLowerCase()}":`,
+        char.name.toLowerCase() === characterName.toLowerCase()
+      );
+      console.log(
+        `Trim Vergleich: "${char.name.trim()}" === "${characterName.trim()}":`,
+        char.name.trim() === characterName.trim()
+      );
+    });
+
+    // Charakter suchen
+    const character = user.characters.find(
+      (char) =>
+        char.name.trim().toLowerCase() === characterName.trim().toLowerCase()
+    );
+
     if (!character) {
-      console.log("Vallah ich bin ", character);
-      //console.log("User:", user);
-      console.log("User.characters:", user.characters);
+      console.log("Charakter nicht gefunden! Debugging abgeschlossen.");
       console.log("Gesuchter Charaktername:", characterName);
+      console.log(
+        "Alle Charaktere im User-Objekt:",
+        JSON.stringify(user.characters, null, 2)
+      );
 
       return res.status(404).json({ message: "Charakter nicht gefunden!" });
     }
+
+    // Erfolgsmeldung
+    console.log("Charakter gefunden:", JSON.stringify(character, null, 2));
 
     // Inventar durchsuchen
     let item;
