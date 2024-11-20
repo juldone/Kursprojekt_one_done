@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BattleArena from "./BattleArena.js";
+import Battlearena from "./Battlearena.js";
 
 const Fight = () => {
   const [accountId, setAccountId] = useState(null);
@@ -118,7 +118,10 @@ const Fight = () => {
                 <option value="">Wähle einen Charakter</option>
                 {characters && characters.length > 0 ? (
                   characters.map((character) => (
-                    <option key={character._id} value={character._id}>
+                    <option
+                      key={character.characterId}
+                      value={character.characterId}
+                    >
                       {character.name} (Level {character.level})
                     </option>
                   ))
@@ -150,7 +153,7 @@ const Fight = () => {
           {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
         </>
       ) : (
-        <BattleArena
+        <Battlearena
           battleResult={battleResult}
           characters={characters}
           characterId={characterId} // characterId korrekt übergeben
