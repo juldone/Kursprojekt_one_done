@@ -26,6 +26,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Rest des equipmentControllers mit Brian Debugged, Items an und ablegen funktioniert. (Kleiner Bug - unendliches Armor Scaling möglich, beim Rüstung ablegen werden alle Stats in die Rüstung geschoben) - Erstmal hinnehmen, Funktion gegeben. Äh und ist n´Feature.
 
 ### Brian
+- BattleArena.js überarbeitet HP Leisten funktionieren halbwegs
+- Mit Tim die equipmentLogik überarbeitet sodass gegenstände ordentlich an und abgelegt werden hurray for exploit ( findet eh keiner raus :) )
+- Angefangen versucht die eine Websocket aufzubauen (habs aufgegeben ) vllt morgen.
+   
 
 ### Julian
 
