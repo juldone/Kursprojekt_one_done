@@ -161,14 +161,11 @@ app.use("/user/:accountId/crafting", craftingRoutes);
 
 // Einbinden der equipmentRoute
 // Notiz an mich selber, um diese Route auszuführen muss ich Localhost:3000/equipment/equip zuhören aka fetch
-app.use("/equipment", equipmentRoutes);
 
-// EQUIPMENT AUSRÜSTEN
-app.use("/equipment/equip", (req, res) => {
-  const { characterId, itemType, item } = req.body;
-  // Logik für das Ausrüsten eines Gegenstands
-  res.status(200).json({ message: "Item equipped successfully!" });
-});
+// localhost:3000/equipment/equip
+// localhost:3000/equipment/unequip
+
+app.use("/equipment", equipmentRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {

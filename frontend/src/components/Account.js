@@ -48,7 +48,7 @@ const Account = () => {
     fetchUserData();
   }, []);
 
-  const equipItem = async (item, itemType, characterId) => {
+  const equipItem = async (accountId, characterName, itemName, type) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -58,15 +58,16 @@ const Account = () => {
 
     try {
       const response = await fetch("http://localhost:3000/equipment/equip", {
-        method: "USE",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          characterId,
-          itemType,
-          item,
+          accountId,
+          characterName,
+          itemName,
+          type,
         }),
       });
 
@@ -80,7 +81,7 @@ const Account = () => {
       setUserData((prevData) => ({
         ...prevData,
         characters: prevData.characters.map((char) =>
-          char.characterId === characterId ? updatedCharacter : char
+          char.characterName === characterName ? updatedCharacter : char
         ),
       }));
     } catch (error) {
