@@ -171,18 +171,38 @@ export const unequipItem = async (req, res) => {
     console.log("Charakter gefunden:", character);
 
     // Hilfsfunktion zum Ablegen von Ausrüstungsgegenständen
+    // Hilfsfunktion zum Ablegen von Ausrüstungsgegenständen
     const unequipArmor = (slot) => {
+      // Überprüfe, ob der Slot im Armor-Objekt vorhanden ist
       const armorItem = character.equipment.armor[slot];
-      if (!armorItem) {
+
+      if (!armorItem || armorItem === "0-StatHände") {
         return {
           status: 400,
-          message: `Du hast keine ${slot}-Rüstung angelegt, die du ablegen kannst.`,
+          message: `Du hast keine gültige Rüstung für den Slot ${slot} angelegt.`,
         };
       }
 
-      character.stats.defense -= armorItem.armor; // Verteidigungswert anpassen
-      character.equipment.armor[slot] = null; // Slot leeren
-      user.armorinventory.push(armorItem); // Zurück ins Inventar legen
+      // Überprüfe, ob die Rüstung die Eigenschaft "armor" hat
+      if (armorItem.armor === undefined) {
+        console.log(
+          `Fehler: Ungültiger Rüstungswert für ${armorItem.itemName || slot}`
+        );
+        return {
+          status: 400,
+          message: `Ungültiger Rüstungswert für ${armorItem.itemName || slot}.`,
+        };
+      }
+
+      // Reduziere die Verteidigung des Charakters um den Rüstungswert
+      character.stats.defense -= armorItem.armor;
+
+      // Leere den Slot
+      character.equipment.armor[slot] = null;
+
+      // Füge das Item zurück ins Inventar
+      user.armorinventory.push(armorItem);
+
       return {
         status: 200,
         message: `Du hast die ${slot}-Rüstung "${armorItem.itemName}" abgelegt.`,
@@ -194,11 +214,9 @@ export const unequipItem = async (req, res) => {
     if (type === "Waffe") {
       console.log("Prüfung auf Waffe...");
       if (!character.equipment.weapon) {
-        return res
-          .status(400)
-          .json({
-            message: "Du hast keine Waffe angelegt, die du ablegen kannst.",
-          });
+        return res.status(400).json({
+          message: "Du hast keine Waffe angelegt, die du ablegen kannst.",
+        });
       }
 
       unequippedItem = { ...character.equipment.weapon };
