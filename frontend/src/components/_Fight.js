@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from "react";
-import Battlearena from "./Battlearena";
+import BattleArena from "./BattleArena.js"; // Die BattleArena-Komponente importieren
 
 const Fight = () => {
-  const [accountId, setAccountId] = useState(null); // Account ID
-  const [characterId, setCharacterId] = useState(""); // Charakter-ID
-  const [characters, setCharacters] = useState([]); // Liste der Charaktere
-  const [battleResult, setBattleResult] = useState(null); // Kampfergebnis
-  const [loading, setLoading] = useState(false); // Ladezustand
-  const [error, setError] = useState(null); // Fehlerzustand
-  const [loadingCharacters, setLoadingCharacters] = useState(true); // Ladezustand für Charaktere
-  const [token, setToken] = useState(""); // JWT Token
+  const [accountId, setAccountId] = useState(null);
+  const [characterId, setCharacterId] = useState("");
+  const [characters, setCharacters] = useState([]);
+  const [battleResult, setBattleResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [loadingCharacters, setLoadingCharacters] = useState(true);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    // Hole die accountId und den Token aus dem localStorage
     const storedAccountId = localStorage.getItem("accountId");
     const storedToken = localStorage.getItem("token");
-
+    const storedCharacterId = localStorage.getItem("chracterId");
     if (storedAccountId && storedToken) {
       setAccountId(storedAccountId);
       setToken(storedToken);
+      setCharacterId(storedCharacterId);
+
       fetchCharacters(storedAccountId, storedToken);
     }
   }, []);
 
-  // Hole die Charaktere für den Account
   const fetchCharacters = async (accountId, token) => {
     setLoadingCharacters(true);
     try {
@@ -36,10 +36,8 @@ const Fight = () => {
       }
 
       const data = await response.json();
-
-      // Überprüfen, ob die Antwort die erwarteten Daten enthält
       if (data && data.characters) {
-        setCharacters(data.characters); // Setze die erhaltenen Charaktere
+        setCharacters(data.characters);
       } else {
         throw new Error("Keine Charaktere gefunden.");
       }
@@ -60,21 +58,19 @@ const Fight = () => {
     setError(null);
     setBattleResult(null);
 
-    try {
-      // Logge den characterId und accountId, um zu prüfen, ob sie korrekt sind
-      console.log("Sending fight request with accountId:", accountId);
-      console.log("Sending fight request with characterId:", characterId);
+    // Sicherstellen, dass characterId als String übergeben wird
+    const characterIdString = characterId.toString(); // Umwandlung in String
 
-      // Sende die Anfrage an den Backend-Endpunkt
+    try {
       const response = await fetch("http://localhost:3000/battle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // JWT Token hinzufügen
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          accountId, // accountId aus dem State
-          characterId, // characterId aus dem State
+          accountId,
+          characterId: characterIdString, // characterId als String übergeben
         }),
       });
 
@@ -84,7 +80,7 @@ const Fight = () => {
       }
 
       const data = await response.json();
-      setBattleResult(data); // Ergebnis speichern
+      setBattleResult(data); // Setze das Kampfergebnis
     } catch (err) {
       setError(err.message);
     } finally {
@@ -100,7 +96,6 @@ const Fight = () => {
         starten!
       </p>
 
-      {/* Dropdown-Menü für Charaktere */}
       {loadingCharacters ? (
         <p>Charaktere werden geladen...</p>
       ) : (
@@ -135,7 +130,7 @@ const Fight = () => {
       <div style={{ marginBottom: "20px" }}>
         <button
           onClick={handleFight}
-          disabled={!characterId} // Button ist deaktiviert, wenn kein Charakter ausgewählt ist
+          disabled={!characterId}
           style={{
             marginLeft: "10px",
             padding: "10px 20px",
@@ -152,42 +147,15 @@ const Fight = () => {
       </div>
 
       {loading && <p>Lädt... Der Kampf beginnt!</p>}
-
       {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
 
       {battleResult && (
-        <div style={{ marginTop: "20px", lineHeight: "1.6" }}>
-          <h2>Kampfergebnis</h2>
-          <p>{battleResult.message}</p>
-
-          {battleResult.drops && battleResult.drops.length > 0 && (
-            <>
-              <h3>Erhaltene Drops:</h3>
-              <ul>
-                {battleResult.drops.map((drop, index) => (
-                  <li key={index}>
-                    {drop.quantity}x {drop.material}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {battleResult.userMaterials && (
-            <>
-              <h3>Aktualisierte Materialien:</h3>
-              <ul>
-                {Object.entries(battleResult.userMaterials).map(
-                  ([material, quantity]) => (
-                    <li key={material}>
-                      {material}: {quantity}
-                    </li>
-                  )
-                )}
-              </ul>
-            </>
-          )}
-        </div>
+        <BattleArena
+          player={battleResult.player} // Hier werden die Spieler- und Gegnerdaten übergeben
+          enemy={battleResult.enemy}
+          battleLog={battleResult.log} // Das Kampflog wird weitergegeben
+          onFight={handleFight} // Der Kampfbefehl wird weitergegeben, um die nächste Runde zu starten
+        />
       )}
     </div>
   );
