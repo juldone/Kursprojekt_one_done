@@ -19,6 +19,7 @@ const Battlearena = ({
     (char) => char.characterId === characterId
   );
   const enemyCharacter = battleResult?.enemy;
+  console.log(enemyCharacter);
 
   const handleFightInArena = async () => {
     setLoading(true);
@@ -44,10 +45,23 @@ const Battlearena = ({
       }
 
       const data = await response.json();
+
+      // Charakterdaten und Gegnerdaten
+      const characterData = data.character;
+      const enemyData = data.enemy;
+
       setFightResult(data);
 
       // Animierte Lebenspunkt-Änderung
-      simulateHpChanges(data.playerHp, data.enemyHp);
+      simulateHpChanges(data.character.stats.hp, data.enemy.stats.health);
+      console.log(
+        "Undefined weil Dumm ",
+        data.character.stats.hp,
+        data.enemy.stats.health
+      );
+      console.log("Data", data);
+      console.log(enemyData);
+      console.log(characterData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,7 +76,7 @@ const Battlearena = ({
       if (playerHp === newPlayerHp && enemyHp === newEnemyHp) {
         clearInterval(interval);
       }
-    }, 50); // Geschwindigkeit der Animation
+    }, 100); // Geschwindigkeit der Animation
   };
 
   // Toggle für das Einklappen des Kampflogs
@@ -171,10 +185,10 @@ const Battlearena = ({
       {fightResult && (
         <div style={{ marginTop: "20px", lineHeight: "1.6" }}>
           <h2>Kampfergebnis</h2>
-          <p>{fightResult.message}</p>
+          <p>{fightResult.battleSummary.message}</p>
 
           {/* Kampf-Log */}
-          {battleResult?.battleLog?.length > 0 && (
+          {fightResult?.battleLog?.length > 0 && (
             <div>
               <h3 onClick={toggleLogVisibility} style={{ cursor: "pointer" }}>
                 {isLogOpen ? "Kampflog schließen" : "Kampflog anzeigen"}
@@ -191,7 +205,7 @@ const Battlearena = ({
                     borderRadius: "5px",
                   }}
                 >
-                  {battleResult.battleLog.map((log, index) => (
+                  {fightResult.battleLog.map((log, index) => (
                     <div key={index}>
                       <p>Runde {log.round}</p>
                       <p>Angriff des Charakters: {log.characterAttack}</p>
@@ -206,10 +220,10 @@ const Battlearena = ({
           )}
 
           {/* Belohnungen */}
-          {battleResult?.rewards?.drops?.length > 0 && (
+          {fightResult?.rewards?.drops?.length > 0 && (
             <div>
               <h3>Belohnungen</h3>
-              {battleResult.rewards.drops.map((drop, index) => (
+              {fightResult.rewards.drops.map((drop, index) => (
                 <div key={index}>
                   <p>
                     {drop.material}: {drop.quantity} Stück

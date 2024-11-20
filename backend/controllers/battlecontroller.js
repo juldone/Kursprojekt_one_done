@@ -35,7 +35,7 @@ export async function battle(req, res) {
     // Wähle einen zufälligen Gegner aus den geladenen Daten
     const randomIndex = Math.floor(Math.random() * EnemyData.length);
     const enemy = EnemyData[randomIndex];
-
+    console.log(enemy);
     // Initialisiere die Startwerte
     let characterHp = character.stats.hp;
     let enemyHp = enemy.stats.health;
@@ -98,8 +98,7 @@ export async function battle(req, res) {
           },
           enemy: {
             name: enemy.name,
-            originalStats: enemy.stats,
-            finalStats: { health: 0 },
+            stats: { ...enemy.stats, hp: enemyHp },
           },
           battleLog,
           rewards: {
@@ -136,8 +135,7 @@ export async function battle(req, res) {
           },
           enemy: {
             name: enemy.name,
-            originalStats: enemy.stats,
-            finalStats: { health: enemyHp },
+            stats: { ...enemy.stats, hp: enemyHp },
           },
           battleLog,
         });
