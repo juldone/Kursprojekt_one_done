@@ -34,6 +34,7 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Im equipmentController.js character.stats.armor += item.armor bei Zeile 69 und allen anderen types hinzugefügt, gleiches prinzip wie bei den Waffen nur umgeschrieben. Sollte klappen.
 - Testing Durchlauf gestartet, Probleme gehabt den Body der Post Anfrage zu füllen, accountId, characterName, itemName, type gebe ich an aber nicht richtig. Entweder heute Abend oder Morgen früh um Hilfe fragen.
 ### REMINDER - Morgen als erstes Stat Changes für Armor zum laufen bringen -> Dann testen -> Rdy To Merge (Meiner Meinung nach)
+### REMINDERCEPTION - Brian fixxed it <3
 
 ### Brian
 - Tägliche Besprechung für weiteres vorgehen geplant
