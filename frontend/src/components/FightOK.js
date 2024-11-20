@@ -10,7 +10,7 @@ const Fight = () => {
   const [error, setError] = useState(null);
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [token, setToken] = useState("");
-  const [showArena, setShowArena] = useState(false); // Steuert die Anzeige der Battlearena
+  const [showArena, setShowArena] = useState(false); // Neu: Kontrolliert Anzeige der Battlearena
 
   useEffect(() => {
     const storedAccountId = localStorage.getItem("accountId");
@@ -78,18 +78,12 @@ const Fight = () => {
 
       const data = await response.json();
       setBattleResult(data);
-      setShowArena(true); // Zeigt die Battlearena an
+      setShowArena(true); // Neu: Zeigt die Battlearena an
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBack = () => {
-    // Funktion zum Zurückkehren zur Charakterauswahl
-    setShowArena(false);
-    setBattleResult(null);
   };
 
   return (
@@ -153,10 +147,10 @@ const Fight = () => {
         <Battlearena
           battleResult={battleResult}
           characters={characters}
-          characterId={characterId} // characterId korrekt übergeben
-          accountId={accountId} // accountId korrekt übergeben
+          characterId={selectedCharacterId}
+          accountId={userAccountId} // accountId übergeben
           token={token}
-          onBack={handleBack} // Funktion für Zurück
+          onBack={handleBack}
         />
       )}
     </div>
