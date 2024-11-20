@@ -143,6 +143,7 @@ export const equipItem = async (req, res) => {
 };
 
 // Beginn Ausrüstung Ablegen Funktion
+
 export const unequipItem = async (req, res) => {
   const { accountId, characterName, type } = req.body;
 
@@ -156,6 +157,7 @@ export const unequipItem = async (req, res) => {
     console.log("Benutzer gefunden:", user);
 
     // Charakter finden
+    console.log("Suche nach Charakter:", characterName);
     const character = user.characters.find(
       (char) => char.name === characterName
     );
@@ -170,47 +172,10 @@ export const unequipItem = async (req, res) => {
 
     console.log("Charakter gefunden:", character);
 
-    // Hilfsfunktion zum Ablegen von Ausrüstungsgegenständen
-    // Hilfsfunktion zum Ablegen von Ausrüstungsgegenständen
-    const unequipArmor = (slot) => {
-      // Überprüfe, ob der Slot im Armor-Objekt vorhanden ist
-      const armorItem = character.equipment.armor[slot];
+    // Ausgerüstetes Item prüfen
+    let unequippedItem;
+    let message;
 
-      if (!armorItem || armorItem === "0-StatHände") {
-        return {
-          status: 400,
-          message: `Du hast keine gültige Rüstung für den Slot ${slot} angelegt.`,
-        };
-      }
-
-      // Überprüfe, ob die Rüstung die Eigenschaft "armor" hat
-      if (armorItem.armor === undefined) {
-        console.log(
-          `Fehler: Ungültiger Rüstungswert für ${armorItem.itemName || slot}`
-        );
-        return {
-          status: 400,
-          message: `Ungültiger Rüstungswert für ${armorItem.itemName || slot}.`,
-        };
-      }
-
-      // Reduziere die Verteidigung des Charakters um den Rüstungswert
-      character.stats.defense -= armorItem.armor;
-
-      // Leere den Slot
-      character.equipment.armor[slot] = null;
-
-      // Füge das Item zurück ins Inventar
-      user.armorinventory.push(armorItem);
-
-      return {
-        status: 200,
-        message: `Du hast die ${slot}-Rüstung "${armorItem.itemName}" abgelegt.`,
-      };
-    };
-
-    // Waffenprüfung und Ablegen
-    let unequippedItem, message;
     if (type === "Waffe") {
       console.log("Prüfung auf Waffe...");
       if (!character.equipment.weapon) {
@@ -219,34 +184,89 @@ export const unequipItem = async (req, res) => {
         });
       }
 
-      unequippedItem = { ...character.equipment.weapon };
-      character.stats.attack -= unequippedItem.damage; // Angriffswert reduzieren
-      character.equipment.weapon = null; // Waffenslot leeren
-      user.weaponinventory.push(unequippedItem);
-
-      const weaponName = unequippedItem.itemName || "eine unbekannte Waffe";
-      message = `Du hast die Waffe "${weaponName}" abgelegt.`;
-    } else {
-      // Überprüfen, ob der Typ eine Rüstung ist
-      const armorSlots = ["head", "chest", "hands", "legs"];
-      if (armorSlots.includes(type)) {
-        const result = unequipArmor(type); // Passende Rüstung ablegen
-        if (result.status !== 200) {
-          return res.status(result.status).json({ message: result.message });
+      // Waffe ablegen
+      if (type === "Waffe") {
+        if (!character.equipment.weapon) {
+          return res.status(400).json({
+            message: "Du hast keine Waffe angelegt, die du ablegen kannst.",
+          });
         }
-        message = result.message;
-      } else {
-        return res
-          .status(400)
-          .json({ message: "Ungültiger Ausrüstungs-Typ angegeben." });
+
+        // Waffe kopieren und Angriffswert anpassen
+        unequippedItem = { ...character.equipment.weapon };
+        character.stats.attack -= unequippedItem.damage; // Angriffswert reduzieren
+        character.equipment.weapon = null; // Waffenslot leeren
+
+        // Waffe ins Inventar zurücklegen
+        user.weaponinventory.push(unequippedItem);
+
+        // Überprüfen, ob der Name der Waffe existiert, bevor er in der Nachricht verwendet wird
+        message = `Du hast die Waffe "${unequippedItem}" abgelegt.`;
+
+        return res.status(200).json({ message });
       }
+
+      // Kopfrüstung ablegen
+      unequippedItem = { ...character.equipment.armor.head }; // Kopfrüstung kopieren
+      character.stats.defense -= unequippedItem.armor; // Verteidigungswert anpassen
+      character.equipment.armor.head = null; // Ausrüstungsslot leeren
+      user.armorinventory.push(unequippedItem); // Gegenstand zurück in´s Inventar ballern
+      message = `Du hast die Kopfrüstung "${unequippedItem.itemName}" abgelegt.`;
+    } else if (type === "Brust") {
+      if (!character.equipment.armor.chest) {
+        return res.status(400).json({
+          message:
+            "Du hast keine Brustpanzerung angelegt, die du ablegen kannst.",
+        });
+      }
+
+      // Brustpanzerung ablegen
+      unequippedItem = { ...character.equipment.armor.chest };
+      character.stats.defense -= unequippedItem.armor;
+      character.equipment.armor.chest = null;
+      user.armorinventory.push(unequippedItem);
+      message = `Du hast die Brustpanzerung "${unequippedItem.itemName}" abgelegt.`;
+    } else if (type === "Hand") {
+      if (!character.equipment.armor.hands) {
+        return res.status(400).json({
+          message: "Du hast keine Handschuhe angelegt, die du ablegen kannst.",
+        });
+      }
+
+      // Handschuhe ablegen
+      unequippedItem = { ...character.equipment.armor.hands };
+      character.stats.defense -= unequippedItem.armor;
+      character.equipment.armor.hands = null;
+      user.armorinventory.push(unequippedItem);
+      message = `Du hast die Handschuhe "${unequippedItem.itemName}" abgelegt.`;
+    } else if (type === "Füße") {
+      if (!character.equipment.armor.legs) {
+        return res.status(400).json({
+          message: "Du hast keine Fußrüstung angelegt, die du ablegen kannst.",
+        });
+      }
+
+      // Fußrüstung ablegen
+      unequippedItem = { ...character.equipment.armor.legs };
+      character.stats.defense -= unequippedItem.armor;
+      character.equipment.armor.hands = null;
+      user.armorinventory.push(unequippedItem);
+      message = `Du hast die Schuhe "${unequippedItem.itemName}" abgelegt.`;
+    } else {
+      return res.status(400).json({
+        message:
+          "Digga stehst du hier drin oder oben bitte sag hier, save hier die logik hier ist noch nooby",
+      });
     }
 
     // Benutzer speichern
     await user.save();
     console.log("Speichern erfolgreich!");
 
-    res.status(200).json({ message, character });
+    res.status(200).json({
+      message,
+      character,
+    });
   } catch (error) {
     console.error("Fehler im unequipItem:", error);
     res.status(500).json({ message: "Interner Serverfehler!" });
