@@ -19,6 +19,7 @@ import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.j
 import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
 import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
 import Character from "./data/character/character.js";
+import equipmentRoutes from "./routes/equipmentRoutes.js"; // Pfad anpassen, falls anders
 
 // Initialisiere Express
 const app = express();
@@ -164,6 +165,9 @@ app.use(express.static(path.resolve("public")));
 // /crafting/armcraft
 
 app.use("/user/:accountId/crafting", craftingRoutes);
+
+// Einbinden der equipmentRoute
+app.use("/equipment", equipmentRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {

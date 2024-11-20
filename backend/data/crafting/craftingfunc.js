@@ -92,6 +92,7 @@ export const weaponcraftItem = async (req, res) => {
     // Erstelle das gecraftete Item
     const craftedItem = {
       itemName: recipe.name,
+      type: recipe.type,
       rarity,
       damage, // Verwendet den berechneten Wert
     };
@@ -177,6 +178,7 @@ export const armorcraftItem = async (req, res) => {
     // Erstelle das gecraftete Item
     const craftedItem = {
       itemName: recipe.name,
+      type: recipe.type,
       rarity,
       armor, // Verwendet den berechneten Wert
     };
