@@ -142,7 +142,6 @@ export const equipItem = async (req, res) => {
   }
 };
 
-// Funktion: Ausrüstung ablegen
 export const unequipItem = async (req, res) => {
   const { accountId, characterName, type } = req.body;
 
@@ -153,19 +152,30 @@ export const unequipItem = async (req, res) => {
       return res.status(404).json({ message: "Benutzer nicht gefunden!" });
     }
 
+    console.log("Benutzer gefunden:", user);
+
     // Charakter finden
+    console.log("Suche nach Charakter:", characterName);
     const character = user.characters.find(
-      (char) => char.characterName === characterName
+      (char) => char.name === characterName
     );
+
     if (!character) {
+      console.log(
+        "Charakter nicht gefunden! Verfügbare Charaktere:",
+        user.characters
+      );
       return res.status(404).json({ message: "Charakter nicht gefunden!" });
     }
+
+    console.log("Charakter gefunden:", character);
 
     // Ausgerüstetes Item prüfen
     let unequippedItem;
     let message;
 
     if (type === "Waffe") {
+      console.log("Prüfung auf Waffe...");
       if (!character.equipment.weapon) {
         return res.status(400).json({
           message: "Du hast keine Waffe angelegt, die du ablegen kannst.",
@@ -173,16 +183,26 @@ export const unequipItem = async (req, res) => {
       }
 
       // Waffe ablegen
-      unequippedItem = { ...character.equipment.weapon }; // Waffe kopieren
-      character.stats.attack -= unequippedItem.damage; // Angriffswert anpassen
-      character.equipment.weapon = null; // Ausrüstungsslot leeren
-      user.weaponinventory.push(unequippedItem); // Gegenstand zurück in´s Inventar ballern
-      message = `Du hast die Waffe "${unequippedItem.itemName}" abgelegt.`;
-    } else if (type === "Kopf") {
-      if (!character.equipment.armor.head) {
-        return res.status(400).json({
-          message: "Du hast keine Kopfrüstung angelegt, die du ablegen kannst.",
-        });
+      if (type === "Waffe") {
+        if (!character.equipment.weapon) {
+          return res.status(400).json({
+            message: "Du hast keine Waffe angelegt, die du ablegen kannst.",
+          });
+        }
+
+        // Waffe kopieren und Angriffswert anpassen
+        unequippedItem = { ...character.equipment.weapon };
+        character.stats.attack -= unequippedItem.damage; // Angriffswert reduzieren
+        character.equipment.weapon = null; // Waffenslot leeren
+
+        // Waffe ins Inventar zurücklegen
+        user.weaponinventory.push(unequippedItem);
+
+        // Überprüfen, ob der Name der Waffe existiert, bevor er in der Nachricht verwendet wird
+        const weaponName = unequippedItem.itemName || "eine unbekannte Waffe";
+        message = `Du hast die Waffe "${weaponName}" abgelegt.`;
+
+        return res.status(200).json({ message });
       }
 
       // Kopfrüstung ablegen
@@ -221,7 +241,7 @@ export const unequipItem = async (req, res) => {
     } else if (type === "Füße") {
       if (!character.equipment.armor.legs) {
         return res.status(400).json({
-          message: "Du hast keine Fußrüstung angelegt, die due ablegen kannst.",
+          message: "Du hast keine Fußrüstung angelegt, die du ablegen kannst.",
         });
       }
 
@@ -230,20 +250,26 @@ export const unequipItem = async (req, res) => {
       character.stats.defense -= unequippedItem.armor;
       character.equipment.armor.hands = null;
       user.armorinventory.push(unequippedItem);
-      message = `Du hast die Schuhe "${unequippedItem.itemName}" abgelegt. `;
+      message = `Du hast die Schuhe "${unequippedItem.itemName}" abgelegt.`;
     } else {
-      return res.status(400).json({ message: "Ungültige Kategorie!" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Digga stehst du hier drin oder oben bitte sag hier, save hier die logik hier ist noch nooby",
+        });
     }
 
     // Benutzer speichern
     await user.save();
+    console.log("Speichern erfolgreich!");
 
     res.status(200).json({
       message,
       character,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Fehler im unequipItem:", error);
     res.status(500).json({ message: "Interner Serverfehler!" });
   }
 };
