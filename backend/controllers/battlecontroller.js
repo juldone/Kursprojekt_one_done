@@ -21,7 +21,7 @@ export async function battle(req, res) {
 
     // Überprüfe, ob der Charakter mit characterId existiert
     const character = user.characters.find(
-      (char) => char.characterId.toString() === characterId // Vergewissere dich, dass die ID als String verglichen wird
+      (char) => char.characterId.toString() === characterId
     );
 
     if (!character) {
@@ -30,7 +30,7 @@ export async function battle(req, res) {
 
     // Lade die Gegnerdaten
     const data = await fs.readFile(enemyDataPath, "utf-8");
-    const EnemyData = JSON.parse(data); // JSON-Daten auslesen
+    const EnemyData = JSON.parse(data);
 
     // Wähle einen zufälligen Gegner aus den geladenen Daten
     const randomIndex = Math.floor(Math.random() * EnemyData.length);
@@ -39,14 +39,26 @@ export async function battle(req, res) {
     // Initialisiere die Startwerte
     let characterHp = character.stats.hp;
     let enemyHp = enemy.stats.health;
+    const battleLog = [];
 
     // Kampfschleife
     while (characterHp > 0 && enemyHp > 0) {
       // Charakter greift Gegner an
-      const characterAttack = character.stats.attack - enemy.stats.defense;
-      enemyHp -= Math.max(0, characterAttack); // Verhindert negativen Schaden
+      const characterAttack = Math.max(
+        0,
+        character.stats.attack - enemy.stats.defense
+      );
+      enemyHp -= characterAttack;
 
-      // Innerhalb der while-Schleife, nach dem Kampf
+      // Füge die Runde zum Kampflog hinzu
+      battleLog.push({
+        round: battleLog.length + 1,
+        characterAttack,
+        enemyAttack: 0,
+        characterHp,
+        enemyHp: Math.max(0, enemyHp),
+      });
+
       if (enemyHp <= 0) {
         const materialDrops = [];
         enemy.drops.forEach((drop) => {
@@ -57,7 +69,7 @@ export async function battle(req, res) {
             !Array.isArray(amount)
           ) {
             console.error(`Ungültige Drop-Daten für ${enemy.name}:`, drop);
-            return; // Überspringe diesen Drop, wenn ungültige Daten vorhanden sind
+            return;
           }
 
           if (Math.random() <= chance) {
@@ -67,7 +79,6 @@ export async function battle(req, res) {
 
             user.materials[material] =
               (user.materials[material] || 0) + quantity;
-
             materialDrops.push({ material, quantity });
           }
         });
@@ -77,37 +88,58 @@ export async function battle(req, res) {
         }
 
         return res.status(200).json({
-          message: `${character.name} hat ${enemy.name} besiegt!`,
-          characters: {
+          battleSummary: {
+            winner: "character",
+            message: `${character.name} hat ${enemy.name} besiegt!`,
+          },
+          character: {
             name: character.name,
-            stats: character.stats, // Sende die vollständigen Stats des Charakters
+            stats: { ...character.stats, hp: characterHp },
           },
           enemy: {
             name: enemy.name,
-            stats: {
-              health: enemy.stats.health,
-              attack: enemy.stats.attack,
-              defense: enemy.stats.defense,
-            },
+            originalStats: enemy.stats,
+            finalStats: { health: 0 },
           },
-          drops: materialDrops,
-          userMaterials: user.materials,
-        });
-      }
-
-      if (characterHp <= 0) {
-        return res.status(200).json({
-          message: `${enemy.name} hat ${character.name} besiegt DRECK!!`,
+          battleLog,
+          rewards: {
+            drops: materialDrops,
+            updatedMaterials: user.materials,
+          },
         });
       }
 
       // Gegner greift an
-      const enemyAttack = enemy.stats.attack - character.stats.defense;
-      characterHp -= Math.max(0, enemyAttack);
+      const enemyAttack = Math.max(
+        0,
+        enemy.stats.attack - character.stats.defense
+      );
+      characterHp -= enemyAttack;
+
+      battleLog.push({
+        round: battleLog.length + 1,
+        characterAttack: 0,
+        enemyAttack,
+        characterHp: Math.max(0, characterHp),
+        enemyHp,
+      });
 
       if (characterHp <= 0) {
         return res.status(200).json({
-          message: `${enemy.name} hat ${character.name} besiegt DRECK!!`,
+          battleSummary: {
+            winner: "enemy",
+            message: `${enemy.name} hat ${character.name} besiegt!`,
+          },
+          character: {
+            name: character.name,
+            stats: { ...character.stats, hp: 0 },
+          },
+          enemy: {
+            name: enemy.name,
+            originalStats: enemy.stats,
+            finalStats: { health: enemyHp },
+          },
+          battleLog,
         });
       }
     }

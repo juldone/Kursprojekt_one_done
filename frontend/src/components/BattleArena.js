@@ -4,13 +4,16 @@ const Battlearena = ({
   battleResult,
   characters,
   characterId,
-  accountId, // Füge accountId als Prop hinzu
+  accountId,
   onBack,
   token,
 }) => {
-  const [fightResult, setFightResult] = useState(null); // Zustand für das Kampfergebnis
+  const [fightResult, setFightResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [playerHp, setPlayerHp] = useState(100); // Spieler-HP (zum Testen voreingestellt)
+  const [enemyHp, setEnemyHp] = useState(100); // Gegner-HP
+  const [isLogOpen, setIsLogOpen] = useState(false); // Zustand für Einklappen des Kampflogs
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
@@ -27,10 +30,10 @@ const Battlearena = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // JWT Token verwenden
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          accountId, // Verwende die übergebene accountId
+          accountId,
           characterId: playerCharacter.characterId,
         }),
       });
@@ -41,12 +44,30 @@ const Battlearena = ({
       }
 
       const data = await response.json();
-      setFightResult(data); // Ergebnis des Kampfes anzeigen
+      setFightResult(data);
+
+      // Animierte Lebenspunkt-Änderung
+      simulateHpChanges(data.playerHp, data.enemyHp);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const simulateHpChanges = (newPlayerHp, newEnemyHp) => {
+    const interval = setInterval(() => {
+      setPlayerHp((hp) => Math.max(hp - 1, newPlayerHp));
+      setEnemyHp((hp) => Math.max(hp - 1, newEnemyHp));
+      if (playerHp === newPlayerHp && enemyHp === newEnemyHp) {
+        clearInterval(interval);
+      }
+    }, 50); // Geschwindigkeit der Animation
+  };
+
+  // Toggle für das Einklappen des Kampflogs
+  const toggleLogVisibility = () => {
+    setIsLogOpen((prev) => !prev);
   };
 
   return (
@@ -74,13 +95,14 @@ const Battlearena = ({
           >
             <div
               style={{
-                width: `${playerCharacter?.hp || 100}%`,
+                width: `${playerHp}%`,
                 height: "100%",
                 backgroundColor: "green",
+                transition: "width 0.5s ease-in-out",
               }}
             ></div>
           </div>
-          <p>HP: {playerCharacter?.hp || 100}</p>
+          <p>HP: {playerHp}</p>
         </div>
 
         {/* Gegner */}
@@ -98,13 +120,14 @@ const Battlearena = ({
           >
             <div
               style={{
-                width: `${enemyCharacter?.hp || 100}%`,
+                width: `${enemyHp}%`,
                 height: "100%",
                 backgroundColor: "red",
+                transition: "width 0.5s ease-in-out",
               }}
             ></div>
           </div>
-          <p>HP: {enemyCharacter?.hp || 100}</p>
+          <p>HP: {enemyHp}</p>
         </div>
       </div>
 
@@ -150,32 +173,50 @@ const Battlearena = ({
           <h2>Kampfergebnis</h2>
           <p>{fightResult.message}</p>
 
-          {fightResult.drops && fightResult.drops.length > 0 && (
-            <>
-              <h3>Erhaltene Drops:</h3>
-              <ul>
-                {fightResult.drops.map((drop, index) => (
-                  <li key={index}>
-                    {drop.quantity}x {drop.material}
-                  </li>
-                ))}
-              </ul>
-            </>
+          {/* Kampf-Log */}
+          {battleResult?.battleLog?.length > 0 && (
+            <div>
+              <h3 onClick={toggleLogVisibility} style={{ cursor: "pointer" }}>
+                {isLogOpen ? "Kampflog schließen" : "Kampflog anzeigen"}
+              </h3>
+
+              {isLogOpen && (
+                <div
+                  style={{
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    marginTop: "10px",
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {battleResult.battleLog.map((log, index) => (
+                    <div key={index}>
+                      <p>Runde {log.round}</p>
+                      <p>Angriff des Charakters: {log.characterAttack}</p>
+                      <p>Angriff des Gegners: {log.enemyAttack}</p>
+                      <p>HP des Charakters: {log.characterHp}</p>
+                      <p>HP des Gegners: {log.enemyHp}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
 
-          {fightResult.userMaterials && (
-            <>
-              <h3>Aktualisierte Materialien:</h3>
-              <ul>
-                {Object.entries(fightResult.userMaterials).map(
-                  ([material, quantity]) => (
-                    <li key={material}>
-                      {material}: {quantity}
-                    </li>
-                  )
-                )}
-              </ul>
-            </>
+          {/* Belohnungen */}
+          {battleResult?.rewards?.drops?.length > 0 && (
+            <div>
+              <h3>Belohnungen</h3>
+              {battleResult.rewards.drops.map((drop, index) => (
+                <div key={index}>
+                  <p>
+                    {drop.material}: {drop.quantity} Stück
+                  </p>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
