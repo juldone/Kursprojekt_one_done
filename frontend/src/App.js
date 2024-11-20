@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm"; // Die RegisterForm-Komponente
-import Account from "./components/Account";
+import Account from "./components/Accountold.js";
 import "./App.css"; // Oder der Pfad, den du für das CSS verwendest
 import CraftingInterface from "./components/CraftingInterface.js";
 

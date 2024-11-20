@@ -30,19 +30,12 @@ app.use(express.json());
 // CORS konfigurieren
 app.use(
   cors({
-    origin: "http://localhost:3001", // Frontend URL anpassen
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: ["http://localhost:3001", "http://localhost:3001"], // Erlaubt die Frontend-Origin
+    methods: ["GET", "USE", "POST", "PUT", "DELETE"], // Erlaubte HTTP-Methoden
+    credentials: true, // Falls Cookies oder Authentifizierungsdaten benötigt werden
   })
 );
-// CORS konfigurieren
-app.use(
-  cors({
-    origin: "http://localhost:3001", // Frontend URL anpassen
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -167,7 +160,15 @@ app.use(express.static(path.resolve("public")));
 app.use("/user/:accountId/crafting", craftingRoutes);
 
 // Einbinden der equipmentRoute
+// Notiz an mich selber, um diese Route auszuführen muss ich Localhost:3000/equipment/equip zuhören aka fetch
 app.use("/equipment", equipmentRoutes);
+
+// EQUIPMENT AUSRÜSTEN
+app.use("/equipment/equip", (req, res) => {
+  const { characterId, itemType, item } = req.body;
+  // Logik für das Ausrüsten eines Gegenstands
+  res.status(200).json({ message: "Item equipped successfully!" });
+});
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {
