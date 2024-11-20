@@ -2,7 +2,7 @@
   {
     "recipeId": 1,
     "name": "Eichenbogen",
-    "type": "Fernkampf",
+    "type": "Waffe",
     "damage": 25,
     "rarity": "",
     "materials": {
@@ -14,7 +14,7 @@
   {
     "recipeId": 2,
     "name": "Stahlschwert",
-    "type": "1H",
+    "type": "Waffe",
     "damage": 35,
     "rarity": "",
     "materials": {
@@ -26,7 +26,7 @@
   {
     "recipeId": 3,
     "name": "Magischer Stab",
-    "type": "Magisch",
+    "type": "Waffe",
     "damage": 40,
     "rarity": "",
     "materials": {
@@ -38,7 +38,7 @@
   {
     "recipeId": 4,
     "name": "Kriegshammer",
-    "type": "2H",
+    "type": "Waffe",
     "damage": 45,
     "rarity": "",
     "materials": {
@@ -50,7 +50,7 @@
   {
     "recipeId": 5,
     "name": "Dolch der Schatten",
-    "type": "1H",
+    "type": "Waffe",
     "damage": 50,
     "rarity": "",
     "materials": {
