@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Battlearena from "./Battlearena.js";
+import BattleArena from "./BattleArena.js";
 
 const Fight = () => {
   const [accountId, setAccountId] = useState(null);
@@ -153,7 +153,7 @@ const Fight = () => {
           {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
         </>
       ) : (
-        <Battlearena
+        <BattleArena
           battleResult={battleResult}
           characters={characters}
           characterId={characterId} // characterId korrekt übergeben
