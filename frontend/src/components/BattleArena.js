@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const Battlearena = ({
   battleResult,
@@ -18,13 +18,28 @@ const Battlearena = ({
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
   );
-  const enemyCharacter = battleResult?.enemy;
-  console.log(enemyCharacter);
+
+  // Refs für die aktuellen HP-Werte
+  const playerHpRef = useRef(playerHp);
+  const enemyHpRef = useRef(enemyHp);
+
+  // Wird bei HP-Änderung aufgerufen, um Ref zu aktualisieren
+  useEffect(() => {
+    playerHpRef.current = playerHp;
+  }, [playerHp]);
+
+  useEffect(() => {
+    enemyHpRef.current = enemyHp;
+  }, [enemyHp]);
 
   const handleFightInArena = async () => {
     setLoading(true);
     setError(null);
     setFightResult(null);
+
+    // Healthbars zurücksetzen, bevor der neue Kampf startet
+    setPlayerHp(100); // Maximaler Wert für Spieler-HP (anpassen, falls anders)
+    setEnemyHp(100); // Maximaler Wert für Gegner-HP
 
     try {
       const response = await fetch("http://localhost:3000/battle", {
@@ -45,23 +60,10 @@ const Battlearena = ({
       }
 
       const data = await response.json();
-
-      // Charakterdaten und Gegnerdaten
-      const characterData = data.character;
-      const enemyData = data.enemy;
-
       setFightResult(data);
 
       // Animierte Lebenspunkt-Änderung
       simulateHpChanges(data.character.stats.hp, data.enemy.stats.health);
-      console.log(
-        "Undefined weil Dumm ",
-        data.character.stats.hp,
-        data.enemy.stats.health
-      );
-      console.log("Data", data);
-      console.log(enemyData);
-      console.log(characterData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -71,15 +73,31 @@ const Battlearena = ({
 
   const simulateHpChanges = (newPlayerHp, newEnemyHp) => {
     const interval = setInterval(() => {
-      setPlayerHp((hp) => Math.max(hp - 1, newPlayerHp));
-      setEnemyHp((hp) => Math.max(hp - 1, newEnemyHp));
-      if (playerHp === newPlayerHp && enemyHp === newEnemyHp) {
+      setPlayerHp((prevHp) => {
+        const updatedHp = Math.max(prevHp - 1, newPlayerHp);
+        if (updatedHp === newPlayerHp) {
+          playerHpRef.current = updatedHp; // Update Ref value
+        }
+        return updatedHp;
+      });
+      setEnemyHp((prevHp) => {
+        const updatedHp = Math.max(prevHp - 1, newEnemyHp);
+        if (updatedHp === newEnemyHp) {
+          enemyHpRef.current = updatedHp; // Update Ref value
+        }
+        return updatedHp;
+      });
+
+      // Stoppe das Intervall, wenn beide HP-Werte erreicht sind
+      if (
+        playerHpRef.current === newPlayerHp &&
+        enemyHpRef.current === newEnemyHp
+      ) {
         clearInterval(interval);
       }
     }, 100); // Geschwindigkeit der Animation
   };
 
-  // Toggle für das Einklappen des Kampflogs
   const toggleLogVisibility = () => {
     setIsLogOpen((prev) => !prev);
   };
@@ -97,6 +115,11 @@ const Battlearena = ({
         {/* Spielercharakter */}
         <div style={{ textAlign: "left" }}>
           <h2>{playerCharacter?.name}</h2>
+          <img
+            src={`../../logo512.png`} // Bild aus dem public Ordner
+            alt={playerCharacter?.name}
+            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+          />
           <p>Level: {playerCharacter?.level}</p>
           <div
             style={{
@@ -112,7 +135,7 @@ const Battlearena = ({
                 width: `${playerHp}%`,
                 height: "100%",
                 backgroundColor: "green",
-                transition: "width 0.5s ease-in-out",
+                transition: "width 0.3s ease-out",
               }}
             ></div>
           </div>
@@ -121,8 +144,13 @@ const Battlearena = ({
 
         {/* Gegner */}
         <div style={{ textAlign: "right" }}>
-          <h2>{enemyCharacter?.name}</h2>
-          <p>Level: {enemyCharacter?.level}</p>
+          <h2>Gegner</h2>
+          <img
+            src={`../../logo512.png`} // Bild aus dem public Ordner
+            alt="Bild"
+            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+          />
+          <p>Level: ????</p>
           <div
             style={{
               width: "200px",
@@ -137,7 +165,7 @@ const Battlearena = ({
                 width: `${enemyHp}%`,
                 height: "100%",
                 backgroundColor: "red",
-                transition: "width 0.5s ease-in-out",
+                transition: "width 0.3s ease-out",
               }}
             ></div>
           </div>
@@ -219,23 +247,12 @@ const Battlearena = ({
             </div>
           )}
 
-          {/* Belohnungen */}
-          {fightResult?.rewards?.drops?.length > 0 && (
-            <div>
-              <h3>Belohnungen</h3>
-              {fightResult.rewards.drops.map((drop, index) => (
-                <div key={index}>
-                  <p>
-                    {drop.material}: {drop.quantity} Stück
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+          <h3>Belohnung:</h3>
+          <p>{fightResult.reward}</p>
         </div>
       )}
 
-      {/* Fehleranzeige */}
+      {/* Fehler */}
       {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
     </div>
   );
