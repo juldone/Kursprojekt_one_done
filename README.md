@@ -16,6 +16,23 @@
 
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
+### Changelog 21.11.24
+
+### Tim
+
+### Brian
+
+### Julian
+- Anpassung der Button-Stile (Hover-, Klick- und Standardzustände).
+  Hinzufügen von visuellen dynamische Listen
+- Implementierung versucht der Account.js-Komponente: nur mit Bugs und try and error
+- Benutzerinformationen laden (z.B. Name, Materialien, Inventar, Charaktere).
+- Dynamisches Umschalten der Sichtbarkeit von Waffen- und Rüstungslisten.
+- Hinzufügen von Buttons und Event-Handlern für Aktionen (z.B. "Waffe ausrüsten", "In den Kampf") Ergebnis fehlgeschlagen 
+ nur mit bugs
+- Überprüfung der API-Endpunkte auf Richtigkeit
+- Überprüfung der API-Route /equipment/equip im Backend
+
 
 ### Changelog 20.11.24
 
