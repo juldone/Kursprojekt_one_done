@@ -60,7 +60,7 @@ const Account = () => {
 
   const equipItem = async (characterId, item, type) => {
     try {
-      const response = await fetch("/equipment/equip", {
+      const response = await fetch("http://localhost:3000/equipment/equip", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
