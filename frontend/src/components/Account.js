@@ -50,6 +50,110 @@ const Account = () => {
     fetchUserData();
   }, []); // Einmalige Ausführung beim Laden des Components
 
+  const equipItem = async (characterName, itemName, type) => {
+    const token = localStorage.getItem("token");
+    const accountId = localStorage.getItem("accountId");
+
+    if (!token || !accountId) {
+      console.error("Token oder Account ID fehlen.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/equipment/equip", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          accountId: accountId,
+          characterName: characterName,
+          itemName: itemName,
+          type: type, // Kann "Waffe", "Kopf", "Brust", etc. sein
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Erfolgreich ausgerüstet:", data.message);
+
+      // Optional: Charakterdaten aktualisieren
+      setUserData((prevData) => ({
+        ...prevData,
+        characters: prevData.characters.map((char) =>
+          char.name === characterName
+            ? { ...char, equipment: data.character.equipment }
+            : char
+        ),
+      }));
+    } catch (error) {
+      console.error("Fehler beim Ausrüsten des Items:", error);
+      alert("Fehler beim Ausrüsten des Items.");
+    }
+  };
+
+  const unequipItem = async (characterName, itemName, type) => {
+    const token = localStorage.getItem("token");
+    const accountId = localStorage.getItem("accountId");
+    try {
+      // Sende die Anfrage an das Backend, um das Item zu unequippen
+      const response = await fetch("http://localhost:3000/equipment/unequip", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          accountId,
+          characterName,
+          itemName,
+          type,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Fehler beim Unequippen");
+      }
+
+      // Aktualisiere den Zustand, um den Slot im Charakter zu leeren und das Inventar zu erweitern
+      setUserData((prevData) => ({
+        ...prevData,
+        characters: prevData.characters.map((char) =>
+          char.name === characterName
+            ? {
+                ...char,
+                equipment: {
+                  ...char.equipment,
+                  [type]: null, // Der entsprechende Slot wird auf null gesetzt
+                },
+              }
+            : char
+        ),
+        ...(type === "Waffe"
+          ? {
+              weaponinventory: [
+                ...prevData.weaponinventory,
+                data.unequippedItem,
+              ],
+            } // Füge das unequippte Item zum Inventar hinzu
+          : type === "Kopf" ||
+            type === "Brust" ||
+            type === "Hand" ||
+            type === "Füße"
+          ? {
+              armorinventory: [...prevData.armorinventory, data.unequippedItem], // Für Rüstungen
+            }
+          : {}),
+      }));
+    } catch (error) {
+      console.error("Fehler beim Unequippen:", error);
+    }
+  };
+
   const goToCrafting = () => {
     const accountId = localStorage.getItem("accountId");
     if (accountId) {
@@ -205,6 +309,27 @@ const Account = () => {
               <li key={`weapon-${index}`}>
                 <strong>Waffe:</strong> {item.itemName} - {item.type} -{" "}
                 {item.rarity} - {item.damage} Schaden
+                <button
+                  onClick={() =>
+                    equipItem(
+                      userData.characters[0].name,
+                      item.itemName,
+                      "Waffe"
+                    )
+                  }
+                  style={{
+                    padding: "5px 10px",
+                    fontSize: "14px",
+                    backgroundColor: "green",
+                    color: "#222",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginLeft: "10px",
+                  }}
+                >
+                  Ausrüsten
+                </button>
               </li>
             ))}
         </ul>
@@ -221,8 +346,38 @@ const Account = () => {
           {userData.armorinventory &&
             userData.armorinventory.map((item, index) => (
               <li key={`armor-${index}`}>
-                <strong>Rüstung:</strong> {item.itemName} - {item.type} -{" "}
-                {item.rarity} - {item.armor} Verteidigung
+                <strong>Rüstung:</strong> {item.itemName} -{" "}
+                {item.type === "Kopf"
+                  ? "Kopf"
+                  : item.type === "Brust"
+                  ? "Brust"
+                  : item.type === "Hand"
+                  ? "Hände"
+                  : item.type === "Füße"
+                  ? "Füße"
+                  : "Unbekannt"}{" "}
+                - {item.rarity} - {item.armor} Verteidigung
+                <button
+                  style={{
+                    padding: "5px 10px",
+                    fontSize: "14px",
+                    backgroundColor: "green",
+                    color: "#222",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginLeft: "10px",
+                  }}
+                  onClick={() =>
+                    equipItem(
+                      userData.characters[0].name,
+                      item.itemName,
+                      item.type
+                    )
+                  }
+                >
+                  Ausrüsten
+                </button>
               </li>
             ))}
         </ul>
@@ -238,13 +393,132 @@ const Account = () => {
               <strong>Angriff:</strong> {character.stats.attack} <br />
               <strong>Verteidigung:</strong> {character.stats.defense} <br />
               <strong>Geschwindigkeit:</strong> {character.stats.speed} <br />
-              <strong>Waffe:</strong> {character.equipment.weapon} <br />
+              <strong>Waffe:</strong> {character.equipment.weapon}
+              {character.equipment.weapon && (
+                <button
+                  style={{
+                    padding: "5px 10px",
+                    fontSize: "14px",
+                    backgroundColor: "#ff4d4d",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    unequipItem(
+                      character.name,
+                      character.equipment.weapon,
+                      "Waffe"
+                    )
+                  }
+                >
+                  Waffe ablegen
+                </button>
+              )}
+              <br />
               <strong>Rüstung:</strong>
               <ul>
-                <li>Helm: {character.equipment.armor.head}</li>
-                <li>Brustpanzer: {character.equipment.armor.chest}</li>
-                <li>Handschuhe: {character.equipment.armor.hands}</li>
-                <li>Beinschützer: {character.equipment.armor.legs}</li>
+                {character.equipment.armor.head && (
+                  <li>
+                    Helm: {character.equipment.armor.head}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.head,
+                          "Kopf"
+                        )
+                      }
+                    >
+                      Helm ablegen
+                    </button>
+                  </li>
+                )}
+                {character.equipment.armor.chest && (
+                  <li>
+                    Brustpanzer: {character.equipment.armor.chest}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.chest,
+                          "Brust"
+                        )
+                      }
+                    >
+                      Brustpanzer ablegen
+                    </button>
+                  </li>
+                )}
+                {character.equipment.armor.hands && (
+                  <li>
+                    Handschuhe: {character.equipment.armor.hands}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.hands,
+                          "Hand"
+                        )
+                      }
+                    >
+                      Handschuhe ablegen
+                    </button>
+                  </li>
+                )}
+                {character.equipment.armor.legs && (
+                  <li>
+                    Beinschützer: {character.equipment.armor.legs}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.legs,
+                          "Füße"
+                        )
+                      }
+                    >
+                      Beinschützer ablegen
+                    </button>
+                  </li>
+                )}
               </ul>
               <button
                 style={{
@@ -263,7 +537,7 @@ const Account = () => {
             </li>
           ))
         ) : (
-          <li>Keine Charaktere vorhanden.</li>
+          <p>Keine Charaktere gefunden.</p>
         )}
       </ul>
 

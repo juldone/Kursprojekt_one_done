@@ -95,7 +95,7 @@ const Battlearena = ({
       ) {
         clearInterval(interval);
       }
-    }, 100); // Geschwindigkeit der Animation
+    }, 50); // Geschwindigkeit der Animation
   };
 
   const toggleLogVisibility = () => {
@@ -135,7 +135,7 @@ const Battlearena = ({
                 width: `${playerHp}%`,
                 height: "100%",
                 backgroundColor: "green",
-                transition: "width 0.3s ease-out",
+                transition: "width 0.5s ease-out",
               }}
             ></div>
           </div>
@@ -165,7 +165,7 @@ const Battlearena = ({
                 width: `${enemyHp}%`,
                 height: "100%",
                 backgroundColor: "red",
-                transition: "width 0.3s ease-out",
+                transition: "width 0.5s ease-out",
               }}
             ></div>
           </div>
