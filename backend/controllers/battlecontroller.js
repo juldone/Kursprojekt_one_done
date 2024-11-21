@@ -29,8 +29,11 @@ export async function battle(req, res) {
     }
 
     // Lade die Gegnerdaten
-    const data = await fs.readFile(enemyDataPath, "utf-8");
-    const EnemyData = JSON.parse(data);
+    const data = await fs.readFile(enemyDataPath, "utf-8").catch((err) => {
+      console.error("Fehler beim Lesen der Gegnerdaten:", err);
+      throw new Error("Gegnerdaten konnten nicht geladen werden.");
+    });
+    const EnemyData = JSON.parse(data); // JSON-Daten auslesen
 
     // Wähle einen zufälligen Gegner aus den geladenen Daten
     const randomIndex = Math.floor(Math.random() * EnemyData.length);

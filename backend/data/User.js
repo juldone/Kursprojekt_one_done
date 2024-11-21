@@ -7,13 +7,14 @@ const userSchema = new mongoose.Schema({
   userName: { type: String, required: true, unique: true },
   accountId: { type: Number, required: true, unique: true },
   materials: {
-    Holz: { type: Number, default: 0 },
-    Stein: { type: Number, default: 0 },
-    Metall: { type: Number, default: 0 },
+    Holz: { type: Number, default: 100 },
+    Stein: { type: Number, default: 100 },
+    Metall: { type: Number, default: 100 },
   },
   weaponinventory: [
     {
       itemName: { type: String, required: true },
+      type: { type: String, required: true },
       damage: { type: Number, required: true },
       rarity: { type: String }, // optional, falls es eine Rarität gibt
     },
@@ -21,6 +22,7 @@ const userSchema = new mongoose.Schema({
   armorinventory: [
     {
       itemName: { type: String, required: true },
+      type: { type: String, required: true },
       armor: { type: Number, required: true },
       rarity: { type: String }, // optional, falls es eine Rarität gibt
     },
@@ -37,12 +39,20 @@ const userSchema = new mongoose.Schema({
         speed: { type: Number, required: true, default: 5 }, // Geschwindigkeit
       },
       equipment: {
-        weapon: { type: String, required: true, default: "Basis-Schwert" }, // Standardwaffe
+        weapon: { type: String, required: false, default: "Basis-Schwert" }, // Standardwaffe
         armor: {
-          head: { type: String, required: true, default: "Basis-Helm" }, // Helm
-          chest: { type: String, required: true, default: "Basis-Brustpanzer" }, // Brustpanzer
-          hands: { type: String, required: true, default: "Basis-Handschuhe" }, // Handschuhe
-          legs: { type: String, required: true, default: "Basis-Beinschützer" }, // Beinschützer
+          head: { type: String, required: false, default: "Basis-Helm" }, // Helm
+          chest: {
+            type: String,
+            required: false,
+            default: "Basis-Brustpanzer",
+          }, // Brustpanzer
+          hands: { type: String, required: false, default: "Basis-Handschuhe" }, // Handschuhe
+          legs: {
+            type: String,
+            required: false,
+            default: "Basis-Beinschützer",
+          }, // Beinschützer
         },
       },
     },

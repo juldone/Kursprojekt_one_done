@@ -17,9 +17,56 @@
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
+### Changelog 20.11.24
+
+### Tim
+- in der waffen_rezepte.json bei allen rezepten den type zu "Waffe" geändert. (Datenbank struktur)
+- equipmentController.js if (type === "Fernkampf") zu if (type === "Waffe") geändert
+- Testing gestartet, bis zur Funktion Rüstung ablegen gekommen
+- Rest des equipmentControllers mit Brian Debugged, Items an und ablegen funktioniert. (Kleiner Bug - unendliches Armor Scaling möglich, beim Rüstung ablegen werden alle Stats in die Rüstung geschoben) - Erstmal hinnehmen, Funktion gegeben. Äh und ist n´Feature.
+
+### Brian
+- BattleArena.js überarbeitet HP Leisten funktionieren halbwegs
+- Mit Tim die equipmentLogik überarbeitet sodass gegenstände ordentlich an und abgelegt werden hurray for exploit ( findet eh keiner raus :) )
+- Angefangen versucht die eine Websocket aufzubauen (habs aufgegeben ) vllt morgen.
+   
+
+### Julian
+- Kämpfen button in kombination mit einer weiterleitung auf den endgültigen fight button bearbeitet
+- equipment bzw. items anlegen ( dem character hinzuzufügen ) im frontend visualisiert, leider mit bugs
+- app.js im backend mit cors blocked die use/post abfrage des eqiups verändert und freigegeben
+- account_js unverändert // Account_js_iteminsert_ Items dem character via click hinzufügen funktioniert. Ausser beim anlegen der Rüstungen wird es im Frontend nicht angezeigt.
+
+
+
+### Changelog 19.11.24
+
+### Tim
+- equipmentController logik geschrieben, equipmentRoutens geschrieben, in app.js eingebunden
+- Mit Brian equipmentController.js logik überarbeitet, getestet was mit Items passiert welche vom Inventar an den Character gelegt werden -> diese verschwinden aus dem Inventar = sehr gut!
+- Dann versucht die Stats, also Momentan den DMG im Insgesamten zu erhöhen je nach Waffe welche angelegt wird -> Funktioniert bei Waffen.
+- Im equipmentController.js character.stats.armor += item.armor bei Zeile 69 und allen anderen types hinzugefügt, gleiches prinzip wie bei den Waffen nur umgeschrieben. Sollte klappen.
+- Testing Durchlauf gestartet, Probleme gehabt den Body der Post Anfrage zu füllen, accountId, characterName, itemName, type gebe ich an aber nicht richtig. Entweder heute Abend oder Morgen früh um Hilfe fragen.
+### REMINDER - Morgen als erstes Stat Changes für Armor zum laufen bringen -> Dann testen -> Rdy To Merge (Meiner Meinung nach)
+### REMINDERCEPTION - Brian fixxed it <3
+
+### Brian
+- Tägliche Besprechung für weiteres vorgehen geplant
+- Equipmentlogik mit Tim überarbeitet
+- Bugs gefixt ( Equipmentcontroller wieder zum laufen bekommen , Fight.js hat falschen Wert genommen als im Backend)
+- Userstruktur ein weiteres mal überarbeitet
+- Battle-Arena für den Interaktiven Kampf angefangen ist aber noch Fehlerbehaftet
+
+### Julian 
+- Hauptsächlich Front und Backend bearbeitet
+- FightRouting_js erstellt // Account_js überarbeitet // Fight_js erstellt // Codes überarbeitet
+- app_js überarbeitet_fighting_route überarbeitet
+- Buttons erstellt und bearbeitet
+- neue componente Fight.js zsm. mit Brian geroutet
+- Fight_js erweitert durch neues "fightwindow" eigener_char links, gegner rechts angeordnet, in die mitte ein fight button. BUG: nach klick auf Fight werden namen nicht         aktualisiert ansonsten funktioniert die Kampflogik 
+
 ### Changelog 18.11.24
 
-### Tim 
 ### Tim 
 - Crafting Branch in Main gemerged (yes!)
 - armor_rezepte.json mit Sets gefüllt. (Holzset: Kopf, Hand, Brust, Füße, Steinset: Kopf, Hand, Brust, Füße, Metallset: Kopf, Hand, Brust, Füße)
