@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom"; // useNavigate korrekt importieren
 
 const Account = () => {
@@ -117,6 +118,23 @@ const Account = () => {
     }
   };
 
+  const equipItem = async (accountId, characterName, itemName, type) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/createCharacter",
+        {
+          accountId,
+          characterName,
+          itemName,
+          type,
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Fehler beim Ausrüsten des Items:", error);
+    }
+  };
+
   const deleteCharacter = async (characterId) => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
@@ -205,11 +223,32 @@ const Account = () => {
               <li key={`weapon-${index}`}>
                 <strong>Waffe:</strong> {item.itemName} - {item.type} -{" "}
                 {item.rarity} - {item.damage} Schaden
+                <button
+                  onClick={() =>
+                    equipItem(
+                      userData.accountId,
+                      "CharacterName",
+                      item.itemName,
+                      "weapon"
+                    )
+                  }
+                  style={{
+                    marginLeft: "10px",
+                    padding: "5px",
+                    fontSize: "12px",
+                    backgroundColor: "#4CAF50",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Ausrüsten
+                </button>
               </li>
             ))}
         </ul>
       )}
-
       <h2
         style={{ marginTop: "20px", color: "#ebebeb", cursor: "pointer" }}
         onClick={() => setIsArmorVisible((prev) => !prev)}
@@ -217,15 +256,27 @@ const Account = () => {
         Rüstung: {isArmorVisible ? "▼" : "▶"}
       </h2>
       {isArmorVisible && (
-        <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+        <div style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
           {userData.armorinventory &&
             userData.armorinventory.map((item, index) => (
-              <li key={`armor-${index}`}>
-                <strong>Rüstung:</strong> {item.itemName} - {item.type} -{" "}
-                {item.rarity} - {item.armor} Verteidigung
-              </li>
+              <button key={`armor-${index}`}>
+                style=
+                {{
+                  marginBottom: "10px",
+                  padding: "10px",
+                  backgroundColor: "#4CAF50",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+                onClick=
+                {() => equipItem(userData.accountId, item.itemName, "armor")}
+                <strong>{item.itemName}</strong> - {item.type} - {item.rarity} -{" "}
+                {item.armor} Verteidigung
+              </button>
             ))}
-        </ul>
+        </div>
       )}
       <h2 style={{ marginTop: "20px", color: "#ebebeb" }}>Charaktere:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>

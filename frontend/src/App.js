@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm"; // Die RegisterForm-Komponente
-import Account from "./components/Account";
+import Account from "./components/Account.js";
 import "./App.css"; // Oder der Pfad, den du für das CSS verwendest
 import CraftingInterface from "./components/CraftingInterface.js";
 import Fight from "./components/Fight.js";
@@ -29,7 +29,6 @@ const App = () => {
         <Route
           path="/"
           element={
-            // Die Login- und Register-Formulare werden hier auf derselben Seite angezeigt
             <>
               {isRegistering ? (
                 <RegisterForm
@@ -52,8 +51,7 @@ const App = () => {
                   ? "Already have an account? Log in"
                   : "Don't have an account? Register"}
               </button>
-              {message && <div className="message">{message}</div>}{" "}
-              {/* Zeige die Nachricht */}
+              {message && <div className="message">{message}</div>}
             </>
           }
         />
