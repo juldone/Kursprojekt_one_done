@@ -1,3 +1,7 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Account from "../frontend/src/components/Account.js";
+import FightRouting from "./routes/FightRouting.js"; // Importiere die FightRouting-Datei
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
@@ -7,19 +11,22 @@ import cors from "cors";
 import { login } from "./utils/login.js";
 import { protect } from "./utils/protected.js";
 import { register } from "./utils/register.js";
-import { itemImport } from "./utils/Import/itemimport.js";
-import { materials } from "./utils/Import/materialimport.js";
+import { weaponImport } from "./utils/weaponimport.js";
+import { itemImport } from "./utils/itemimport.js";
+import { armorImport } from "./utils/armorimport.js";
+import { materials } from "./utils/materialimport.js";
 import { enemyImport } from "./data/enemies/enemyimport.js";
 import { battle } from "./controllers/battlecontroller.js";
 import { createCharacter } from "./data/character/characterCreation.js"; // Pfad nach Ordnerumstrukturierung aktualisiert.
 import { authenticate } from "./routes/authMiddleware.js";
 import characterRoutes from "./routes/characterRoutes.js";
 import User from "./data/User.js";
+
 import { weaponrecipeImport } from "./data/crafting/Weapon/waffen_recipeimport.js";
 import { armorrecipeImport } from "./data/crafting/Armor/armor_recipeimport.js";
 import craftingRoutes from "./routes/craftingRoutes.js"; // Import der Crafting-Routen chatty -
+
 import Character from "./data/character/character.js";
-import equipmentRoutes from "./routes/equipmentRoutes.js"; // Pfad anpassen, falls anders
 
 // Initialisiere Express
 const app = express();
@@ -31,11 +38,18 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3001", // Frontend URL anpassen
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
+// CORS konfigurieren
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Frontend URL anpassen
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // MongoDB-Verbindung herstellen
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -66,12 +80,17 @@ app.get("/craft", authenticate, (req, res) => {
   });
 });
 
+// Waffen-Import
+app.get("/weapons", weaponImport);
+
 // Waffen-Rezepte Import
 app.get("/wrezepte", weaponrecipeImport);
 
 // Armor-Rezepte Import
 app.get("/arezepte", armorrecipeImport);
 
+// Armor-Import
+app.get("/armor", armorImport);
 // Route zum Abrufen aller Items
 app.get("/item", itemImport);
 
@@ -92,9 +111,10 @@ app.get("/enemy", enemyImport);
 
 // {
 //   "characterId": "charakter_id_aus_der_datenbank",
+//   "enemyId": 6000
 // }
 
-app.post("/battle", authenticate, battle);
+app.post("/battle", battle);
 
 // Charakter erstellen (Hier wird die createCharacter-Funktion aus characterCreation.js aufgerufen)
 // Zum Testen der character erstellung
@@ -120,49 +140,26 @@ app.post("/battle", authenticate, battle);
 // }
 
 app.post("/createCharacter", createCharacter); // Diese Route ist für die Erstellung eines Charakters
-app.delete("/user/character", async (req, res) => {
-  const { accountId, characterId } = req.body;
-
-  // Überprüfen, ob accountId und characterId übergeben wurden
-  if (!accountId || !characterId) {
-    return res
-      .status(400)
-      .json({ message: "accountId und characterId sind erforderlich." });
-  }
-
-  try {
-    // Benutzer finden und den gewünschten Charakter aus dem characters-Array entfernen
-    const user = await User.findOneAndUpdate(
-      { accountId: accountId }, // Benutzer anhand der accountId finden
-      { $pull: { characters: { characterId: characterId } } }, // Entferne den Charakter mit der gegebenen characterId
-      { new: true } // Gibt den aktualisierten Benutzer zurück
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: "Benutzer nicht gefunden." });
-    }
-
-    res.status(200).json({ message: "Charakter erfolgreich gelöscht.", user });
-  } catch (error) {
-    console.error("Fehler beim Löschen des Charakters:", error);
-    res.status(500).json({ message: "Fehler beim Löschen des Charakters." });
-  }
-});
 
 // Öffentlich zugängliche Dateien aus dem "public"-Verzeichnis bereitstellen
 app.use(express.static(path.resolve("public")));
+
+//localhost:3000/character/equipWeapon
+//                        /equipArmor
+//                        /removeWeapon
+//                        /removeArmor
+//{
+// "characterId" : "ObjectId",
+// armor/weaponId "ObjectId"
+//}
+app.use("/character", characterRoutes);
 
 // Registriere die Crafting-Routen
 
 // /crafting/wpncraft
 // /crafting/armcraft
 
-// localhost:3000/user/5/crafting/
-
 app.use("/user/:accountId/crafting", craftingRoutes);
-
-// Einbinden der equipmentRoute
-app.use("/equipment", equipmentRoutes);
 
 app.get("/user/:accountId", authenticate, async (req, res) => {
   try {
@@ -184,7 +181,7 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
       accountId: user.accountId,
       username: user.userName,
       materials: user.materials, // Materialien aus der Datenbank
-      weaponinventory: user.weaponinventory, // Dein Inventar
+      weapopninventory: user.weaponinventory, // Dein Inventar
       armorinventory: user.armorinventory,
       characters: user.characters,
     });
@@ -204,37 +201,36 @@ app.get("/user/:accountId", authenticate, async (req, res) => {
 //}
 app.use("/character", characterRoutes);
 
-// // Route im Backend für den Benutzer:
-// app.get("/user/:accountId", authenticate, async (req, res) => {
-//   try {
-//     const { accountId } = req.params;
-//     const user = await User.findOne({ accountId });
-//     // const character = await Character.findOne({characterId})
-//     if (!user) {
-//       return res.status(404).json({ message: "Benutzer nicht gefunden" });
-//     }
+// Route im Backend für den Benutzer:
+app.get("/user/:accountId", authenticate, async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const user = await User.findOne({ accountId });
+    // const character = await Character.findOne({characterId})
+    if (!user) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
 
-//     console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
+    console.log("Benutzerdaten aus der Datenbank:", user); // Ausgabe der Benutzerdaten
 
-//     res.json({
-//       accountId: user.accountId,
-//       username: user.userName,
-//       materials: user.materials, // Materialien aus der Datenbank
-//       weaponinventory: user.weaponinventory,
-//       armorinventory: user.armorinventory, // Dein Inventar
-//       characters: characterRoutes((char) => ({
-//         id: char._id,
-//         name: char.name,
-//         level: char.level,
-//         stats: char.stats,
-//         equipment: char.equipment,
-//       })), // Charakterdaten
-//     });
-//   } catch (error) {
-//     console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-//     res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
-//   }
-// });
+    res.json({
+      accountId: user.accountId,
+      username: user.userName,
+      materials: user.materials, // Materialien aus der Datenbank
+      inventory: user.inventory, // Dein Inventar
+      characters: characterRoutes((char) => ({
+        id: char._id,
+        name: char.name,
+        level: char.level,
+        stats: char.stats,
+        equipment: char.equipment,
+      })), // Charakterdaten
+    });
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+    res.status(500).json({ message: "Fehler beim Abrufen der Benutzerdaten" });
+  }
+});
 
 // Server starten
 const PORT = process.env.PORT || 3000;

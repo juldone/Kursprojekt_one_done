@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 const Account = () => {
-  const [userData, setUserData] = useState({
-    username: localStorage.getItem("userName") || "",
-  });
-  const [characters, setCharacters] = useState([]);
-  const [error, setError] = useState(null);
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newCharacterName, setNewCharacterName] = useState("");
-  const [newCharacterId, setNewCharacterId] = useState("");
+  const [userData, setUserData] = useState(null); // User-Daten
+  const [error, setError] = useState(null); // Fehlerzustand
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
 
     if (!token) {
-      window.location.href = "/";
+      window.location.href = "/"; // Weiterleitung wenn kein Token vorhanden ist
       return;
     }
 
@@ -29,78 +23,30 @@ const Account = () => {
         return response.json();
       })
       .then((data) => {
+        console.log("API-Daten:", data); // Debug: Alle API-Daten loggen
+
         setUserData({
           username: data.username,
           accountId: data.accountId,
           materials: data.materials,
-          inventory: data.inventory,
+          weaponinventory: data.weaponinventory,
+          armorinventory: data.armorinventory,
+          characters: data.characters, // Füge Charaktere zu den Daten hinzu
         });
-        setCharacters(data.characters || []);
       })
       .catch((error) => {
         console.error("Fehler beim Abrufen der Benutzerdaten:", error);
         setError("Daten konnten nicht geladen werden.");
       });
-  }, []);
+  }, []); // Die leere Abhängigkeitsliste sorgt dafür, dass der Effekt nur einmal beim Initialisieren des Components ausgeführt wird
 
-  const handleCreateCharacter = () => {
-    const token = localStorage.getItem("token");
+  const goToCrafting = () => {
     const accountId = localStorage.getItem("accountId");
-
-    if (!accountId || !token || !newCharacterName) {
-      setError("Bitte Namen eingeben.");
-      return;
+    if (accountId) {
+      window.location.href = `/user/${accountId}/crafting`;
+    } else {
+      console.error("Account ID fehlt. Navigation zu Crafting nicht möglich.");
     }
-
-    fetch(`http://localhost:3000/createCharacter`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        accountId: accountId,
-        name: newCharacterName,
-        level: 1,
-        stats: {
-          hp: 100,
-          attack: 10,
-          defense: 5,
-          speed: 5,
-        },
-        equipment: {
-          weapon: "Basis-Schwert",
-          armor: {
-            head: "Basis-Helm",
-            chest: "Basis-Brustpanzer",
-            hands: "Basis-Handschuhe",
-            legs: "Basis-Beinschützer",
-          },
-        },
-        characterId: newCharacterId,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Charakter konnte nicht erstellt werden.");
-        }
-        return response.json();
-      })
-      .then((newCharacter) => {
-        setCharacters((prevCharacters) => [...prevCharacters, newCharacter]);
-        setShowCreateForm(false);
-        setNewCharacterName("");
-        setNewCharacterId("");
-      })
-      .catch((error) => {
-        console.error("Fehler beim Erstellen des Charakters:", error);
-        setError("Charakter konnte nicht erstellt werden.");
-      });
-  };
-
-  const handleShowCreateForm = () => {
-    setShowCreateForm(true);
-    setNewCharacterId(`char_${Date.now()}`); // Generiere ID, wenn Formular geöffnet wird
   };
 
   if (error) {
@@ -112,12 +58,13 @@ const Account = () => {
   }
 
   return (
-    <div>
-      <h1>Account Information</h1>
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <h1 style={{ color: "#333" }}>Account Information</h1>
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
-      <p>Materialien:</p>
-      <ul>
+
+      <h2 style={{ marginTop: "20px", color: "#555" }}>Materialien:</h2>
+      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.materials && (
           <>
             <li>Holz: {userData.materials.Holz || 0}</li>
@@ -126,63 +73,67 @@ const Account = () => {
           </>
         )}
       </ul>
-      <h2>Inventar:</h2>
-      <ul>
-        {userData.inventory &&
-          userData.inventory.map((item, index) => (
-            <li key={index}>
-              {item.itemName} - {item.rarity}
+
+      <h2 style={{ marginTop: "20px", color: "#555" }}>Inventar:</h2>
+      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+        {userData.weaponinventory &&
+          userData.weaponinventory.map((item, index) => (
+            <li key={`weapon-${index}`}>
+              <strong>Waffe:</strong> {item.itemName} - {item.rarity} -{" "}
+              {item.damage} Schaden
+            </li>
+          ))}
+        {userData.armorinventory &&
+          userData.armorinventory.map((item, index) => (
+            <li key={`armor-${index}`}>
+              <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
+              {item.defense} Verteidigung
             </li>
           ))}
       </ul>
-      <h2>Charaktere:</h2>
-      {characters.length ? (
-        characters.map((char) => (
-          <div key={char.id}>
-            <h3>{char.name}</h3>
-            <p>Char_ID: {char.id}</p>
-            <p>Level: {char.level}</p>
-            <p>Stats:</p>
-            <ul>
-              <li>HP: {char.stats.hp}</li>
-              <li>Angriff: {char.stats.attack}</li>
-              <li>Verteidigung: {char.stats.defense}</li>
-              <li>Geschwindigkeit: {char.stats.speed}</li>
-            </ul>
-            <p>Ausrüstung:</p>
-            <ul>
-              <li>Waffe: {char.equipment.weapon}</li>
-              <li>Rüstung:</li>
-              <ul>
-                <li>Kopf: {char.equipment.armor.head}</li>
-                <li>Brust: {char.equipment.armor.chest}</li>
-                <li>Hände: {char.equipment.armor.hands}</li>
-                <li>Beine: {char.equipment.armor.legs}</li>
-              </ul>
-            </ul>
-          </div>
-        ))
-      ) : (
-        <div>
-          <p>Keine Charaktere gefunden.</p>
-          <button onClick={handleShowCreateForm}>Create Character</button>
-        </div>
-      )}
 
-      {showCreateForm && (
-        <div>
-          <h3>Neuen Charakter erstellen</h3>
-          <input
-            type="text"
-            placeholder="Charaktername"
-            value={newCharacterName}
-            onChange={(e) => setNewCharacterName(e.target.value)}
-          />
-          <p>Automatisch vergebene ID: {newCharacterId}</p>
-          <button onClick={handleCreateCharacter}>Charakter erstellen</button>
-          <button onClick={() => setShowCreateForm(false)}>Abbrechen</button>
-        </div>
-      )}
+      {/* Anzeige der Charaktere */}
+      <h2 style={{ marginTop: "20px", color: "#555" }}>Charaktere:</h2>
+      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+        {userData.characters && userData.characters.length > 0 ? (
+          userData.characters.map((character, index) => (
+            <li key={`character-${index}`}>
+              <strong>Charaktername:</strong> {character.name} <br />
+              <strong>Level:</strong> {character.level} <br />
+              <strong>HP:</strong> {character.stats.hp} <br />
+              <strong>Angriff:</strong> {character.stats.attack} <br />
+              <strong>Verteidigung:</strong> {character.stats.defense} <br />
+              <strong>Geschwindigkeit:</strong> {character.stats.speed} <br />
+              <strong>Waffe:</strong> {character.equipment.weapon} <br />
+              <strong>Rüstung:</strong>
+              <ul>
+                <li>Helm: {character.equipment.armor.head}</li>
+                <li>Brustpanzer: {character.equipment.armor.chest}</li>
+                <li>Handschuhe: {character.equipment.armor.hands}</li>
+                <li>Beinschützer: {character.equipment.armor.legs}</li>
+              </ul>
+            </li>
+          ))
+        ) : (
+          <li>Keine Charaktere vorhanden</li>
+        )}
+      </ul>
+
+      <button
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          borderRadius: "5px",
+          border: "none",
+          backgroundColor: "#1e90ff",
+          color: "#fff",
+          cursor: "pointer",
+          marginTop: "20px",
+        }}
+        onClick={goToCrafting}
+      >
+        Crafting
+      </button>
     </div>
   );
 };
