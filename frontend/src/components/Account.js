@@ -21,7 +21,6 @@ const Account = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
-
     if (!token) {
       window.location.href = "/";
       return;
@@ -57,63 +56,91 @@ const Account = () => {
 
     fetchUserData();
   }, []);
-
-  const equipItem = async (characterId, item, type) => {
+  const equipItem = async (accountId, characterName, itemName, type) => {
     try {
+      // Suche den Charakter basierend auf characterName
+      const character = userData.characters.find(
+        (character) => character.name === characterName
+      );
+
+      if (!character) {
+        console.log(character);
+        alert("Charakter nicht gefunden!");
+        return;
+      }
+
+      // Suche das Item im Inventar, das den itemName und type übereinstimmt
+      const selectedItem =
+        type === "Waffe"
+          ? userData.weaponinventory.find(
+              (item) => item.itemName === itemName && item.type === type
+            )
+          : userData.armorinventory.find(
+              (item) => item.itemName === itemName && item.type === type
+            );
+
+      if (!selectedItem) {
+        alert("Item nicht gefunden!");
+        return;
+      }
+
+      // Sende das ausgewählte Item an das Backend
       const response = await fetch("http://localhost:3000/equipment/equip", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          characterId,
-          item,
-          type,
+          accountId: accountId,
+          characterName: character.name, // Hier den richtigen Namen übergeben
+          itemName: selectedItem.itemName, // Nur itemName übergeben
+          type: selectedItem.type, // Den Typ des Items übergeben
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Unbekannter Fehler");
-      }
+      if (response.ok) {
+        const data = await response.json();
+        alert(
+          data.message ||
+            `${
+              type === "Waffe" ? "Waffe" : "Rüstung"
+            } wurde erfolgreich ausgerüstet!`
+        );
 
-      const updatedCharacterData = await response.json();
+        // Erfolgreiches Ausrüsten – Update der Charakterdaten im Frontend
+        setUserData((prevData) => {
+          const updatedCharacters = prevData.characters.map((character) => {
+            if (character.name === characterName) {
+              const updatedEquipment = { ...character.equipment };
 
-      setUserData((prevData) => {
-        const updatedCharacters = prevData.characters.map((character) => {
-          if (character.characterId === characterId) {
-            const updatedEquipment = { ...character.equipment };
+              if (type === "Waffe") {
+                updatedEquipment.weapon = selectedItem.itemName;
+                character.stats.attack += selectedItem.damage; // Stat-Wert anpassen
+              } else if (
+                type === "Kopf" ||
+                type === "Brust" ||
+                type === "Hand" ||
+                type === "Füße"
+              ) {
+                updatedEquipment.armor[type.toLowerCase()] =
+                  selectedItem.itemName;
+                character.stats.defense += selectedItem.armor; // Stat-Wert anpassen
+              }
 
-            if (type === "weapon") {
-              updatedEquipment.weapon = item.itemName;
-            } else if (type === "armor") {
-              const updatedArmor = updatedEquipment.armor || {};
-              updatedArmor[item.slot] = item.itemName;
-              updatedEquipment.armor = updatedArmor;
+              return { ...character, equipment: updatedEquipment };
             }
+            return character;
+          });
 
-            return {
-              ...character,
-              equipment: updatedEquipment,
-              stats: updatedCharacterData.stats,
-            };
-          }
-          return character;
+          return { ...prevData, characters: updatedCharacters };
         });
-
-        return { ...prevData, characters: updatedCharacters };
-      });
-
-      alert(
-        `${type === "weapon" ? "Waffe" : "Rüstung"} '${
-          item.itemName
-        }' wurde erfolgreich ausgerüstet.`
-      );
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || "Fehler beim Ausrüsten des Items.");
+      }
     } catch (error) {
-      console.error("Fehler beim Ausrüsten des Items:", error);
-      alert(
-        "Es gab ein Problem beim Ausrüsten des Items. Bitte versuche es später erneut."
-      );
+      console.error("Fehler beim Senden der Anfrage:", error);
+      alert("Es gab einen Fehler beim Kommunizieren mit dem Backend.");
     }
   };
 
@@ -170,11 +197,14 @@ const Account = () => {
               >
                 <button
                   onClick={() => {
-                    if (userData.characters?.length > 0) {
+                    // Prüfen, ob der Index innerhalb der verfügbaren Charaktere liegt
+                    if (userData.characters) {
+                      // Hier übergibst du das characterId, itemName und type
                       equipItem(
-                        userData.characters[0].characterId,
-                        item,
-                        "weapon"
+                        userData.accountId, // characterId
+                        userData.characters.name, // characterName
+                        item.itemName, // itemName
+                        item.type // type
                       );
                     } else {
                       alert(
@@ -189,10 +219,10 @@ const Account = () => {
                   }}
                   onMouseEnter={(e) =>
                     (e.target.style.backgroundColor = "#45a049")
-                  }
+                  } // Dunkler Grün beim Hover
                   onMouseLeave={(e) =>
                     (e.target.style.backgroundColor = "#4CAF50")
-                  }
+                  } // Zurück zu Standardgrün
                   onMouseDown={(e) =>
                     (e.target.style.transform = "scale(0.95)")
                   }
@@ -200,10 +230,6 @@ const Account = () => {
                 >
                   {item.itemName}
                 </button>
-                <span style={{ marginLeft: "10px" }}>
-                  <strong>Rarität:</strong> {item.rarity} -{" "}
-                  <strong>Schaden:</strong> {item.damage}
-                </span>
               </li>
             ))}
         </ul>
