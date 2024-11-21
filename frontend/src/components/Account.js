@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Definierte Styles als Konstante
+const buttonStyle = {
+  padding: "5px 10px",
+  fontSize: "14px",
+  border: "none",
+  borderRadius: "5px",
+  cursor: "pointer",
+  transition: "background-color 0.3s ease, transform 0.2s ease",
+};
+
 const Account = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-  const [isCreatingCharacter, setIsCreatingCharacter] = useState(false);
-  const [newCharacterName, setNewCharacterName] = useState("");
   const [isWeaponsVisible, setIsWeaponsVisible] = useState(false);
   const [isArmorVisible, setIsArmorVisible] = useState(false);
   const navigate = useNavigate();
@@ -50,34 +58,63 @@ const Account = () => {
     fetchUserData();
   }, []);
 
-  const equipItem = (characterId, item, type) => {
-    setUserData((prevData) => {
-      const updatedCharacters = prevData.characters.map((character) => {
-        if (character.characterId === characterId) {
-          const updatedEquipment = { ...character.equipment };
-
-          if (type === "weapon") {
-            updatedEquipment.weapon = item.itemName;
-          } else if (type === "armor") {
-            // Überprüfung der Armor-Objektstruktur
-            const updatedArmor = updatedEquipment.armor || {};
-            updatedArmor[item.slot] = item.itemName;
-            updatedEquipment.armor = updatedArmor;
-          }
-
-          return { ...character, equipment: updatedEquipment };
-        }
-        return character;
+  const equipItem = async (characterId, item, type) => {
+    try {
+      const response = await fetch("/equipment/equip", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          characterId,
+          item,
+          type,
+        }),
       });
 
-      return { ...prevData, characters: updatedCharacters };
-    });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Unbekannter Fehler");
+      }
 
-    alert(
-      `${type === "weapon" ? "Waffe" : "Rüstung"} '${
-        item.itemName
-      }' wurde angelegt.`
-    );
+      const updatedCharacterData = await response.json();
+
+      setUserData((prevData) => {
+        const updatedCharacters = prevData.characters.map((character) => {
+          if (character.characterId === characterId) {
+            const updatedEquipment = { ...character.equipment };
+
+            if (type === "weapon") {
+              updatedEquipment.weapon = item.itemName;
+            } else if (type === "armor") {
+              const updatedArmor = updatedEquipment.armor || {};
+              updatedArmor[item.slot] = item.itemName;
+              updatedEquipment.armor = updatedArmor;
+            }
+
+            return {
+              ...character,
+              equipment: updatedEquipment,
+              stats: updatedCharacterData.stats,
+            };
+          }
+          return character;
+        });
+
+        return { ...prevData, characters: updatedCharacters };
+      });
+
+      alert(
+        `${type === "weapon" ? "Waffe" : "Rüstung"} '${
+          item.itemName
+        }' wurde erfolgreich ausgerüstet.`
+      );
+    } catch (error) {
+      console.error("Fehler beim Ausrüsten des Items:", error);
+      alert(
+        "Es gab ein Problem beim Ausrüsten des Items. Bitte versuche es später erneut."
+      );
+    }
   };
 
   const goToCrafting = () => {
@@ -98,7 +135,7 @@ const Account = () => {
   }
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Hier könnte ein Spinner oder eine Ladeanzeige stehen
   }
 
   return (
@@ -133,7 +170,7 @@ const Account = () => {
               >
                 <button
                   onClick={() => {
-                    if (userData.characters.length > 0) {
+                    if (userData.characters?.length > 0) {
                       equipItem(
                         userData.characters[0].characterId,
                         item,
@@ -146,25 +183,19 @@ const Account = () => {
                     }
                   }}
                   style={{
-                    padding: "5px 10px",
-                    fontSize: "14px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    backgroundColor: "#4CAF50", // Standardfarbe: Grün
+                    ...buttonStyle,
+                    backgroundColor: "#4CAF50", // Grün für Waffen
                     color: "#fff",
-                    transition:
-                      "background-color 0.3s ease, transform 0.2s ease",
                   }}
-                  onMouseEnter={
-                    (e) => (e.target.style.backgroundColor = "#45a049") // Dunkler Grün beim Hover
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor = "#45a049")
                   }
-                  onMouseLeave={
-                    (e) => (e.target.style.backgroundColor = "#4CAF50") // Zurück zu Standardgrün
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor = "#4CAF50")
                   }
                   onMouseDown={(e) =>
                     (e.target.style.transform = "scale(0.95)")
-                  } // Klickanimation
+                  }
                   onMouseUp={(e) => (e.target.style.transform = "scale(1)")}
                 >
                   {item.itemName}
@@ -194,7 +225,7 @@ const Account = () => {
               >
                 <button
                   onClick={() => {
-                    if (userData.characters.length > 0) {
+                    if (userData.characters?.length > 0) {
                       equipItem(
                         userData.characters[0].characterId,
                         item,
@@ -207,25 +238,19 @@ const Account = () => {
                     }
                   }}
                   style={{
-                    padding: "5px 10px",
-                    fontSize: "14px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    backgroundColor: "#1E90FF", // Standardfarbe: Blau
+                    ...buttonStyle,
+                    backgroundColor: "#FF5733", // Rot für Rüstungen
                     color: "#fff",
-                    transition:
-                      "background-color 0.3s ease, transform 0.2s ease",
                   }}
-                  onMouseEnter={
-                    (e) => (e.target.style.backgroundColor = "#1C86EE") // Dunkler Blau beim Hover
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor = "#FF4500")
                   }
-                  onMouseLeave={
-                    (e) => (e.target.style.backgroundColor = "#1E90FF") // Zurück zu Standardblau
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor = "#FF5733")
                   }
                   onMouseDown={(e) =>
                     (e.target.style.transform = "scale(0.95)")
-                  } // Klickanimation
+                  }
                   onMouseUp={(e) => (e.target.style.transform = "scale(1)")}
                 >
                   {item.itemName}
@@ -249,44 +274,15 @@ const Account = () => {
               <strong>HP:</strong> {character.stats.hp} <br />
               <strong>Angriff:</strong> {character.stats.attack} <br />
               <strong>Verteidigung:</strong> {character.stats.defense} <br />
-              <strong>Geschwindigkeit:</strong> {character.stats.speed} <br />
-              <strong>Waffe:</strong>{" "}
-              {character.equipment.weapon || "Keine Waffe angelegt"} <br />
-              <strong>Rüstung:</strong>
-              <ul>
-                <li>Helm: {character.equipment.armor.head || "Keine"}</li>
-                <li>
-                  Brustpanzer: {character.equipment.armor.chest || "Keine"}
-                </li>
-                <li>
-                  Handschuhe: {character.equipment.armor.hands || "Keine"}
-                </li>
-                <li>
-                  Beinschützer: {character.equipment.armor.legs || "Keine"}
-                </li>
-              </ul>
               <button
                 style={{
-                  padding: "5px 10px",
-                  fontSize: "14px",
-                  backgroundColor: "#ff4d4d",
+                  ...buttonStyle,
+                  backgroundColor: "#008CBA", // Blau für den Kampf
                   color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
                 }}
-                onClick={() => {
-                  if (window.confirm("Charakter wirklich löschen?")) {
-                    setUserData((prevData) => ({
-                      ...prevData,
-                      characters: prevData.characters.filter(
-                        (c) => c.characterId !== character.characterId
-                      ),
-                    }));
-                  }
-                }}
+                onClick={goToFight}
               >
-                Charakter löschen
+                In den Kampf
               </button>
             </li>
           ))
@@ -297,34 +293,13 @@ const Account = () => {
 
       <button
         style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          borderRadius: "5px",
-          border: "none",
-          backgroundColor: "#1e90ff",
+          ...buttonStyle,
+          backgroundColor: "#f44336", // Rot für das Handwerk
           color: "#fff",
-          cursor: "pointer",
-          marginTop: "20px",
         }}
         onClick={goToCrafting}
       >
-        Crafting
-      </button>
-
-      <button
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          borderRadius: "5px",
-          border: "none",
-          backgroundColor: "#ff6347",
-          color: "#fff",
-          cursor: "pointer",
-          marginTop: "20px",
-        }}
-        onClick={goToFight}
-      >
-        GoToFight
+        Zur Schmiede
       </button>
     </div>
   );
