@@ -21,6 +21,9 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Tim
 
 ### Brian
+- Unequip und Equip im Frontend implementiert Basis von Julian und Tim 
+- Mit Websocket beschäftigt und versucht zu implementieren funktioniert noch nicht wird eventuell wieder gedroppt das Feature.
+
 
 ### Julian
 - Anpassung der Button-Stile (Hover-, Klick- und Standardzustände).
