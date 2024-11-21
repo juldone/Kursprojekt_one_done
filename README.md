@@ -19,6 +19,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 21.11.24
 
 ### Tim
+- Unequip und Equip Frontend Basis mit Julian erarbeitet.
+- Großteil meiner heutigen arbeit wurde Reduntant dadurch das 1 Feature 3 Dev´s "gefressen" hat. Hier unbedingt besser kommunizieren und vor allem => Absprachen einhalten, bei nicht verstehen nachfragen.
+- Um noch auf etwas messbares zu kommen vorhandene BattleArena.js Datei (Frontend) von Brian in revamp-battle-arena gebranched, gepublished und erste verbesserung implementiert.
+- Die Hp Bars fangen bei einem erneuten Kampf jetzt immer wieder bei 100/100 an. Hierbei ist die Loot/Reward Funktion flöten gegangen.
+- ### REMINDER - Morgen JSX-Teil aus der Main abgleichen. Glaube da liegt der Fehler.
 
 ### Brian
 - Unequip und Equip im Frontend implementiert Basis von Julian und Tim 
