@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Account = () => {
-  const [userData, setUserData] = useState(null); // Benutzer-Daten
-  const [error, setError] = useState(null); // Fehlerzustand
-  const [isCreatingCharacter, setIsCreatingCharacter] = useState(false); // Verfolgt, ob der Benutzer gerade einen Charakter erstellt
-  const [newCharacterName, setNewCharacterName] = useState(""); // Name des neuen Charakters
-  const [isWeaponsVisible, setIsWeaponsVisible] = useState(false); // Waffen ein-/ausklappen
-  const [isArmorVisible, setIsArmorVisible] = useState(false); // Rüstung ein-/ausklappen
-  const [selectedCharacterId, setSelectedCharacterId] = useState(null); // ID des aktuell ausgewählten Charakters
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+  const [isCreatingCharacter, setIsCreatingCharacter] = useState(false);
+  const [newCharacterName, setNewCharacterName] = useState("");
+  const [isWeaponsVisible, setIsWeaponsVisible] = useState(false);
+  const [isArmorVisible, setIsArmorVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
 
     if (!token) {
-      window.location.href = "/"; // Weiterleitung, wenn kein Token vorhanden ist
+      window.location.href = "/";
       return;
     }
 
@@ -47,27 +48,22 @@ const Account = () => {
     };
 
     fetchUserData();
-  }, []); // Einmalige Ausführung beim Laden des Components
+  }, []);
 
-  const handleEquipItem = (item, type) => {
-    if (!selectedCharacterId) {
-      alert("Bitte wähle zuerst einen Charakter aus.");
-      return;
-    }
-
+  const equipItem = (characterId, item, type) => {
     setUserData((prevData) => {
       const updatedCharacters = prevData.characters.map((character) => {
-        if (character.characterId === selectedCharacterId) {
-          const updatedEquipment =
-            type === "weapon"
-              ? { ...character.equipment, weapon: item.itemName }
-              : {
-                  ...character.equipment,
-                  armor: {
-                    ...character.equipment.armor,
-                    [item.slot]: item.itemName,
-                  },
-                };
+        if (character.characterId === characterId) {
+          const updatedEquipment = { ...character.equipment };
+
+          if (type === "weapon") {
+            updatedEquipment.weapon = item.itemName;
+          } else if (type === "armor") {
+            // Überprüfung der Armor-Objektstruktur
+            const updatedArmor = updatedEquipment.armor || {};
+            updatedArmor[item.slot] = item.itemName;
+            updatedEquipment.armor = updatedArmor;
+          }
 
           return { ...character, equipment: updatedEquipment };
         }
@@ -78,21 +74,23 @@ const Account = () => {
     });
 
     alert(
-      `${item.itemName} wurde dem Charakter ${
-        userData.characters.find(
-          (char) => char.characterId === selectedCharacterId
-        ).name
-      } als ${type === "weapon" ? "Waffe" : "Rüstung"} zugewiesen.`
+      `${type === "weapon" ? "Waffe" : "Rüstung"} '${
+        item.itemName
+      }' wurde angelegt.`
     );
   };
 
   const goToCrafting = () => {
     const accountId = localStorage.getItem("accountId");
     if (accountId) {
-      window.location.href = `/user/${accountId}/crafting`;
+      navigate(`/user/${accountId}/crafting`);
     } else {
       console.error("Account ID fehlt. Navigation zu Crafting nicht möglich.");
     }
+  };
+
+  const goToFight = () => {
+    navigate("/battle");
   };
 
   if (error) {
@@ -108,37 +106,14 @@ const Account = () => {
       <h1 style={{ color: "#333" }}>Account Information</h1>
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
-
-      <h2 style={{ marginTop: "20px", color: "#ebebeb" }}>Charaktere:</h2>
-      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
-        {userData.characters && userData.characters.length > 0 ? (
-          userData.characters.map((character, index) => (
-            <li
-              key={`character-${index}`}
-              style={{
-                backgroundColor:
-                  selectedCharacterId === character.characterId
-                    ? "#d3f9d8"
-                    : "transparent",
-                cursor: "pointer",
-              }}
-              onClick={() => setSelectedCharacterId(character.characterId)}
-            >
-              <strong>Charaktername:</strong> {character.name} <br />
-              <strong>Level:</strong> {character.level} <br />
-              <strong>HP:</strong> {character.stats.hp} <br />
-              <strong>Waffe:</strong> {character.equipment.weapon} <br />
-              <strong>Rüstung:</strong>
-              <ul>
-                <li>Helm: {character.equipment.armor.head}</li>
-                <li>Brustpanzer: {character.equipment.armor.chest}</li>
-                <li>Handschuhe: {character.equipment.armor.hands}</li>
-                <li>Beinschützer: {character.equipment.armor.legs}</li>
-              </ul>
-            </li>
-          ))
-        ) : (
-          <li>Keine Charaktere vorhanden.</li>
+      <p>Materialien:</p>
+      <ul>
+        {userData.materials && (
+          <>
+            <li>Holz: {userData.materials.Holz || 0}</li>
+            <li>Stein: {userData.materials.Stein || 0}</li>
+            <li>Metall: {userData.materials.Metall || 0}</li>
+          </>
         )}
       </ul>
 
@@ -154,11 +129,50 @@ const Account = () => {
             userData.weaponinventory.map((item, index) => (
               <li
                 key={`weapon-${index}`}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleEquipItem(item, "weapon")}
+                style={{ listStyle: "none", marginBottom: "10px" }}
               >
-                <strong>Waffe:</strong> {item.itemName} - {item.rarity} -{" "}
-                {item.damage} Schaden
+                <button
+                  onClick={() => {
+                    if (userData.characters.length > 0) {
+                      equipItem(
+                        userData.characters[0].characterId,
+                        item,
+                        "weapon"
+                      );
+                    } else {
+                      alert(
+                        "Kein Charakter verfügbar, um die Waffe auszurüsten."
+                      );
+                    }
+                  }}
+                  style={{
+                    padding: "5px 10px",
+                    fontSize: "14px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    backgroundColor: "#4CAF50", // Standardfarbe: Grün
+                    color: "#fff",
+                    transition:
+                      "background-color 0.3s ease, transform 0.2s ease",
+                  }}
+                  onMouseEnter={
+                    (e) => (e.target.style.backgroundColor = "#45a049") // Dunkler Grün beim Hover
+                  }
+                  onMouseLeave={
+                    (e) => (e.target.style.backgroundColor = "#4CAF50") // Zurück zu Standardgrün
+                  }
+                  onMouseDown={(e) =>
+                    (e.target.style.transform = "scale(0.95)")
+                  } // Klickanimation
+                  onMouseUp={(e) => (e.target.style.transform = "scale(1)")}
+                >
+                  {item.itemName}
+                </button>
+                <span style={{ marginLeft: "10px" }}>
+                  <strong>Rarität:</strong> {item.rarity} -{" "}
+                  <strong>Schaden:</strong> {item.damage}
+                </span>
               </li>
             ))}
         </ul>
@@ -176,15 +190,142 @@ const Account = () => {
             userData.armorinventory.map((item, index) => (
               <li
                 key={`armor-${index}`}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleEquipItem(item, "armor")}
+                style={{ listStyle: "none", marginBottom: "10px" }}
               >
-                <strong>Rüstung:</strong> {item.itemName} - {item.rarity} -{" "}
-                {item.armor} Verteidigung
+                <button
+                  onClick={() => {
+                    if (userData.characters.length > 0) {
+                      equipItem(
+                        userData.characters[0].characterId,
+                        item,
+                        "armor"
+                      );
+                    } else {
+                      alert(
+                        "Kein Charakter verfügbar, um die Rüstung auszurüsten."
+                      );
+                    }
+                  }}
+                  style={{
+                    padding: "5px 10px",
+                    fontSize: "14px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    backgroundColor: "#1E90FF", // Standardfarbe: Blau
+                    color: "#fff",
+                    transition:
+                      "background-color 0.3s ease, transform 0.2s ease",
+                  }}
+                  onMouseEnter={
+                    (e) => (e.target.style.backgroundColor = "#1C86EE") // Dunkler Blau beim Hover
+                  }
+                  onMouseLeave={
+                    (e) => (e.target.style.backgroundColor = "#1E90FF") // Zurück zu Standardblau
+                  }
+                  onMouseDown={(e) =>
+                    (e.target.style.transform = "scale(0.95)")
+                  } // Klickanimation
+                  onMouseUp={(e) => (e.target.style.transform = "scale(1)")}
+                >
+                  {item.itemName}
+                </button>
+                <span style={{ marginLeft: "10px" }}>
+                  <strong>Rarität:</strong> {item.rarity} -{" "}
+                  <strong>Verteidigung:</strong> {item.armor}
+                </span>
               </li>
             ))}
         </ul>
       )}
+
+      <h2 style={{ marginTop: "20px", color: "#ebebeb" }}>Charaktere:</h2>
+      <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+        {userData.characters && userData.characters.length > 0 ? (
+          userData.characters.map((character, index) => (
+            <li key={`character-${index}`}>
+              <strong>Charaktername:</strong> {character.name} <br />
+              <strong>Level:</strong> {character.level} <br />
+              <strong>HP:</strong> {character.stats.hp} <br />
+              <strong>Angriff:</strong> {character.stats.attack} <br />
+              <strong>Verteidigung:</strong> {character.stats.defense} <br />
+              <strong>Geschwindigkeit:</strong> {character.stats.speed} <br />
+              <strong>Waffe:</strong>{" "}
+              {character.equipment.weapon || "Keine Waffe angelegt"} <br />
+              <strong>Rüstung:</strong>
+              <ul>
+                <li>Helm: {character.equipment.armor.head || "Keine"}</li>
+                <li>
+                  Brustpanzer: {character.equipment.armor.chest || "Keine"}
+                </li>
+                <li>
+                  Handschuhe: {character.equipment.armor.hands || "Keine"}
+                </li>
+                <li>
+                  Beinschützer: {character.equipment.armor.legs || "Keine"}
+                </li>
+              </ul>
+              <button
+                style={{
+                  padding: "5px 10px",
+                  fontSize: "14px",
+                  backgroundColor: "#ff4d4d",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (window.confirm("Charakter wirklich löschen?")) {
+                    setUserData((prevData) => ({
+                      ...prevData,
+                      characters: prevData.characters.filter(
+                        (c) => c.characterId !== character.characterId
+                      ),
+                    }));
+                  }
+                }}
+              >
+                Charakter löschen
+              </button>
+            </li>
+          ))
+        ) : (
+          <li>Keine Charaktere vorhanden.</li>
+        )}
+      </ul>
+
+      <button
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          borderRadius: "5px",
+          border: "none",
+          backgroundColor: "#1e90ff",
+          color: "#fff",
+          cursor: "pointer",
+          marginTop: "20px",
+        }}
+        onClick={goToCrafting}
+      >
+        Crafting
+      </button>
+
+      <button
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          borderRadius: "5px",
+          border: "none",
+          backgroundColor: "#ff6347",
+          color: "#fff",
+          cursor: "pointer",
+          marginTop: "20px",
+        }}
+        onClick={goToFight}
+      >
+        GoToFight
+      </button>
     </div>
   );
 };
