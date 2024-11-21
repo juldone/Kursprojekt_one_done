@@ -1,5 +1,8 @@
+// importierung von React und Hooks (useState, useEffect, useRef) die für die Zustandsverwaltung
+// und die Handhabung von SEiteneffekten sowie Referenzen genutzt werden.
 import React, { useState, useEffect, useRef } from "react";
 
+// Definiert eine Funktion Battlearena, die als React-Komponente exportiert wird.
 const Battlearena = ({
   battleResult,
   characters,
@@ -95,7 +98,7 @@ const Battlearena = ({
       ) {
         clearInterval(interval);
       }
-    }, 50); // Geschwindigkeit der Animation
+    }, 100); // Geschwindigkeit der Animation
   };
 
   const toggleLogVisibility = () => {
