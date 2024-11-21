@@ -250,7 +250,19 @@ const Battlearena = ({
             </div>
           )}
 
-          <h3>Belohnung:</h3>
+          {/* Belohnungen */}
+          {fightResult?.rewards?.drops?.length > 0 && (
+            <div>
+              <h3>Belohnungen</h3>
+              {fightResult.rewards.drops.map((drop, index) => (
+                <div key={index}>
+                  <p>
+                    {drop.material}: {drop.quantity} Stück
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
           <p>{fightResult.reward}</p>
         </div>
       )}
