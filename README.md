@@ -32,6 +32,12 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
    
 
 ### Julian
+- Kämpfen button in kombination mit einer weiterleitung auf den endgültigen fight button bearbeitet
+- equipment bzw. items anlegen ( dem character hinzuzufügen ) im frontend visualisiert, leider mit bugs
+- app.js im backend mit cors blocked die use/post abfrage des eqiups verändert und freigegeben
+- account_js unverändert // Account_js_iteminsert_ Items dem character via click hinzufügen funktioniert. Ausser beim anlegen der Rüstungen wird es im Frontend nicht angezeigt.
+
+
 
 ### Changelog 19.11.24
 
