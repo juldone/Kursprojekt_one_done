@@ -13,7 +13,6 @@ const Account = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
-
     if (!token) {
       window.location.href = "/";
       return;
@@ -49,35 +48,92 @@ const Account = () => {
 
     fetchUserData();
   }, []);
+  const equipItem = async (accountId, characterName, itemName, type) => {
+    try {
+      // Suche den Charakter basierend auf characterName
+      const character = userData.characters.find(
+        (character) => character.name === characterName
+      );
 
-  const equipItem = (characterId, item, type) => {
-    setUserData((prevData) => {
-      const updatedCharacters = prevData.characters.map((character) => {
-        if (character.characterId === characterId) {
-          const updatedEquipment = { ...character.equipment };
+      if (!character) {
+        console.log(character);
+        alert("Charakter nicht gefunden!");
+        return;
+      }
 
-          if (type === "weapon") {
-            updatedEquipment.weapon = item.itemName;
-          } else if (type === "armor") {
-            // Überprüfung der Armor-Objektstruktur
-            const updatedArmor = updatedEquipment.armor || {};
-            updatedArmor[item.slot] = item.itemName;
-            updatedEquipment.armor = updatedArmor;
-          }
+      // Suche das Item im Inventar, das den itemName und type übereinstimmt
+      const selectedItem =
+        type === "Waffe"
+          ? userData.weaponinventory.find(
+              (item) => item.itemName === itemName && item.type === type
+            )
+          : userData.armorinventory.find(
+              (item) => item.itemName === itemName && item.type === type
+            );
 
-          return { ...character, equipment: updatedEquipment };
-        }
-        return character;
+      if (!selectedItem) {
+        alert("Item nicht gefunden!");
+        return;
+      }
+
+      // Sende das ausgewählte Item an das Backend
+      const response = await fetch("http://localhost:3000/equipment/equip", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accountId: accountId,
+          characterName: character.name, // Hier den richtigen Namen übergeben
+          itemName: selectedItem.itemName, // Nur itemName übergeben
+          type: selectedItem.type, // Den Typ des Items übergeben
+        }),
       });
 
-      return { ...prevData, characters: updatedCharacters };
-    });
+      if (response.ok) {
+        const data = await response.json();
+        alert(
+          data.message ||
+            `${
+              type === "Waffe" ? "Waffe" : "Rüstung"
+            } wurde erfolgreich ausgerüstet!`
+        );
 
-    alert(
-      `${type === "weapon" ? "Waffe" : "Rüstung"} '${
-        item.itemName
-      }' wurde angelegt.`
-    );
+        // Erfolgreiches Ausrüsten – Update der Charakterdaten im Frontend
+        setUserData((prevData) => {
+          const updatedCharacters = prevData.characters.map((character) => {
+            if (character.name === characterName) {
+              const updatedEquipment = { ...character.equipment };
+
+              if (type === "Waffe") {
+                updatedEquipment.weapon = selectedItem.itemName;
+                character.stats.attack += selectedItem.damage; // Stat-Wert anpassen
+              } else if (
+                type === "Kopf" ||
+                type === "Brust" ||
+                type === "Hand" ||
+                type === "Füße"
+              ) {
+                updatedEquipment.armor[type.toLowerCase()] =
+                  selectedItem.itemName;
+                character.stats.defense += selectedItem.armor; // Stat-Wert anpassen
+              }
+
+              return { ...character, equipment: updatedEquipment };
+            }
+            return character;
+          });
+
+          return { ...prevData, characters: updatedCharacters };
+        });
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || "Fehler beim Ausrüsten des Items.");
+      }
+    } catch (error) {
+      console.error("Fehler beim Senden der Anfrage:", error);
+      alert("Es gab einen Fehler beim Kommunizieren mit dem Backend.");
+    }
   };
 
   const goToCrafting = () => {
@@ -133,11 +189,14 @@ const Account = () => {
               >
                 <button
                   onClick={() => {
-                    if (userData.characters.length > 0) {
+                    // Prüfen, ob der Index innerhalb der verfügbaren Charaktere liegt
+                    if (userData.characters) {
+                      // Hier übergibst du das characterId, itemName und type
                       equipItem(
-                        userData.characters[0].characterId,
-                        item,
-                        "weapon"
+                        userData.accountId, // characterId
+                        userData.characters.name, // characterName
+                        item.itemName, // itemName
+                        item.type // type
                       );
                     } else {
                       alert(
@@ -156,12 +215,12 @@ const Account = () => {
                     transition:
                       "background-color 0.3s ease, transform 0.2s ease",
                   }}
-                  onMouseEnter={
-                    (e) => (e.target.style.backgroundColor = "#45a049") // Dunkler Grün beim Hover
-                  }
-                  onMouseLeave={
-                    (e) => (e.target.style.backgroundColor = "#4CAF50") // Zurück zu Standardgrün
-                  }
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor = "#45a049")
+                  } // Dunkler Grün beim Hover
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor = "#4CAF50")
+                  } // Zurück zu Standardgrün
                   onMouseDown={(e) =>
                     (e.target.style.transform = "scale(0.95)")
                   } // Klickanimation
@@ -169,10 +228,6 @@ const Account = () => {
                 >
                   {item.itemName}
                 </button>
-                <span style={{ marginLeft: "10px" }}>
-                  <strong>Rarität:</strong> {item.rarity} -{" "}
-                  <strong>Schaden:</strong> {item.damage}
-                </span>
               </li>
             ))}
         </ul>
