@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const Battlearena = ({
-  battleResult,
-  characters,
-  characterId,
-  accountId,
-  onBack,
-  token,
-}) => {
+const Battlearena = ({ characters, characterId, accountId, onBack, token }) => {
   // States für verschiedene Informationen des Kampfes
   const [fightResult, setFightResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -33,23 +26,6 @@ const Battlearena = ({
     enemyHpRef.current = enemyHp;
   }, [enemyHp]);
 
-  // Effekt zum Setzen der Balken auf 0, wenn der Kampf abgeschlossen ist
-  useEffect(() => {
-    if (playerHp === 0) {
-      const playerBar = document.querySelector(".player-health-bar");
-      if (playerBar) {
-        playerBar.style.width = "0%"; // Setzt die Breite des Spieler-Balkens auf 0%
-      }
-    }
-
-    if (enemyHp === 0) {
-      const enemyBar = document.querySelector(".enemy-health-bar");
-      if (enemyBar) {
-        enemyBar.style.width = "0%"; // Setzt die Breite des Gegner-Balkens auf 0%
-      }
-    }
-  }, [playerHp, enemyHp]);
-
   const handleFightInArena = async () => {
     if (isFighting) return; // Verhindert den Start eines neuen Kampfes, wenn bereits einer läuft
     setIsFighting(true); // Setzt den Kampfstatus auf "kämpfend"
@@ -60,24 +36,21 @@ const Battlearena = ({
     setPlayerHp(100);
     setEnemyHp(100);
 
-    // Verzögerung einbauen, bevor der Kampf fortgesetzt wird
     await new Promise((resolve) => {
       const playerBar = document.querySelector(".player-health-bar");
       const enemyBar = document.querySelector(".enemy-health-bar");
 
       if (playerBar && enemyBar) {
         const handleTransitionEnd = () => {
-          // Entfernt Event Listener, wenn die Transition beendet ist
           playerBar.removeEventListener("transitionend", handleTransitionEnd);
           enemyBar.removeEventListener("transitionend", handleTransitionEnd);
           resolve();
         };
 
-        // Fügt Event Listener für Übergangsende hinzu
         playerBar.addEventListener("transitionend", handleTransitionEnd);
         enemyBar.addEventListener("transitionend", handleTransitionEnd);
       } else {
-        resolve(); // Wenn die Elemente nicht gefunden werden, wird sofort fortgefahren
+        resolve();
       }
     });
 
@@ -94,58 +67,58 @@ const Battlearena = ({
         }),
       });
 
-      // Fehlerbehandlung
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Ein Fehler ist aufgetreten.");
       }
       const data = await response.json();
-      console.log(data); // Antwort loggen, um sicherzustellen, dass die Daten richtig ankommen
+      console.log(data);
       setFightResult(data);
 
-      simulateHpChanges(data.character.stats.hp, data.enemy.stats.health);
+      // Aktualisiere die HP-Balken basierend auf den Backend-Daten
+      updateHpBars(data.character.stats.hp, data.enemy.stats.health, data);
     } catch (err) {
-      setError(err.message); // Fehler wird im State gespeichert
+      setError(err.message);
     } finally {
       setLoading(false);
-      // Verzögerung einbauen, bevor der Kampfstatus zurückgesetzt wird
       setTimeout(() => {
-        setIsFighting(false); // Kampf beendet, Status zurücksetzen
-      }, 1000); // 1 Sekunde Verzögerung
+        setIsFighting(false);
+      }, 1000);
     }
   };
 
-  // Simuliert HP-Änderungen während des Kampfes
-  const simulateHpChanges = (newPlayerHp, newEnemyHp) => {
-    const interval = setInterval(() => {
-      // Aktualisieren der HP basierend auf der Differenz
-      setPlayerHp((prevHp) => {
-        const updatedHp = Math.max(prevHp - 5, 0); // Schnellerer Rückgang (größere Schritte)
-        if (updatedHp === 0) clearInterval(interval); // Stoppt die Simulation, wenn der Wert 0 erreicht
-        return updatedHp;
-      });
+  // Funktion zum Setzen der HP basierend auf echten Daten
+  const updateHpBars = (newPlayerHp, newEnemyHp, fightResult) => {
+    console.log("Update HP Called:");
+    console.log("Player HP:", newPlayerHp, "Enemy HP:", newEnemyHp);
 
-      // HP des Gegners aktualisieren
-      setEnemyHp((prevHp) => {
-        const updatedHp = Math.max(prevHp - 5, 0); // Schnellerer Rückgang (größere Schritte)
-        if (updatedHp === 0) clearInterval(interval); // Stoppt die Simulation, wenn der Wert 0 erreicht.
-        return updatedHp;
-      });
-
-      // Wenn beide HP-Werte erreicht sind, stoppen wir die Simulation
-      if (playerHp === newPlayerHp && enemyHp === newEnemyHp) {
-        clearInterval(interval);
-        updateWinnerHealthBar(); // Funktion zum Aktualisieren des Lebensbalkens des Siegers
+    // Setze HP direkt auf 0, wenn der Kampf vorbei ist
+    if (fightResult) {
+      if (fightResult.winner === "player") {
+        newEnemyHp = 0;
+      } else if (fightResult.winner === "enemy") {
+        newPlayerHp = 0;
       }
-    }, 50); // Das Intervall auf 50ms gesetzt für schnellere Änderungen
-  };
+    }
 
-  // Funktion zum Aktualisieren des Lebensbalkens des Siegers
-  const updateWinnerHealthBar = () => {
-    if (fightResult && fightResult.winner === "player") {
-      setPlayerHp(100); // Setzt die HP des Spielers auf 100, wenn er gewonnen hat
-    } else if (fightResult && fightResult.winner === "enemy") {
-      setEnemyHp(100); // Setzt die HP des Gegners auf 100, wenn er gewonnen hat
+    // Verzögere die Änderungen der HP für eine sichtbare Übergangsanimation
+    setTimeout(() => {
+      setPlayerHp(newPlayerHp);
+      setEnemyHp(newEnemyHp);
+    }, 100); // 100ms Verzögerung, um den Übergang auszulösen
+
+    // Verzögere den Übergang, um sicherzustellen, dass der Balken auf 0 schrumpft
+    if (
+      fightResult &&
+      (fightResult.winner === "player" || fightResult.winner === "enemy")
+    ) {
+      setTimeout(() => {
+        if (fightResult.winner === "player") {
+          setEnemyHp(0); // Setze die HP des Gegners sofort auf 0
+        } else if (fightResult.winner === "enemy") {
+          setPlayerHp(0); // Setze die HP des Spielers sofort auf 0
+        }
+      }, 500); // Warte 500ms, um den Übergang abzuschließen
     }
   };
 
@@ -179,6 +152,7 @@ const Battlearena = ({
           />
           <p>Level: ????</p>
           <div style={styles.healthBarContainer}>
+            {console.log("Enemy HP in Render:", enemyHp)}
             <div style={styles.healthBar("red", enemyHp)}></div>
           </div>
           <p>HP: {enemyHp}</p>
@@ -223,6 +197,8 @@ const Battlearena = ({
                       <p>Angriff des Gegners: {log.enemyAttack}</p>
                       <p>Schaden an Charakter: {log.damageToCharacter}</p>
                       <p>Schaden an Gegner: {log.damageToEnemy}</p>
+                      <p>HP des Characters: {log.characterHp}</p>
+                      <p>HP des Gegners: {log.enemyHp}</p>
                     </div>
                   ))}
                 </div>
@@ -271,11 +247,15 @@ const styles = {
     height: "20px",
     margin: "5px 0",
   },
-  healthBar: (color, hp) => ({
-    backgroundColor: color,
-    width: `${hp}%`,
-    height: "100%",
-  }),
+  healthBar: (color, hp) => {
+    console.log("Health Bar Width:", `${hp}`);
+    return {
+      backgroundColor: color,
+      width: `${hp}%`, // Setzt die Breite basierend auf den HP
+      height: "100%",
+      transition: "width 0.5s eas-in-out", // Animiert den Übergang
+    };
+  },
   button: (loading) => ({
     padding: "10px 20px",
     fontSize: "16px",
