@@ -21,6 +21,9 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Tim
 
 ### Brian
+-Zusammen mit Julian die Account.js fehler behoben
+-Mit Tim angefangen ein kleines remodel der Battlelogik zu machen einige dinge im Backend laufen im Frontend ab noch einige Fehler beim Ablauf des Kampfes
+
 
 ### Julian
 - Frontend in der Account.js Fehler bearbeitet und Funktionen hinzugefügt
