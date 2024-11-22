@@ -19,6 +19,8 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 22.11.24
 
 ### Tim
+-Remodel der Battlelogik zu machen, teilweise Progress der aber leider zunichte gemacht wurde weil ich vorhandene Funktionen die im Backend vorhanden sind nicht richtig angesprochen habe
+-Am Wochenende nochmal Schritt für Schritt versuchen das hin zu bekommen, für heute ist die Luft raus. 
 
 ### Brian
 -Zusammen mit Julian die Account.js fehler behoben
