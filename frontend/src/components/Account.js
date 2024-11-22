@@ -519,7 +519,6 @@ const Account = () => {
                   cursor: "pointer",
                   marginTop: "10px",
                 }}
-                onClick={() => deleteCharacter(character.characterId)}
               >
                 Charakter löschen
               </button>
