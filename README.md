@@ -16,6 +16,21 @@
 
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
+### Changelog 22.11.24
+
+### Tim
+
+### Brian
+
+### Julian
+- Frontend in der Account.js Fehler bearbeitet und Funktionen hinzugefügt
+- Unequip und equip größtenteils berabetitet
+- Ein-Waffen/Rüstungs-Regel implementiert: Charaktere können jetzt nur eine Waffe oder Rüstung gleichzeitig ausrüsten. Bei Rüstungen noch mit Fehler
+- Prüfung auf ausgerüstete Waffe: Überprüfung, ob der Charakter bereits eine Waffe trägt, bevor eine neue ausgerüstet wird.
+- Benachrichtigungen eingebaut: Anzeige einer Nachricht (mit alert), wenn der Nutzer versucht, eine zweite Waffe auszurüsten. Alerts für Ungültige Items hinzugefügt
+- Logik zur Ausrüstung beibehalten: Die bestehende Funktionalität von Brian für das Ausrüsten wurde ergänzt
+ 
+
 ### Changelog 21.11.24
 
 ### Tim
