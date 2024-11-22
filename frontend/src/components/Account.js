@@ -326,18 +326,41 @@ const Account = () => {
                 {item.rarity} - {item.damage} Schaden
                 <button
                   onClick={() => {
-                    equipItem(
-                      userData.characters[0].name,
-                      item.itemName,
-                      "Waffe"
-                    );
+                    const character = userData.characters[0];
+
+                    // Prüfen, ob bereits eine Waffe ausgerüstet ist
+                    if (character.equipment.weapon) {
+                      alert("Du kannst nur eine Waffe gleichzeitig ausrüsten!");
+                      return;
+                    }
+
+                    // Prüfen, ob das Item bereits ausgerüstet ist
+                    if (character.equipment.weapon === item.itemName) {
+                      alert(
+                        `Die Waffe "${item.itemName}" ist bereits ausgerüstet.`
+                      );
+                      return;
+                    }
+
+                    // Prüfen, ob das Item gültig ist
+                    if (!item || !item.itemName || !item.damage) {
+                      alert("Ungültiges Item. Kann nicht ausgerüstet werden.");
+                      return;
+                    }
+
+                    // Ausrüsten der Waffe
                     const updatedInventory = userData.weaponinventory.filter(
                       (weapon) => weapon.itemName !== item.itemName
                     );
-                    const updatedCharacter = { ...userData.characters[0] };
+
+                    const updatedCharacter = { ...character };
                     updatedCharacter.equipment.weapon = item.itemName;
                     updatedCharacter.stats.attack += item.damage;
-                    console.log(item.damage);
+
+                    console.log(
+                      `Waffe ausgerüstet: ${item.itemName}, Schaden: ${item.damage}`
+                    );
+
                     setUserData({
                       ...userData,
                       weaponinventory: updatedInventory,
@@ -396,18 +419,43 @@ const Account = () => {
                     marginLeft: "10px",
                   }}
                   onClick={() => {
-                    equipItem(
-                      userData.characters[0].name,
-                      item.itemName,
-                      item.type
-                    );
+                    const character = userData.characters[0];
+
+                    // Prüfen, ob bereits eine Rüstung ausgerüstet ist
+                    if (character.equipment.armor) {
+                      alert(
+                        "Du kannst nur eine Rüstung gleichzeitig ausrüsten!"
+                      );
+                      return;
+                    }
+
+                    // Prüfen, ob das Item bereits ausgerüstet ist
+                    if (character.equipment.armor === item.itemName) {
+                      alert(
+                        `Die Rüstung "${item.itemName}" ist bereits ausgerüstet.`
+                      );
+                      return;
+                    }
+
+                    // Prüfen, ob das Item gültig ist
+                    if (!item || !item.itemName || !item.type) {
+                      alert("Ungültiges Item. Kann nicht ausgerüstet werden.");
+                      return;
+                    }
+
+                    // Ausrüsten der Waffe
                     const updatedInventory = userData.armorinventory.filter(
                       (armor) => armor.itemName !== item.itemName
                     );
-                    const updatedCharacter = { ...userData.characters[0] };
-                    updatedCharacter.equipment.armor[item.type] = item.itemName;
-                    updatedCharacter.stats.defense += item.armor;
-                    console.log(item.armor);
+
+                    const updatedCharacter = { ...character };
+                    updatedCharacter.equipment.armor = item.itemName;
+                    updatedCharacter.stats.defense += item.defense;
+
+                    console.log(
+                      `Rüstung ausgerüstet: ${item.itemName}, Defensrre: ${item.defense}`
+                    );
+
                     setUserData({
                       ...userData,
                       armorinventory: updatedInventory,
@@ -446,23 +494,55 @@ const Account = () => {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    unequipItem(
-                      character.name,
-                      character.equipment.weapon,
-                      "Waffe"
-                    );
-                    const updatedInventory = [...userData.weaponinventory];
-                    const updatedCharacter = { ...character };
-                    updatedCharacter.equipment.weapon = null;
-                    updatedCharacter.stats.attack -=
-                      updatedCharacter.stats.attack;
-                    console.log(updatedCharacter.stats.attack);
+                    // Überprüfen, ob überhaupt eine Waffe ausgerüstet ist
+                    if (!character.equipment.weapon) {
+                      alert(
+                        "Es gibt keine ausgerüstete Waffe, die abgelegt werden kann."
+                      );
+                      return;
+                    }
 
+                    const updatedCharacter = { ...character };
+
+                    // Finden der abgelegten Waffe
+                    const unequippedWeapon = userData.weaponinventory.find(
+                      (item) =>
+                        item.itemName === updatedCharacter.equipment.weapon
+                    );
+
+                    // Wenn die Waffe bereits im Inventar ist, wird der Schadenswert korrekt übernommen
+                    const weaponToReturn = {
+                      itemName: updatedCharacter.equipment.weapon,
+                      damage: unequippedWeapon
+                        ? unequippedWeapon.damage
+                        : updatedCharacter.stats.attack, // Schadenswert korrekt übernehmen
+                    };
+
+                    // Zurücklegen der Waffe ins Inventar
+                    const updatedInventory = [
+                      ...userData.weaponinventory,
+                      {
+                        itemName: weaponToReturn.itemName,
+                        damage: weaponToReturn.damage,
+                      },
+                    ];
+
+                    // Charakter-Daten aktualisieren
+                    updatedCharacter.stats.attack -= weaponToReturn.damage; // Nur den Schaden der abgelegten Waffe abziehen
+                    updatedCharacter.equipment.weapon = null; // Entfernen der ausgerüsteten Waffe
+
+                    // Setzen der neuen Daten
                     setUserData({
                       ...userData,
                       weaponinventory: updatedInventory,
                       characters: [updatedCharacter],
                     });
+
+                    console.log("Waffe abgelegt:", weaponToReturn.itemName);
+                    console.log(
+                      "Aktualisierter Angriff:",
+                      updatedCharacter.stats.attack
+                    );
                   }}
                 >
                   Waffe ablegen
