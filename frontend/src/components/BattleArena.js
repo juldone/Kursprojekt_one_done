@@ -72,35 +72,62 @@ const Battlearena = ({
   };
 
   const simulateHpChanges = (newPlayerHp, newEnemyHp) => {
-    const interval = setInterval(() => {
-      setPlayerHp((prevHp) => {
-        const updatedHp = Math.max(prevHp - 1, newPlayerHp);
-        if (updatedHp === newPlayerHp) {
-          playerHpRef.current = updatedHp; // Update Ref value
-        }
-        return updatedHp;
-      });
-      setEnemyHp((prevHp) => {
-        const updatedHp = Math.max(prevHp - 1, newEnemyHp);
-        if (updatedHp === newEnemyHp) {
-          enemyHpRef.current = updatedHp; // Update Ref value
-        }
-        return updatedHp;
-      });
+    let playerHpDifference = newPlayerHp - playerHpRef.current;
+    let enemyHpDifference = newEnemyHp - enemyHpRef.current;
 
-      // Stoppe das Intervall, wenn beide HP-Werte erreicht sind
-      if (
-        playerHpRef.current === newPlayerHp &&
-        enemyHpRef.current === newEnemyHp
-      ) {
-        clearInterval(interval);
+    const animateHpChange = () => {
+      if (Math.abs(playerHpDifference) < 1 && Math.abs(enemyHpDifference) < 1) {
+        return; // Animation beenden, wenn beide HP-Werte erreicht sind
       }
-    }, 50); // Geschwindigkeit der Animation
+
+      // Player HP Animation
+      if (Math.abs(playerHpDifference) >= 1) {
+        setPlayerHp((prevHp) => {
+          const newHp = prevHp + Math.sign(playerHpDifference) * 1; // 1 HP pro Frame ändern
+          playerHpDifference = newPlayerHp - newHp;
+          return newHp;
+        });
+      }
+
+      // Enemy HP Animation
+      if (Math.abs(enemyHpDifference) >= 1) {
+        setEnemyHp((prevHp) => {
+          const newHp = prevHp + Math.sign(enemyHpDifference) * 1; // 1 HP pro Frame ändern
+          enemyHpDifference = newEnemyHp - newHp;
+          return newHp;
+        });
+      }
+
+      requestAnimationFrame(animateHpChange); // Nächsten Animationsframe anfordern
+    };
+
+    animateHpChange(); // Animation starten
   };
 
   const toggleLogVisibility = () => {
     setIsLogOpen((prev) => !prev);
   };
+
+  const HealthBar = ({ currentHp, maxHp, color }) => (
+    <div
+      style={{
+        width: "200px",
+        height: "20px",
+        backgroundColor: "#ccc",
+        borderRadius: "10px",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          width: `${(currentHp / maxHp) * 100}%`,
+          height: "100%",
+          backgroundColor: color,
+          transition: "width 0.5s ease-out",
+        }}
+      ></div>
+    </div>
+  );
 
   return (
     <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif" }}>
@@ -130,14 +157,7 @@ const Battlearena = ({
               overflow: "hidden",
             }}
           >
-            <div
-              style={{
-                width: `${playerHp}%`,
-                height: "100%",
-                backgroundColor: "green",
-                transition: "width 0.5s ease-out",
-              }}
-            ></div>
+            <HealthBar currentHp={playerHp} maxHp={100} color="green" />
           </div>
           <p>HP: {playerHp}</p>
         </div>
@@ -160,14 +180,7 @@ const Battlearena = ({
               overflow: "hidden",
             }}
           >
-            <div
-              style={{
-                width: `${enemyHp}%`,
-                height: "100%",
-                backgroundColor: "red",
-                transition: "width 0.5s ease-out",
-              }}
-            ></div>
+            <HealthBar currentHp={enemyHp} maxHp={100} color="red" />
           </div>
           <p>HP: {enemyHp}</p>
         </div>
@@ -246,8 +259,19 @@ const Battlearena = ({
               )}
             </div>
           )}
-
-          <h3>Belohnung:</h3>
+          {/* Belohnungen */}
+          {fightResult?.rewards?.drops?.length > 0 && (
+            <div>
+              <h3>Belohnungen</h3>
+              {fightResult.rewards.drops.map((drop, index) => (
+                <div key={index}>
+                  <p>
+                    {drop.material}: {drop.quantity} Stück
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
           <p>{fightResult.reward}</p>
         </div>
       )}
