@@ -336,6 +336,8 @@ const Account = () => {
                     );
                     const updatedCharacter = { ...userData.characters[0] };
                     updatedCharacter.equipment.weapon = item.itemName;
+                    updatedCharacter.stats.attack += item.damage;
+                    console.log(item.damage);
                     setUserData({
                       ...userData,
                       weaponinventory: updatedInventory,
@@ -404,6 +406,8 @@ const Account = () => {
                     );
                     const updatedCharacter = { ...userData.characters[0] };
                     updatedCharacter.equipment.armor[item.type] = item.itemName;
+                    updatedCharacter.stats.defense += item.armor;
+                    console.log(item.armor);
                     setUserData({
                       ...userData,
                       armorinventory: updatedInventory,
@@ -450,6 +454,10 @@ const Account = () => {
                     const updatedInventory = [...userData.weaponinventory];
                     const updatedCharacter = { ...character };
                     updatedCharacter.equipment.weapon = null;
+                    updatedCharacter.stats.attack -=
+                      updatedCharacter.stats.attack;
+                    console.log(updatedCharacter.stats.attack);
+
                     setUserData({
                       ...userData,
                       weaponinventory: updatedInventory,
@@ -485,6 +493,8 @@ const Account = () => {
                         const updatedInventory = [...userData.armorinventory];
                         const updatedCharacter = { ...character };
                         updatedCharacter.equipment.armor.head = null;
+                        updatedCharacter.stats.defense -=
+                          updatedCharacter.stats.defense;
                         setUserData({
                           ...userData,
                           armorinventory: updatedInventory,
@@ -518,6 +528,8 @@ const Account = () => {
                         const updatedInventory = [...userData.armorinventory];
                         const updatedCharacter = { ...character };
                         updatedCharacter.equipment.armor.chest = null;
+                        updatedCharacter.stats.defense -=
+                          updatedCharacter.stats.defense;
                         setUserData({
                           ...userData,
                           armorinventory: updatedInventory,
@@ -551,6 +563,8 @@ const Account = () => {
                         const updatedInventory = [...userData.armorinventory];
                         const updatedCharacter = { ...character };
                         updatedCharacter.equipment.armor.hands = null;
+                        updatedCharacter.stats.defense -=
+                          updatedCharacter.stats.defense;
                         setUserData({
                           ...userData,
                           armorinventory: updatedInventory,
@@ -584,6 +598,8 @@ const Account = () => {
                         const updatedInventory = [...userData.armorinventory];
                         const updatedCharacter = { ...character };
                         updatedCharacter.equipment.armor.legs = null;
+                        updatedCharacter.stats.defense -=
+                          updatedCharacter.stats.defense;
                         setUserData({
                           ...userData,
                           armorinventory: updatedInventory,
