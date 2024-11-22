@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BattleArena from "./BattleArena.js";
+import { calculateDamage, processRound } from "./battlelogic"; // Importiere die Logik
 
 const Fight = () => {
   const [accountId, setAccountId] = useState(null);
@@ -10,7 +11,7 @@ const Fight = () => {
   const [error, setError] = useState(null);
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [token, setToken] = useState("");
-  const [showArena, setShowArena] = useState(false); // Steuert die Anzeige der Battlearena
+  const [showArena, setShowArena] = useState(false);
 
   useEffect(() => {
     const storedAccountId = localStorage.getItem("accountId");
@@ -35,7 +36,6 @@ const Fight = () => {
       }
 
       const data = await response.json();
-
       if (data && data.characters) {
         setCharacters(data.characters);
       } else {
@@ -77,8 +77,61 @@ const Fight = () => {
       }
 
       const data = await response.json();
-      setBattleResult(data);
-      setShowArena(true); // Zeigt die Battlearena an
+      const { character, enemy } = data;
+
+      let characterHp = character.stats.hp;
+      let enemyHp = enemy.stats.health;
+      const battleLog = [];
+
+      // Kampfschleife mit Damage-Berechnung und Prozess der Runde
+      while (characterHp > 0 && enemyHp > 0) {
+        // Berechne den Schaden für beide Parteien
+        const characterDamage = calculateDamage(character, enemy);
+        const enemyDamage = calculateDamage(enemy, character);
+
+        // Die Rundenlogik auslagern (z.B. HP aktualisieren)
+        const roundResult = processRound(
+          character,
+          enemy,
+          characterDamage,
+          enemyDamage
+        );
+
+        // Aktualisiere die HP des Charakters und des Feindes
+        characterHp = roundResult.characterHp;
+        enemyHp = roundResult.enemyHp;
+
+        battleLog.push({
+          round: battleLog.length + 1,
+          characterAttack: characterDamage,
+          enemyAttack: enemyDamage,
+          characterHp,
+          enemyHp: Math.max(0, enemyHp),
+        });
+
+        // Überprüfe den Ausgang des Kampfes
+        if (enemyHp <= 0) {
+          setBattleResult({
+            winner: "character",
+            battleLog,
+            characterHp,
+            enemyHp: 0,
+          });
+          setShowArena(true);
+          return;
+        }
+
+        if (characterHp <= 0) {
+          setBattleResult({
+            winner: "enemy",
+            battleLog,
+            characterHp: 0,
+            enemyHp,
+          });
+          setShowArena(true);
+          return;
+        }
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -87,7 +140,6 @@ const Fight = () => {
   };
 
   const handleBack = () => {
-    // Funktion zum Zurückkehren zur Charakterauswahl
     setShowArena(false);
     setBattleResult(null);
   };
@@ -146,21 +198,13 @@ const Fight = () => {
                 cursor: characterId ? "pointer" : "not-allowed",
               }}
             >
-              Kämpfen!
+              Kämpfen
             </button>
           </div>
-          {loading && <p>Lädt... Der Kampf beginnt!</p>}
-          {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
         </>
       ) : (
-        <BattleArena
-          battleResult={battleResult}
-          characters={characters}
-          characterId={characterId} // characterId korrekt übergeben
-          accountId={accountId} // accountId korrekt übergeben
-          token={token}
-          onBack={handleBack} // Funktion für Zurück
-        />
+        <BattleArena battleResult={battleResult} onBack={handleBack} />
       )}
     </div>
   );
