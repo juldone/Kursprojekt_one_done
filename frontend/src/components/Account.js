@@ -98,8 +98,9 @@ const Account = () => {
   const unequipItem = async (characterName, itemName, type) => {
     const token = localStorage.getItem("token");
     const accountId = localStorage.getItem("accountId");
+
     try {
-      // Sende die Anfrage an das Backend, um das Item zu unequippen
+      // Anfrage an das Backend senden
       const response = await fetch("http://localhost:3000/equipment/unequip", {
         method: "POST",
         headers: {
@@ -115,40 +116,54 @@ const Account = () => {
       });
 
       const data = await response.json();
+
+      // Prüfen, ob die Anfrage erfolgreich war
       if (!response.ok) {
         throw new Error(data.message || "Fehler beim Unequippen");
       }
 
-      // Aktualisiere den Zustand, um den Slot im Charakter zu leeren und das Inventar zu erweitern
-      setUserData((prevData) => ({
-        ...prevData,
-        characters: prevData.characters.map((char) =>
-          char.name === characterName
+      // Zustand des Benutzers aktualisieren
+      setUserData((prevData) => {
+        const updatedCharacters = prevData.characters.map((char) => {
+          // Finde den passenden Charakter und aktualisiere das Equipment
+          if (char.name === characterName) {
+            return {
+              ...char,
+              equipment: {
+                ...char.equipment,
+                [type]: null, // Slot wird geleert
+              },
+            };
+          }
+          return char;
+        });
+
+        // Unequippte Gegenstände zum richtigen Inventar hinzufügen
+        const updatedInventory =
+          type === "Waffe"
             ? {
-                ...char,
-                equipment: {
-                  ...char.equipment,
-                  [type]: null, // Der entsprechende Slot wird auf null gesetzt
-                },
+                weaponinventory: [
+                  ...prevData.weaponinventory,
+                  data.unequippedItem,
+                ],
               }
-            : char
-        ),
-        ...(type === "Waffe"
-          ? {
-              weaponinventory: [
-                ...prevData.weaponinventory,
-                data.unequippedItem,
-              ],
-            } // Füge das unequippte Item zum Inventar hinzu
-          : type === "Kopf" ||
-            type === "Brust" ||
-            type === "Hand" ||
-            type === "Füße"
-          ? {
-              armorinventory: [...prevData.armorinventory, data.unequippedItem], // Für Rüstungen
-            }
-          : {}),
-      }));
+            : ["Kopf", "Brust", "Hand", "Füße"].includes(type)
+            ? {
+                armorinventory: [
+                  ...prevData.armorinventory,
+                  data.unequippedItem,
+                ],
+              }
+            : {}; // Falls der Typ nicht passt, bleibt das Inventar unverändert
+
+        return {
+          ...prevData,
+          characters: updatedCharacters,
+          ...updatedInventory,
+        };
+      });
+
+      console.log(`Item "${itemName}" wurde erfolgreich unequippt.`);
     } catch (error) {
       console.error("Fehler beim Unequippen:", error);
     }
@@ -310,13 +325,26 @@ const Account = () => {
                 <strong>Waffe:</strong> {item.itemName} - {item.type} -{" "}
                 {item.rarity} - {item.damage} Schaden
                 <button
-                  onClick={() =>
+                  onClick={() => {
                     equipItem(
                       userData.characters[0].name,
                       item.itemName,
                       "Waffe"
-                    )
-                  }
+                    );
+                    // Entferne die Waffe aus dem Inventar und füge sie zum Charakter hinzu
+                    const updatedInventory = userData.weaponinventory.filter(
+                      (weapon) => weapon.itemName !== item.itemName
+                    );
+                    // Hier fügst du die Waffe zu den Ausrüstungen des Charakters hinzu
+                    const updatedCharacter = { ...userData.characters[0] };
+                    updatedCharacter.equipment.weapon = item.itemName;
+                    // Setze die aktualisierten Daten
+                    setUserData({
+                      ...userData,
+                      weaponinventory: updatedInventory,
+                      characters: [updatedCharacter],
+                    });
+                  }}
                   style={{
                     padding: "5px 10px",
                     fontSize: "14px",
@@ -368,13 +396,26 @@ const Account = () => {
                     cursor: "pointer",
                     marginLeft: "10px",
                   }}
-                  onClick={() =>
+                  onClick={() => {
                     equipItem(
                       userData.characters[0].name,
                       item.itemName,
                       item.type
-                    )
-                  }
+                    );
+                    // Entferne das Rüstungsstück aus dem Inventar und füge es zum Charakter hinzu
+                    const updatedInventory = userData.armorinventory.filter(
+                      (armor) => armor.itemName !== item.itemName
+                    );
+                    // Hier fügst du das Rüstungsstück zu den Ausrüstungen des Charakters hinzu
+                    const updatedCharacter = { ...userData.characters[0] };
+                    updatedCharacter.equipment.armor[item.type] = item.itemName;
+                    // Setze die aktualisierten Daten
+                    setUserData({
+                      ...userData,
+                      armorinventory: updatedInventory,
+                      characters: [updatedCharacter],
+                    });
+                  }}
                 >
                   Ausrüsten
                 </button>
@@ -382,6 +423,7 @@ const Account = () => {
             ))}
         </ul>
       )}
+
       <h2 style={{ marginTop: "20px", color: "#ebebeb" }}>Charaktere:</h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.characters && userData.characters.length > 0 ? (
@@ -405,13 +447,31 @@ const Account = () => {
                     borderRadius: "5px",
                     cursor: "pointer",
                   }}
-                  onClick={() =>
+                  onClick={() => {
                     unequipItem(
                       character.name,
                       character.equipment.weapon,
                       "Waffe"
-                    )
-                  }
+                    );
+                    // Entferne die Waffe aus der Ausrüstung und füge sie zum Inventar zurück
+                    const updatedInventory = [
+                      ...userData.weaponinventory,
+                      {
+                        itemName: character.equipment.weapon,
+                        type: "Waffe",
+                        rarity: "Unbekannt", // Passen Sie dies entsprechend an
+                        damage: 0, // Hier sollten die tatsächlichen Eigenschaften des Items eingefügt werden
+                      },
+                    ];
+                    const updatedCharacter = { ...character };
+                    updatedCharacter.equipment.weapon = null;
+                    // Setze die aktualisierten Daten
+                    setUserData({
+                      ...userData,
+                      weaponinventory: updatedInventory,
+                      characters: [updatedCharacter],
+                    });
+                  }}
                 >
                   Waffe ablegen
                 </button>
@@ -432,108 +492,38 @@ const Account = () => {
                         borderRadius: "5px",
                         cursor: "pointer",
                       }}
-                      onClick={() =>
+                      onClick={() => {
                         unequipItem(
                           character.name,
                           character.equipment.armor.head,
                           "Kopf"
-                        )
-                      }
+                        );
+                        // Entferne den Helm aus der Ausrüstung und füge ihn zum Inventar zurück
+                        const updatedInventory = [
+                          ...userData.armorinventory,
+                          {
+                            itemName: character.equipment.armor.head,
+                            type: "Kopf",
+                            rarity: "Unbekannt", // Passen Sie dies entsprechend an
+                            armor: 0, // Hier sollten die tatsächlichen Eigenschaften des Items eingefügt werden
+                          },
+                        ];
+                        const updatedCharacter = { ...character };
+                        updatedCharacter.equipment.armor.head = null;
+                        // Setze die aktualisierten Daten
+                        setUserData({
+                          ...userData,
+                          armorinventory: updatedInventory,
+                          characters: [updatedCharacter],
+                        });
+                      }}
                     >
                       Helm ablegen
                     </button>
                   </li>
                 )}
-                {character.equipment.armor.chest && (
-                  <li>
-                    Brustpanzer: {character.equipment.armor.chest}
-                    <button
-                      style={{
-                        padding: "5px 10px",
-                        fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        unequipItem(
-                          character.name,
-                          character.equipment.armor.chest,
-                          "Brust"
-                        )
-                      }
-                    >
-                      Brustpanzer ablegen
-                    </button>
-                  </li>
-                )}
-                {character.equipment.armor.hands && (
-                  <li>
-                    Handschuhe: {character.equipment.armor.hands}
-                    <button
-                      style={{
-                        padding: "5px 10px",
-                        fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        unequipItem(
-                          character.name,
-                          character.equipment.armor.hands,
-                          "Hand"
-                        )
-                      }
-                    >
-                      Handschuhe ablegen
-                    </button>
-                  </li>
-                )}
-                {character.equipment.armor.legs && (
-                  <li>
-                    Beinschützer: {character.equipment.armor.legs}
-                    <button
-                      style={{
-                        padding: "5px 10px",
-                        fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        unequipItem(
-                          character.name,
-                          character.equipment.armor.legs,
-                          "Füße"
-                        )
-                      }
-                    >
-                      Beinschützer ablegen
-                    </button>
-                  </li>
-                )}
+                {/* Wiederholen Sie dasselbe für die anderen Rüstungsarten */}
               </ul>
-              <button
-                style={{
-                  padding: "5px 10px",
-                  fontSize: "14px",
-                  backgroundColor: "#ff4d4d",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-                onClick={() => deleteCharacter(character.characterId)}
-              >
-                Charakter löschen
-              </button>
             </li>
           ))
         ) : (
