@@ -496,28 +496,116 @@ const Account = () => {
                     </button>
                   </li>
                 )}
+                {character.equipment.armor.chest && (
+                  <li>
+                    Brust: {character.equipment.armor.chest}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.chest,
+                          "Brust"
+                        );
+                        const updatedInventory = [...userData.armorinventory];
+                        const updatedCharacter = { ...character };
+                        updatedCharacter.equipment.armor.chest = null;
+                        setUserData({
+                          ...userData,
+                          armorinventory: updatedInventory,
+                          characters: [updatedCharacter],
+                        });
+                      }}
+                    >
+                      Brust ablegen
+                    </button>
+                  </li>
+                )}
+                {character.equipment.armor.hands && (
+                  <li>
+                    Handschuhe: {character.equipment.armor.hands}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.hands,
+                          "Hand"
+                        );
+                        const updatedInventory = [...userData.armorinventory];
+                        const updatedCharacter = { ...character };
+                        updatedCharacter.equipment.armor.hands = null;
+                        setUserData({
+                          ...userData,
+                          armorinventory: updatedInventory,
+                          characters: [updatedCharacter],
+                        });
+                      }}
+                    >
+                      Handschuhe ablegen
+                    </button>
+                  </li>
+                )}
+                {character.equipment.armor.legs && (
+                  <li>
+                    Füße: {character.equipment.armor.legs}
+                    <button
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        backgroundColor: "#ff4d4d",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        unequipItem(
+                          character.name,
+                          character.equipment.armor.legs,
+                          "Füße"
+                        );
+                        const updatedInventory = [...userData.armorinventory];
+                        const updatedCharacter = { ...character };
+                        updatedCharacter.equipment.armor.legs = null;
+                        setUserData({
+                          ...userData,
+                          armorinventory: updatedInventory,
+                          characters: [updatedCharacter],
+                        });
+                      }}
+                    >
+                      Füße ablegen
+                    </button>
+                  </li>
+                )}
                 {/* Weitere Rüstungsteile wie oben wiederholen */}
               </ul>
-              {/* Button zum Löschen des Charakters */}
               <button
-                onClick={() => {
-                  const updatedCharacters = userData.characters.filter(
-                    (char, charIndex) => charIndex !== index
-                  );
-                  setUserData({
-                    ...userData,
-                    characters: updatedCharacters,
-                  });
-                }}
                 style={{
                   padding: "5px 10px",
                   fontSize: "14px",
-                  backgroundColor: "#ff5733", // Roter Button für löschen
+                  backgroundColor: "#ff4d4d",
                   color: "#fff",
                   border: "none",
                   borderRadius: "5px",
                   cursor: "pointer",
-                  marginTop: "10px",
                 }}
               >
                 Charakter löschen
@@ -525,7 +613,7 @@ const Account = () => {
             </li>
           ))
         ) : (
-          <li>Keine Charaktere gefunden.</li>
+          <li>Keine Charaktere vorhanden.</li>
         )}
       </ul>
 
