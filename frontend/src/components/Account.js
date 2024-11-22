@@ -454,15 +454,7 @@ const Account = () => {
                       "Waffe"
                     );
                     // Entferne die Waffe aus der Ausrüstung und füge sie zum Inventar zurück
-                    const updatedInventory = [
-                      ...userData.weaponinventory,
-                      {
-                        itemName: character.equipment.weapon,
-                        type: "Waffe",
-                        rarity: "Unbekannt", // Passen Sie dies entsprechend an
-                        damage: 0, // Hier sollten die tatsächlichen Eigenschaften des Items eingefügt werden
-                      },
-                    ];
+                    const updatedInventory = [...userData.weaponinventory];
                     const updatedCharacter = { ...character };
                     updatedCharacter.equipment.weapon = null;
                     // Setze die aktualisierten Daten
@@ -499,15 +491,7 @@ const Account = () => {
                           "Kopf"
                         );
                         // Entferne den Helm aus der Ausrüstung und füge ihn zum Inventar zurück
-                        const updatedInventory = [
-                          ...userData.armorinventory,
-                          {
-                            itemName: character.equipment.armor.head,
-                            type: "Kopf",
-                            rarity: "Unbekannt", // Passen Sie dies entsprechend an
-                            armor: 0, // Hier sollten die tatsächlichen Eigenschaften des Items eingefügt werden
-                          },
-                        ];
+                        const updatedInventory = [...userData.armorinventory];
                         const updatedCharacter = { ...character };
                         updatedCharacter.equipment.armor.head = null;
                         // Setze die aktualisierten Daten
