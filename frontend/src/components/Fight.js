@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BattleArena from "./BattleArena.js";
+import BattleArena from "../components/BattleArena/BattleArena.js";
 
 const Fight = () => {
   const [accountId, setAccountId] = useState(null);
@@ -77,6 +77,7 @@ const Fight = () => {
       }
 
       const data = await response.json();
+      console.log(data);
       setBattleResult(data);
       setShowArena(true); // Zeigt die Battlearena an
     } catch (err) {
