@@ -14,6 +14,7 @@ const Battlearena = ({
   const [playerHp, setPlayerHp] = useState(100); // Spieler-HP (zum Testen voreingestellt)
   const [enemyHp, setEnemyHp] = useState(100); // Gegner-HP
   const [isLogOpen, setIsLogOpen] = useState(false); // Zustand für Einklappen des Kampflogs
+  const [animationComplete, setAnimationComplete] = useState(false);
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
@@ -36,6 +37,7 @@ const Battlearena = ({
     setLoading(true);
     setError(null);
     setFightResult(null);
+    setAnimationComplete(false); // Animation zurücksetzen
 
     // Healthbars zurücksetzen, bevor der neue Kampf startet
     setPlayerHp(100); // Maximaler Wert für Spieler-HP (anpassen, falls anders)
@@ -63,39 +65,55 @@ const Battlearena = ({
       setFightResult(data);
 
       // Animierte Lebenspunkt-Änderung
-      simulateHpChanges(data.character.stats.hp, data.enemy.stats.health);
+      simulateHpChanges(
+        data.character.stats.hp,
+        data.enemy.stats.health,
+        data.battleLog
+      );
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+  const simulateHpChanges = (playerFinalHp, enemyFinalHp, battleLog) => {
+    if (!Array.isArray(battleLog)) {
+      console.error("battleLog is not valid:", battleLog);
+      return; // Beende die Funktion, wenn battleLog nicht definiert ist
+    }
 
-  const simulateHpChanges = (newPlayerHp, newEnemyHp) => {
+    let currentTurn = 0;
+
     const interval = setInterval(() => {
-      setPlayerHp((prevHp) => {
-        const updatedHp = Math.max(prevHp - 1, newPlayerHp);
-        if (updatedHp === newPlayerHp) {
-          playerHpRef.current = updatedHp; // Update Ref value
-        }
-        return updatedHp;
-      });
-      setEnemyHp((prevHp) => {
-        const updatedHp = Math.max(prevHp - 1, newEnemyHp);
-        if (updatedHp === newEnemyHp) {
-          enemyHpRef.current = updatedHp; // Update Ref value
-        }
-        return updatedHp;
-      });
-
-      // Stoppe das Intervall, wenn beide HP-Werte erreicht sind
-      if (
-        playerHpRef.current === newPlayerHp &&
-        enemyHpRef.current === newEnemyHp
-      ) {
-        clearInterval(interval);
+      if (currentTurn >= battleLog.length) {
+        clearInterval(interval); // Stoppe das Intervall, wenn der Kampf vorbei ist
+        setAnimationComplete(true); // Markiere Animation als abgeschlossen
+        return;
       }
-    }, 50); // Geschwindigkeit der Animation
+
+      const turn = battleLog[currentTurn];
+
+      // Spieler greift an und der Gegner erleidet Schaden
+      if (turn.characterAttack > 0 && enemyHpRef.current > 0) {
+        setEnemyHp((prevHp) => {
+          const updatedEnemyHp = Math.max(0, prevHp - turn.characterAttack);
+          enemyHpRef.current = updatedEnemyHp; // Aktualisiere Ref für Gegner-HP
+          return updatedEnemyHp;
+        });
+      }
+
+      // Gegner greift an und der Spieler erleidet Schaden
+      if (turn.enemyAttack > 0 && playerHpRef.current > 0) {
+        setPlayerHp((prevHp) => {
+          const updatedPlayerHp = Math.max(0, prevHp - turn.enemyAttack);
+          playerHpRef.current = updatedPlayerHp; // Aktualisiere Ref für Spieler-HP
+          return updatedPlayerHp;
+        });
+      }
+
+      // Aktualisiere den aktuellen Turn
+      currentTurn++;
+    }, 1000); // Verzögerung von 1000ms zwischen den Turns
   };
 
   const toggleLogVisibility = () => {
@@ -208,9 +226,8 @@ const Battlearena = ({
       >
         Zurück zur Auswahl
       </button>
-
       {/* Kampfergebnis */}
-      {fightResult && (
+      {fightResult && animationComplete && (
         <div style={{ marginTop: "20px", lineHeight: "1.6" }}>
           <h2>Kampfergebnis</h2>
           <p>{fightResult.battleSummary.message}</p>
