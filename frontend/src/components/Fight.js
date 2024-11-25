@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BattleArena from "./BattleArena.js";
-
+import { useNavigate } from "react-router-dom";
+import "./Fight.css";
 const Fight = () => {
   const [accountId, setAccountId] = useState(null);
   const [characterId, setCharacterId] = useState("");
@@ -11,6 +12,17 @@ const Fight = () => {
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [token, setToken] = useState("");
   const [showArena, setShowArena] = useState(false); // Steuert die Anzeige der Battlearena
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Füge die Klasse zu body hinzu
+    document.body.classList.add("fight-background");
+
+    // Bereinigung nach Verlassen der Seite
+    return () => {
+      document.body.classList.remove("fight-background");
+    };
+  }, []);
 
   useEffect(() => {
     const storedAccountId = localStorage.getItem("accountId");
@@ -147,6 +159,12 @@ const Fight = () => {
               }}
             >
               Kämpfen!
+            </button>
+            <button
+              onClick={() => navigate("/account")}
+              className="back-button"
+            >
+              Zurück zur Account-Seite
             </button>
           </div>
           {loading && <p>Lädt... Der Kampf beginnt!</p>}

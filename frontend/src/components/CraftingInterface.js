@@ -12,6 +12,16 @@ const CraftingInterface = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Füge die Klasse zu body hinzu
+    document.body.classList.add("crafting-background");
+
+    // Bereinigung nach Verlassen der Seite
+    return () => {
+      document.body.classList.remove("crafting-background");
+    };
+  }, []);
+
+  useEffect(() => {
     if (!accountId) {
       console.error("Account ID ist nicht gesetzt!");
       return;

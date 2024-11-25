@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./form.css";
 
 const LoginForm = ({ setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
@@ -7,6 +8,16 @@ const LoginForm = ({ setToken, setAccountId }) => {
   const [errorMessage, setErrorMessage] = useState(""); // Fehlernachricht für die Anzeige
   const navigate = useNavigate(); // Verwende `useNavigate` für die Navigation
   const url = "http://localhost:3000/login"; // Deine API-Login-URL
+
+  useEffect(() => {
+    // Füge die Klasse zu body hinzu
+    document.body.classList.add("form-background");
+
+    // Bereinigung nach Verlassen der Seite
+    return () => {
+      document.body.classList.remove("form-background");
+    };
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();

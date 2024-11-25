@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate korrekt importieren
+import "./Account.css";
 
 const Account = () => {
   const [userData, setUserData] = useState(null); // Benutzer-Daten
@@ -9,6 +10,16 @@ const Account = () => {
   const [isWeaponsVisible, setIsWeaponsVisible] = useState(false); // Waffen ein-/ausklappen
   const [isArmorVisible, setIsArmorVisible] = useState(false); // Rüstung ein-/ausklappen
   const navigate = useNavigate(); // useNavigate korrekt benutzen
+
+  useEffect(() => {
+    // Füge die Klasse zu body hinzu
+    document.body.classList.add("mainpage-background");
+
+    // Bereinigung nach Verlassen der Seite
+    return () => {
+      document.body.classList.remove("mainpage-background");
+    };
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

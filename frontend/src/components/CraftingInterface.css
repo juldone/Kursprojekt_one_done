@@ -1,3 +1,11 @@
+/* Setze Hintergrundbild mit !important */
+.crafting-background {
+  background-image: url("../../public/z-w-gu-9.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
 .crafting-container {
   max-width: 800px;
   margin: 20px auto;
