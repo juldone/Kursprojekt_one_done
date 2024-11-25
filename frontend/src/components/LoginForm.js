@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./LoginForm.css"; // Importierung der CSS Datei
 
 const LoginForm = ({ setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
