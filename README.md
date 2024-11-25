@@ -26,8 +26,15 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 
 
 ### Brian
+- BattleArena.js überarbeitet damit es etwas mehr engagement beim Kampfablauf gibt
+- Disable button beim Weapon Equipment eingebaut
+- Mit Julian zusammen Die andwendung in die Cloud zu bringen
 
 ### Julian
+- Mit Brian zusammengearbeitet und die Anwendung in die Cloud gebracht
+- NGINX installiert als Webserver
+- EC2 Instanz aufgesetzt
+- DocumentDB als MongoDB initialisiert und sie mit der EC2 Instanz verbunden
 
 ### Changelog 22.11.24
 
