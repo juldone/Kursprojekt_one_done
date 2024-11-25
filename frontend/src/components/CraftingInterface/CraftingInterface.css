@@ -1,26 +1,31 @@
 /* Setze Hintergrundbild mit !important */
 .crafting-background {
-  background-image: url("../../public/z-w-gu-9.jpg") !important;
-  background-size: cover !important;
+  background-image: url("../../../public/bilder/Craftingbajuti.jpg") !important;
+  background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
 
 .crafting-container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Überschriften */
 .crafting-title {
+  background-color: #d40b33;
+  border: none;
+  color: white;
+  padding: 15px 32px;
   text-align: center;
-  font-size: 2em;
-  color: #333;
-  margin-bottom: 20px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
 /* Rezepte nebeneinander anordnen */

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BattleArena from "./BattleArena.js";
+import BattleArena from "../Battlearena/BattleArena.js";
 import { useNavigate } from "react-router-dom";
 import "./Fight.css";
 const Fight = () => {

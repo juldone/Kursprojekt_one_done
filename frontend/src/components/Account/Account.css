@@ -1,6 +1,6 @@
 /* Setze Hintergrundbild mit !important */
 .mainpage-background {
-  background-image: url("../../public/mirco-cabbia-sciamano240-st-louis-2-3.jpg");
+  background-image: url("../../../public/bilder/MainBG.jpg");
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;

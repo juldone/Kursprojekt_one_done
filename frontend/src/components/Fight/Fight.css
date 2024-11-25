@@ -1,6 +1,6 @@
 /* Setze Hintergrundbild mit !important */
 .fight-background {
-  background-image: url("../../public/75689471_p10.png");
+  background-image: url("../../../public/75689471_p10.png");
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
