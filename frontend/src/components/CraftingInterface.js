@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./CraftingInterface.css";
 
 const CraftingInterface = () => {
   const [weaponRecipes, setWeaponRecipes] = useState([]);
@@ -7,15 +9,14 @@ const CraftingInterface = () => {
   const [materials] = useState({ Holz: 0, Stein: 0, Metall: 0 });
 
   const accountId = localStorage.getItem("accountId");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!accountId) {
-      // Rückgabe im useEffect, wenn accountId nicht vorhanden ist
       console.error("Account ID ist nicht gesetzt!");
       return;
     }
 
-    // Waffenrezepte laden
     fetch(`http://localhost:3000/user/${accountId}/crafting/wpnrecipes`)
       .then((res) => res.json())
       .then((data) => setWeaponRecipes(data))
@@ -23,14 +24,13 @@ const CraftingInterface = () => {
         console.error("Fehler beim Laden der Waffenrezepte:", err)
       );
 
-    // Rüstungsrezepte laden
     fetch(`http://localhost:3000/user/${accountId}/crafting/armrecipes`)
       .then((res) => res.json())
       .then((data) => setArmorRecipes(data))
       .catch((err) =>
         console.error("Fehler beim Laden der Rüstungsrezepte:", err)
       );
-  }, [accountId]); // accountId als Abhängigkeit hinzufügen
+  }, [accountId]);
 
   const craftItem = (recipeId, type) => {
     const endpoint =
@@ -42,7 +42,7 @@ const CraftingInterface = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        accountId: accountId, // accountId hier im Body
+        accountId: accountId,
         recipeId: recipeId,
         materials: materials,
       }),
@@ -54,60 +54,75 @@ const CraftingInterface = () => {
         return res.json();
       })
       .then((data) => {
-        alert(data.message); // Antwort vom Backend anzeigen
+        alert(data.message);
       })
       .catch((err) => console.error("Fehler beim Craften:", err));
   };
 
   if (!accountId) {
-    return <div>Bitte logge dich ein!</div>; // Hier wird dem Benutzer eine Nachricht angezeigt, wenn kein AccountId vorhanden ist
+    return <div>Bitte logge dich ein!</div>;
   }
 
   return (
-    <div>
-      <h1>Crafting Interface</h1>
+    <div className="crafting-container">
+      <h1 className="crafting-title">Crafting Interface</h1>
 
-      {/* Waffenrezepte */}
-      <h2>Waffenrezepte</h2>
-      <ul>
-        {weaponRecipes.map((recipe) => (
-          <li key={recipe.recipeId} onClick={() => setSelectedRecipe(recipe)}>
-            {recipe.name} - Typ: {recipe.type}, Schaden: {recipe.damage}
-          </li>
-        ))}
-      </ul>
+      {/* Waffen- und Rüstungsrezepte nebeneinander */}
+      <div className="recipes-container">
+        <div className="recipes-column">
+          <h2 className="recipe-title">Waffenrezepte</h2>
+          <ul className="recipe-list">
+            {weaponRecipes.map((recipe) => (
+              <li
+                key={recipe.recipeId}
+                onClick={() => setSelectedRecipe(recipe)}
+                className="recipe-item"
+              >
+                {recipe.name} - Typ: {recipe.type}, Schaden: {recipe.damage}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="recipes-column">
+          <h2 className="recipe-title">Rüstungsrezepte</h2>
+          <ul className="recipe-list">
+            {armorRecipes.map((recipe) => (
+              <li
+                key={recipe.recipeId}
+                onClick={() => setSelectedRecipe(recipe)}
+                className="recipe-item"
+              >
+                {recipe.name} - Typ: {recipe.type}, Rüstung: {recipe.armor}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
-      {/* Rüstungsrezepte */}
-      <h2>Rüstungsrezepte</h2>
-      <ul>
-        {armorRecipes.map((recipe) => (
-          <li key={recipe.recipeId} onClick={() => setSelectedRecipe(recipe)}>
-            {recipe.name} - Typ: {recipe.type}, Rüstung: {recipe.armor}
-          </li>
-        ))}
-      </ul>
-
-      {/* Ausgewähltes Rezept */}
       {selectedRecipe && (
-        <div>
-          <h3>Ausgewähltes Rezept: {selectedRecipe.name}</h3>
-          <p>Typ: {selectedRecipe.type}</p>
-          <p>Material kosten :</p>
-          <ul>
+        <div className="selected-recipe">
+          <h3 className="selected-recipe-title">
+            Ausgewähltes Rezept: {selectedRecipe.name}
+          </h3>
+          <p className="selected-recipe-detail">Typ: {selectedRecipe.type}</p>
+          <p className="selected-recipe-detail">Material kosten :</p>
+          <ul className="materials-list">
             {Object.entries(selectedRecipe.materials).map(
               ([material, amount]) => (
-                <li key={material}>
+                <li key={material} className="material-item">
                   {material}: {amount}
                 </li>
               )
             )}
           </ul>
-
-          {/* Crafting-Button */}
+          <button onClick={() => navigate("/account")} className="back-button">
+            Zurück zur Account-Seite
+          </button>
           <button
             onClick={() =>
               craftItem(selectedRecipe.recipeId, selectedRecipe.type)
             }
+            className="craft-button"
           >
             Craften
           </button>
