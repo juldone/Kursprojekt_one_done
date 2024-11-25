@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import "./Battlearena.css"; // Import der CSS-Datei
 
 const Battlearena = ({
   battleResult,
@@ -15,16 +16,15 @@ const Battlearena = ({
   const [enemyHp, setEnemyHp] = useState(100); // Gegner-HP
   const [isLogOpen, setIsLogOpen] = useState(false); // Zustand für Einklappen des Kampflogs
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
   );
 
-  // Refs für die aktuellen HP-Werte
   const playerHpRef = useRef(playerHp);
   const enemyHpRef = useRef(enemyHp);
 
-  // Wird bei HP-Änderung aufgerufen, um Ref zu aktualisieren
   useEffect(() => {
     playerHpRef.current = playerHp;
   }, [playerHp]);
@@ -37,11 +37,11 @@ const Battlearena = ({
     setLoading(true);
     setError(null);
     setFightResult(null);
-    setAnimationComplete(false); // Animation zurücksetzen
+    setBattleLog([]); // Kampflog zurücksetzen
+    setAnimationComplete(false);
 
-    // Healthbars zurücksetzen, bevor der neue Kampf startet
-    setPlayerHp(100); // Maximaler Wert für Spieler-HP (anpassen, falls anders)
-    setEnemyHp(100); // Maximaler Wert für Gegner-HP
+    setPlayerHp(100);
+    setEnemyHp(100);
 
     try {
       const response = await fetch("http://localhost:3000/battle", {
@@ -64,7 +64,6 @@ const Battlearena = ({
       const data = await response.json();
       setFightResult(data);
 
-      // Animierte Lebenspunkt-Änderung
       simulateHpChanges(
         data.character.stats.hp,
         data.enemy.stats.health,
@@ -76,44 +75,46 @@ const Battlearena = ({
       setLoading(false);
     }
   };
+
   const simulateHpChanges = (playerFinalHp, enemyFinalHp, battleLog) => {
     if (!Array.isArray(battleLog)) {
       console.error("battleLog is not valid:", battleLog);
-      return; // Beende die Funktion, wenn battleLog nicht definiert ist
+      return;
     }
 
     let currentTurn = 0;
 
     const interval = setInterval(() => {
       if (currentTurn >= battleLog.length) {
-        clearInterval(interval); // Stoppe das Intervall, wenn der Kampf vorbei ist
-        setAnimationComplete(true); // Markiere Animation als abgeschlossen
+        clearInterval(interval);
+        setAnimationComplete(true);
         return;
       }
 
       const turn = battleLog[currentTurn];
 
-      // Spieler greift an und der Gegner erleidet Schaden
       if (turn.characterAttack > 0 && enemyHpRef.current > 0) {
-        setEnemyHp((prevHp) => {
-          const updatedEnemyHp = Math.max(0, prevHp - turn.characterAttack);
-          enemyHpRef.current = updatedEnemyHp; // Aktualisiere Ref für Gegner-HP
-          return updatedEnemyHp;
-        });
+        setEnemyHp((prevHp) => Math.max(0, prevHp - turn.characterAttack));
       }
 
-      // Gegner greift an und der Spieler erleidet Schaden
       if (turn.enemyAttack > 0 && playerHpRef.current > 0) {
-        setPlayerHp((prevHp) => {
-          const updatedPlayerHp = Math.max(0, prevHp - turn.enemyAttack);
-          playerHpRef.current = updatedPlayerHp; // Aktualisiere Ref für Spieler-HP
-          return updatedPlayerHp;
-        });
+        setPlayerHp((prevHp) => Math.max(0, prevHp - turn.enemyAttack));
       }
 
-      // Aktualisiere den aktuellen Turn
+      // Schrittweise das Log aktualisieren
+      setBattleLog((prevLog) => [
+        ...prevLog,
+        {
+          round: turn.round,
+          characterAttack: turn.characterAttack,
+          enemyAttack: turn.enemyAttack,
+          characterHp: playerHpRef.current,
+          enemyHp: enemyHpRef.current,
+        },
+      ]);
+
       currentTurn++;
-    }, 1000); // Verzögerung von 1000ms zwischen den Turns
+    }, 1000); // Jede Runde wird alle 1 Sekunde hinzugefügt
   };
 
   const toggleLogVisibility = () => {
@@ -121,150 +122,78 @@ const Battlearena = ({
   };
 
   return (
-    <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif" }}>
+    <div className="battlearena">
       <h1>Battle Arena</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          padding: "20px",
-        }}
-      >
-        {/* Spielercharakter */}
-        <div style={{ textAlign: "left" }}>
+      <div className="battle-area">
+        <div className="player">
           <h2>{playerCharacter?.name}</h2>
           <img
-            src={`../../logo512.png`} // Bild aus dem public Ordner
+            src={`../../logo512.png`}
             alt={playerCharacter?.name}
-            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+            className="character-img"
           />
           <p>Level: {playerCharacter?.level}</p>
-          <div
-            style={{
-              width: "200px",
-              height: "20px",
-              backgroundColor: "#ccc",
-              borderRadius: "10px",
-              overflow: "hidden",
-            }}
-          >
+          <div className="health-bar">
             <div
-              style={{
-                width: `${playerHp}%`,
-                height: "100%",
-                backgroundColor: "green",
-                transition: "width 0.5s ease-out",
-              }}
+              className="health-bar-fill player-hp"
+              style={{ width: `${playerHp}%` }}
             ></div>
           </div>
           <p>HP: {playerHp}</p>
         </div>
 
-        {/* Gegner */}
-        <div style={{ textAlign: "right" }}>
+        {battleLog.length > 0 && (
+          <div>
+            <h3 onClick={toggleLogVisibility} className="log-toggle">
+              {isLogOpen ? "Kampflog schließen" : "Kampflog anzeigen"}
+            </h3>
+            {isLogOpen && (
+              <div className="battle-log">
+                {battleLog.map((log, index) => (
+                  <div key={index}>
+                    <p>Runde {log.round}</p>
+                    <p>Angriff des Charakters: {log.characterAttack}</p>
+                    <p>Angriff des Gegners: {log.enemyAttack}</p>
+                    <p>HP des Charakters: {log.characterHp}</p>
+                    <p>HP des Gegners: {log.enemyHp}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="enemy">
           <h2>Gegner</h2>
-          <img
-            src={`../../logo512.png`} // Bild aus dem public Ordner
-            alt="Bild"
-            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-          />
+          <img src={`../../logo512.png`} alt="Bild" className="character-img" />
           <p>Level: ????</p>
-          <div
-            style={{
-              width: "200px",
-              height: "20px",
-              backgroundColor: "#ccc",
-              borderRadius: "10px",
-              overflow: "hidden",
-            }}
-          >
+          <div className="health-bar">
             <div
-              style={{
-                width: `${enemyHp}%`,
-                height: "100%",
-                backgroundColor: "red",
-                transition: "width 0.5s ease-out",
-              }}
+              className="health-bar-fill enemy-hp"
+              style={{ width: `${enemyHp}%` }}
             ></div>
           </div>
           <p>HP: {enemyHp}</p>
         </div>
       </div>
 
-      {/* Fight Button */}
       <button
         onClick={handleFightInArena}
         disabled={loading}
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: loading ? "#ccc" : "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: loading ? "not-allowed" : "pointer",
-        }}
+        className={`fight-button ${loading ? "disabled" : ""}`}
       >
         {loading ? "Kämpft..." : "Kämpfen"}
       </button>
 
-      {/* Zurück Button */}
-      <button
-        onClick={onBack}
-        style={{
-          marginLeft: "10px",
-          marginTop: "20px",
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: "#f44336",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
+      <button onClick={onBack} className="back-button">
         Zurück zur Auswahl
       </button>
-      {/* Kampfergebnis */}
+
       {fightResult && animationComplete && (
-        <div style={{ marginTop: "20px", lineHeight: "1.6" }}>
+        <div className="fight-result">
           <h2>Kampfergebnis</h2>
           <p>{fightResult.battleSummary.message}</p>
 
-          {/* Kampf-Log */}
-          {fightResult?.battleLog?.length > 0 && (
-            <div>
-              <h3 onClick={toggleLogVisibility} style={{ cursor: "pointer" }}>
-                {isLogOpen ? "Kampflog schließen" : "Kampflog anzeigen"}
-              </h3>
-
-              {isLogOpen && (
-                <div
-                  style={{
-                    maxHeight: "300px",
-                    overflowY: "auto",
-                    marginTop: "10px",
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    borderRadius: "5px",
-                  }}
-                >
-                  {fightResult.battleLog.map((log, index) => (
-                    <div key={index}>
-                      <p>Runde {log.round}</p>
-                      <p>Angriff des Charakters: {log.characterAttack}</p>
-                      <p>Angriff des Gegners: {log.enemyAttack}</p>
-                      <p>HP des Charakters: {log.characterHp}</p>
-                      <p>HP des Gegners: {log.enemyHp}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Belohnungen */}
           {fightResult?.rewards?.drops?.length > 0 && (
             <div>
               <h3>Belohnungen</h3>
@@ -277,12 +206,10 @@ const Battlearena = ({
               ))}
             </div>
           )}
-          <p>{fightResult.reward}</p>
         </div>
       )}
 
-      {/* Fehler */}
-      {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
+      {error && <p className="error-message">Fehler: {error}</p>}
     </div>
   );
 };
