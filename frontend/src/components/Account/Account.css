@@ -1,7 +1,73 @@
 /* Setze Hintergrundbild mit !important */
 .mainpage-background {
-  background-image: url("../../../public/bilder/MainBG.jpg");
+  background-image: url("../../../public/bilder/Overworldbajuti.jpg");
+  background-size: cover !important; /* Hintergrundbild deckt den gesamten Bildschirm ab */
+  background-position: center !important; /* Zentriert das Bild */
+  background-repeat: no-repeat !important; /* Verhindert, dass das Bild wiederholt wird */
+  background-attachment: fixed; /* Parallax-Effekt */
+  position: relative; /* Erforderlich für die Overlay-Überlagerung */
+  animation: fadeInBackground 1.5s ease-out; /* Fading-Effekt beim Laden der Seite */
+}
+
+/* Parallax-Effekt (Hintergrund bleibt fixiert) */
+.mainpage-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.4
+  ); /* Dunkle Überlagerung für besseren Kontrast */
+  z-index: -1; /* Hintergrundbild bleibt im Hintergrund */
+}
+
+/* Linearer Farbverlauf über das Bild */
+.mainpage-background {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)),
+    url("../../../public/bilder/Overworldbajuti.jpg");
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
+  background-attachment: fixed;
+}
+
+/* Fade-In-Animation für das Hintergrundbild */
+@keyframes fadeInBackground {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Transparente Boxen oder Karten mit abgerundeten Ecken */
+.content-box {
+  background: rgba(255, 255, 255, 0.8); /* Leicht transparente Box */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schatten für Box */
+}
+
+/* Textschatten für besseren Kontrast */
+.mainpage-background h1,
+.mainpage-background p {
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Textschatten für bessere Lesbarkeit */
+}
+
+/* Responsivität sicherstellen */
+@media (max-width: 768px) {
+  .mainpage-background {
+    background-size: cover; /* Stellt sicher, dass das Bild immer den gesamten Bildschirm abdeckt */
+  }
+
+  .content-box {
+    padding: 15px; /* Weniger Padding auf mobilen Geräten */
+  }
 }
