@@ -5,6 +5,8 @@ const RegisterForm = ({ setMessage, setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setuserName] = useState("");
+  const APP_URL = "http://172.31.44.193:3000";
+  //  const APP_URL = "http://local:3000";
 
   useEffect(() => {
     // Füge die Klasse zu body hinzu
@@ -19,7 +21,7 @@ const RegisterForm = ({ setMessage, setToken, setAccountId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch(`${APP_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, userName }),

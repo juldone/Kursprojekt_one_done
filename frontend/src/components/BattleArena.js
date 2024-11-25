@@ -17,6 +17,8 @@ const Battlearena = ({
   const [isLogOpen, setIsLogOpen] = useState(false); // Zustand für Einklappen des Kampflogs
   const [animationComplete, setAnimationComplete] = useState(false);
   const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
+  const APP_URL = "http://172.31.44.193:3000";
+  //  const APP_URL = "http://local:3000";
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
@@ -44,7 +46,7 @@ const Battlearena = ({
     setEnemyHp(100);
 
     try {
-      const response = await fetch("http://localhost:3000/battle", {
+      const response = await fetch(`${APP_URL}/battle`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

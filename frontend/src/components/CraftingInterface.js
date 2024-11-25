@@ -7,6 +7,8 @@ const CraftingInterface = () => {
   const [armorRecipes, setArmorRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [materials] = useState({ Holz: 0, Stein: 0, Metall: 0 });
+  const APP_URL = "http://172.31.44.193:3000";
+  //  const APP_URL = "http://local:3000";
 
   const accountId = localStorage.getItem("accountId");
   const navigate = useNavigate();
@@ -27,14 +29,14 @@ const CraftingInterface = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/user/${accountId}/crafting/wpnrecipes`)
+    fetch(`${APP_URL}/user/${accountId}/crafting/wpnrecipes`)
       .then((res) => res.json())
       .then((data) => setWeaponRecipes(data))
       .catch((err) =>
         console.error("Fehler beim Laden der Waffenrezepte:", err)
       );
 
-    fetch(`http://localhost:3000/user/${accountId}/crafting/armrecipes`)
+    fetch(`${APP_URL}/user/${accountId}/crafting/armrecipes`)
       .then((res) => res.json())
       .then((data) => setArmorRecipes(data))
       .catch((err) =>
@@ -45,8 +47,8 @@ const CraftingInterface = () => {
   const craftItem = (recipeId, type) => {
     const endpoint =
       type === "Kopf" || type === "Brust" || type === "Hand" || type === "Füße"
-        ? `http://localhost:3000/user/${accountId}/crafting/armcraft`
-        : `http://localhost:3000/user/${accountId}/crafting/wpncraft`;
+        ? `${APP_URL}/user/${accountId}/crafting/armcraft`
+        : `${APP_URL}/user/${accountId}/crafting/wpncraft`;
 
     fetch(endpoint, {
       method: "POST",

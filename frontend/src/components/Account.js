@@ -11,6 +11,8 @@ const Account = () => {
   const [isArmorVisible, setIsArmorVisible] = useState(false); // Rüstung ein-/ausklappen
   const navigate = useNavigate(); // useNavigate korrekt benutzen
 
+  const APP_URL = "http://172.31.44.193:3000";
+  //  const APP_URL = "http://local:3000";
   useEffect(() => {
     // Füge die Klasse zu body hinzu
     document.body.classList.add("mainpage-background");
@@ -32,12 +34,9 @@ const Account = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/user/${accountId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await fetch(`${APP_URL}/user/${accountId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (!response.ok) {
           throw new Error(`Fehler: ${response.status} ${response.statusText}`);
@@ -70,8 +69,23 @@ const Account = () => {
       return;
     }
 
+    // Überprüfe, ob der Slot bereits belegt ist
+    const character = userData.characters.find(
+      (char) => char.name === characterName
+    );
+    if (!character) {
+      console.error("Charakter nicht gefunden.");
+      return;
+    }
+
+    // Überprüfe, ob der Slot bereits belegt ist (z. B. für Waffe, Kopf, Brust, etc.)
+    if (character.equipment[type]) {
+      console.error(`Der Slot für ${type} ist bereits belegt.`);
+      return; // Verhindert das Ausrüsten eines neuen Items, wenn der Slot belegt ist
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/equipment/equip", {
+      const response = await fetch(`${APP_URL}/equipment/equip`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +126,7 @@ const Account = () => {
 
     try {
       // Anfrage an das Backend senden
-      const response = await fetch("http://localhost:3000/equipment/unequip", {
+      const response = await fetch(`${APP_URL}/equipment/unequip`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -199,7 +213,7 @@ const Account = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/createCharacter", {
+      const response = await fetch(`${APP_URL}/createCharacter`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -264,7 +278,7 @@ const Account = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/user/character`, {
+      const response = await fetch(`${APP_URL}/user/character`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -337,18 +351,26 @@ const Account = () => {
                 {item.rarity} - {item.damage} Schaden
                 <button
                   onClick={() => {
+                    // Überprüfen, ob der Slot bereits belegt ist
+                    if (userData.characters[0].equipment.weapon) {
+                      alert("Der Slot für die Waffe ist bereits belegt!");
+                      return;
+                    }
+
                     equipItem(
                       userData.characters[0].name,
                       item.itemName,
                       "Waffe"
                     );
+
                     const updatedInventory = userData.weaponinventory.filter(
                       (weapon) => weapon.itemName !== item.itemName
                     );
+
                     const updatedCharacter = { ...userData.characters[0] };
                     updatedCharacter.equipment.weapon = item.itemName;
                     updatedCharacter.stats.attack += item.damage;
-                    console.log(item.damage);
+
                     setUserData({
                       ...userData,
                       weaponinventory: updatedInventory,
@@ -358,16 +380,21 @@ const Account = () => {
                   style={{
                     padding: "5px 10px",
                     fontSize: "14px",
-                    backgroundColor: "green",
+                    backgroundColor: userData.characters[0].equipment.weapon
+                      ? "gray" // Farbe ändern, wenn der Slot belegt ist
+                      : "green",
                     color: "#222",
                     border: "none",
                     borderRadius: "5px",
-                    cursor: "pointer",
+                    cursor: userData.characters[0].equipment.weapon
+                      ? "not-allowed" // Cursor ändern, wenn der Slot belegt ist
+                      : "pointer",
                     marginLeft: "10px",
                   }}
+                  disabled={!!userData.characters[0].equipment.weapon} // Button deaktivieren, wenn der Slot belegt ist
                 >
                   Ausrüsten
-                </button>
+                </button>{" "}
               </li>
             ))}
         </ul>
@@ -407,24 +434,39 @@ const Account = () => {
                     marginLeft: "10px",
                   }}
                   onClick={() => {
+                    // Prüfen, ob der Slot bereits belegt ist
+                    if (userData.characters[0].equipment.armor[item.type]) {
+                      alert(
+                        `Der ${item.type}-Slot ist bereits belegt mit: ${
+                          userData.characters[0].equipment.armor[item.type]
+                        }`
+                      );
+                      return; // Verhindert das Ausführen des weiteren Codes
+                    }
+
+                    // Ausrüstungslogik, wenn der Slot frei ist
                     equipItem(
                       userData.characters[0].name,
                       item.itemName,
                       item.type
                     );
+
                     const updatedInventory = userData.armorinventory.filter(
                       (armor) => armor.itemName !== item.itemName
                     );
                     const updatedCharacter = { ...userData.characters[0] };
                     updatedCharacter.equipment.armor[item.type] = item.itemName;
                     updatedCharacter.stats.defense += item.armor;
-                    console.log(item.armor);
+
                     setUserData({
                       ...userData,
                       armorinventory: updatedInventory,
                       characters: [updatedCharacter],
                     });
                   }}
+                  disabled={
+                    !!userData?.characters[0]?.equipment?.armor?.[item.type]
+                  } // Deaktiviert den Button, wenn der Slot belegt ist
                 >
                   Ausrüsten
                 </button>

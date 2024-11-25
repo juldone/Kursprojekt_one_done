@@ -13,6 +13,8 @@ const Fight = () => {
   const [token, setToken] = useState("");
   const [showArena, setShowArena] = useState(false); // Steuert die Anzeige der Battlearena
   const navigate = useNavigate();
+  const APP_URL = "http://172.31.44.193:3000";
+  //  const APP_URL = "http://local:3000";
 
   useEffect(() => {
     // Füge die Klasse zu body hinzu
@@ -38,7 +40,7 @@ const Fight = () => {
   const fetchCharacters = async (accountId, token) => {
     setLoadingCharacters(true);
     try {
-      const response = await fetch(`http://localhost:3000/user/${accountId}`, {
+      const response = await fetch(`${APP_URL}/user/${accountId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -71,7 +73,7 @@ const Fight = () => {
     setBattleResult(null);
 
     try {
-      const response = await fetch("http://localhost:3000/battle", {
+      const response = await fetch(`${APP_URL}/battle`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
