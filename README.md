@@ -20,6 +20,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 25.11.24
 
 ### Tim
+- Login Bereich Designed und Eingebunden
+- Crafting Bereich Designed und Eingebunden
+- Angefangen Struktur in der Account.js zu schaffen (JSX Teil Auslagern)
+
 
 ### Brian
 
