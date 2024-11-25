@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import "./form.css";
 
 const RegisterForm = ({ setMessage, setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setuserName] = useState("");
+
+  useEffect(() => {
+    // Füge die Klasse zu body hinzu
+    document.body.classList.add("form-background");
+
+    // Bereinigung nach Verlassen der Seite
+    return () => {
+      document.body.classList.remove("form-background");
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

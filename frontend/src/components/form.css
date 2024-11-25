@@ -1,0 +1,7 @@
+/* Setze Hintergrundbild mit !important */
+.form-background {
+  background-image: url("../../public/star-academy-35-3.jpg");
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
