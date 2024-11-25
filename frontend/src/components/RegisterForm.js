@@ -5,7 +5,7 @@ const RegisterForm = ({ setMessage, setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setuserName] = useState("");
-  const APP_URL = "http://172.31.44.193:3000";
+  const APP_URL = "http://63.176.74.46:3000";
   //  const APP_URL = "http://local:3000";
 
   useEffect(() => {

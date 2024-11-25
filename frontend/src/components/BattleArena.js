@@ -17,7 +17,7 @@ const Battlearena = ({
   const [isLogOpen, setIsLogOpen] = useState(false); // Zustand für Einklappen des Kampflogs
   const [animationComplete, setAnimationComplete] = useState(false);
   const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
-  const APP_URL = "http://172.31.44.193:3000";
+  const APP_URL = "http://63.176.74.46:3000";
   //  const APP_URL = "http://local:3000";
 
   const playerCharacter = characters.find(

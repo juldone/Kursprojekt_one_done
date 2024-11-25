@@ -7,7 +7,7 @@ const CraftingInterface = () => {
   const [armorRecipes, setArmorRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [materials] = useState({ Holz: 0, Stein: 0, Metall: 0 });
-  const APP_URL = "http://172.31.44.193:3000";
+  const APP_URL = "http://63.176.74.46:3000";
   //  const APP_URL = "http://local:3000";
 
   const accountId = localStorage.getItem("accountId");

@@ -13,7 +13,7 @@ const Fight = () => {
   const [token, setToken] = useState("");
   const [showArena, setShowArena] = useState(false); // Steuert die Anzeige der Battlearena
   const navigate = useNavigate();
-  const APP_URL = "http://172.31.44.193:3000";
+  const APP_URL = "http://63.176.74.46:3000";
   //  const APP_URL = "http://local:3000";
 
   useEffect(() => {
