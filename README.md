@@ -27,7 +27,8 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Brian
 
 ## Julian
-
+- Präsentation gemeinsam mit Tim und Brian ausgearbeitet
+  
 ### Changelog 25.11.24
 
 ### Tim
