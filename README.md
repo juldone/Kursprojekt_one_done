@@ -17,6 +17,17 @@
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
+### Changelog 26.11.24
+
+### Tim
+- Präsentation gemeinsam mit Julian und Brian ausgearbeitet
+- Insgesamt 7 Sprites für die Präsentation erstellt
+- Branch für morgige Frontend Arbeit vorbereitet
+
+### Brian
+
+## Julian
+
 ### Changelog 25.11.24
 
 ### Tim
