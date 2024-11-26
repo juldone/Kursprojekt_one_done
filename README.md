@@ -25,6 +25,7 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Branch für morgige Frontend Arbeit vorbereitet
 
 ### Brian
+- Präsentation gemeinsam mit Julian und Tim ausgearbeitet 
 
 ## Julian
 - Präsentation gemeinsam mit Tim und Brian ausgearbeitet
