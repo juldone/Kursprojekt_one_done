@@ -40,22 +40,25 @@ const RegisterForm = ({ setMessage, setToken, setAccountId }) => {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Registrierung</h1>
-      <label>Email:</label>
+
       <input
         type="email"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      <label>Username:</label>
+
       <input
+        placeholder="Username"
         type="text"
         value={userName}
         onChange={(e) => setuserName(e.target.value)}
         required
       />
-      <label>Password:</label>
+
       <input
+        placeholder="Password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
