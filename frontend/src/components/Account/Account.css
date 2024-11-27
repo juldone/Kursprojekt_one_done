@@ -8,21 +8,91 @@
   position: relative; /* Erforderlich für die Overlay-Überlagerung */
   animation: fadeInBackground 1.5s ease-out; /* Fading-Effekt beim Laden der Seite */
 }
-
-/* Linearer Farbverlauf über das Bild */
-.mainpage-background {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)),
-    url("../../../public/bilder/Overworldbajuti.jpg");
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-attachment: fixed;
+.account-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-/* Transparente Boxen oder Karten mit abgerundeten Ecken */
-.content-box {
-  background: rgba(255, 255, 255, 0.8); /* Leicht transparente Box */
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schatten für Box */
+.account-header {
+  color: #333;
+}
+
+.section-header {
+  margin-top: 20px;
+  color: #ebebeb;
+  cursor: pointer;
+}
+
+.section-content {
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+.equip-button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: green;
+  color: #222;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.unequip-button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-character-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.create-character-container input {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.create-character-container button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navigation-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1e90ff;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.go-to-fight-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #ff6347;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
 }
