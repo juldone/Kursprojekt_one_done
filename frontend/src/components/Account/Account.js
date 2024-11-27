@@ -308,7 +308,7 @@ const Account = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ color: "#333" }}>Account Information</h1>
+      <h1 style={{ color: "##fffaf0" }}>Account Information</h1>
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
       <p>Materialien:</p>
