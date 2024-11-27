@@ -1,73 +1,94 @@
 .battlearena {
   text-align: center;
-  font-family: Arial, sans-serif;
-  color: #ffffff; /* Weißer Text */
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Leicht durchsichtiger Hintergrund für besseren Kontrast */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.7); /* Etwas dunkler für mehr Kontrast */
+  background-size: cover;
+  background-position: center;
+  padding: 20px 0;
 }
 
 .battle-area {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
   padding: 20px;
+  margin-top: 20px;
+  gap: 30px; /* Bessere Spacing zwischen Spieler und Gegner */
 }
 
-.player {
-  text-align: center;
-  margin-right: 2em;
-}
+.player,
 .enemy {
   text-align: center;
-  margin-left: 2em;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Etwas mehr Tiefe durch transparente Hintergrundfarbe */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.player:hover,
+.enemy:hover {
+  transform: scale(1.05); /* Spieler und Gegner beim Hover leicht vergrößern */
 }
 
 .character-img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  margin-bottom: 10px;
 }
 
 .health-bar {
-  width: 200px;
-  height: 20px;
-  background-color: #ccc;
-  border-radius: 10px;
-  overflow: hidden;
+  position: absolute;
+  width: 220px;
+  height: 18px;
   margin: 5px auto;
+  overflow: inherit;
+  border-radius: 50px;
 }
 
 .health-bar-fill {
+  position: relative;
+  width: 100%;
   height: 100%;
-  transition: width 0.5s ease-out;
+  background-color: green; /* Oder eine andere Farbe */
+  transition: width 1s ease-in-out; /* Übergang auf Breite anwenden */
 }
 
 .player-hp {
-  background-color: green;
+  background: linear-gradient(90deg, #76d7c4, #2ecc71); /* Sanfter Grünton */
 }
 
 .enemy-hp {
-  background-color: red;
+  background: linear-gradient(90deg, #e74c3c, #c0392b); /* Sanfter Rottton */
 }
 
 .fight-button,
 .back-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 25px;
+  font-size: 18px;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
-  font-weight: bold; /* Fettgedruckter Text für bessere Lesbarkeit */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schattierung für mehr Tiefe */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .fight-button {
-  background-color: #007bff;
+  background-color: #3498db;
   color: white;
+}
+
+.fight-button:hover {
+  background-color: #148dde;
+  transform: translateY(-2px); /* Hover-Effekt für den Button */
 }
 
 .fight-button.disabled {
@@ -76,37 +97,52 @@
 }
 
 .back-button {
-  background-color: #f44336;
+  background-color: #e74c3c;
   color: white;
   margin-left: 10px;
 }
 
+.back-button:hover {
+  background-color: #c0392b;
+}
+
 .fight-result {
   margin-top: 20px;
-  line-height: 1.6;
-  font-size: 18px; /* Größere Schrift für die Kampfergebnisse */
-  font-weight: bold; /* Fettgedruckt für bessere Lesbarkeit */
-  color: #f1f1f1; /* Helle Schriftfarbe */
+  font-size: 20px;
+  font-weight: bold;
+  color: #f1f1f1;
+  line-height: 1.8;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
 }
 
 .log-toggle {
   cursor: pointer;
-  font-weight: bold; /* Fettgedruckter Text für den Log-Button */
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 15px;
+  text-decoration: underline;
 }
 
 .battle-log {
-  max-height: 300px;
+  max-height: 350px;
   overflow-y: auto;
   margin-top: 10px;
   border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9; /* Heller Hintergrund für das Log */
-  color: #333; /* Dunklere Textfarbe für bessere Lesbarkeit */
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.battle-log p {
+  margin: 5px 0;
+  font-size: 14px;
 }
 
 .error-message {
   color: red;
-  font-weight: bold; /* Fettgedruckt für Fehlernachrichten */
-  font-size: 18px; /* Größere Schrift für Fehler */
+  font-weight: bold;
+  font-size: 18px;
 }

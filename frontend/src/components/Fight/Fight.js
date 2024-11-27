@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BattleArena from "../Battlearena/BattleArena.js";
 import { useNavigate } from "react-router-dom";
 import "./Fight.css";
+
 const Fight = () => {
   const [accountId, setAccountId] = useState(null);
   const [characterId, setCharacterId] = useState("");
@@ -105,26 +106,49 @@ const Fight = () => {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Kampfmodus</h1>
+    <div
+      style={{
+        padding: "20px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: "#f4f4f9",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <h1 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
+        Kampfvorbereitung
+      </h1>
       {!showArena ? (
         <>
-          <p>
-            Wähle einen Charakter aus und drücke auf Kämpfen, um den Kampf zu
-            starten!
+          <p
+            style={{
+              fontSize: "18px",
+              color: "#555",
+              textAlign: "center",
+              marginBottom: "20px",
+            }}
+          >
+            Wähle deinen Charakter aus und gehe auf "Kämpfen!" um in den
+            Kampfbildschirm zu gelangen.
           </p>
           {loadingCharacters ? (
-            <p>Charaktere werden geladen...</p>
+            <p style={{ fontSize: "16px", color: "#888", textAlign: "center" }}>
+              Charaktere werden geladen...
+            </p>
           ) : (
-            <div style={{ marginBottom: "20px" }}>
+            <div style={{ marginBottom: "20px", textAlign: "center" }}>
               <select
                 value={characterId}
                 onChange={(e) => setCharacterId(e.target.value)}
                 style={{
-                  padding: "10px 20px",
+                  padding: "12px 25px",
                   fontSize: "16px",
-                  borderRadius: "5px",
+                  borderRadius: "10px",
+                  border: "1px solid #ddd",
+                  backgroundColor: "#fff",
                   cursor: "pointer",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  width: "200px",
                 }}
               >
                 <option value="">Wähle einen Charakter</option>
@@ -143,41 +167,79 @@ const Fight = () => {
               </select>
             </div>
           )}
-          <div style={{ marginBottom: "20px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "20px",
+            }}
+          >
             <button
               onClick={handleFight}
               disabled={!characterId}
               style={{
-                marginLeft: "10px",
-                padding: "10px 20px",
+                padding: "12px 25px",
                 fontSize: "16px",
                 backgroundColor: characterId ? "#007bff" : "#ccc",
                 color: "white",
                 border: "none",
-                borderRadius: "5px",
+                borderRadius: "10px",
                 cursor: characterId ? "pointer" : "not-allowed",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                transition: "background-color 0.3s ease",
               }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = characterId
+                  ? "#0056b3"
+                  : "#ccc")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = characterId
+                  ? "#007bff"
+                  : "#ccc")
+              }
             >
               Kämpfen!
             </button>
             <button
               onClick={() => navigate("/account")}
               className="back-button"
+              style={{
+                padding: "12px 25px",
+                fontSize: "16px",
+                backgroundColor: characterId ? "#007bff" : "#ccc",
+                color: "white",
+                border: "none",
+                borderRadius: "50px",
+                cursor: characterId ? "pointer" : "not-allowed",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                transition: "background-color 0.3s ease",
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#ddd")}
+              onMouseLeave={(e) => (e.target.style.backgroundColor = "#f0f0f0")}
             >
               Zurück zur Account-Seite
             </button>
           </div>
-          {loading && <p>Lädt... Der Kampf beginnt!</p>}
-          {error && <p style={{ color: "red" }}>Fehler: {error}</p>}
+          {loading && (
+            <p style={{ fontSize: "16px", color: "#888", textAlign: "center" }}>
+              Lädt... Der Kampf beginnt!
+            </p>
+          )}
+          {error && (
+            <p style={{ color: "red", fontSize: "16px", textAlign: "center" }}>
+              Fehler: {error}
+            </p>
+          )}
         </>
       ) : (
         <BattleArena
           battleResult={battleResult}
           characters={characters}
-          characterId={characterId} // characterId korrekt übergeben
-          accountId={accountId} // accountId korrekt übergeben
+          characterId={characterId}
+          accountId={accountId}
           token={token}
-          onBack={handleBack} // Funktion für Zurück
+          onBack={handleBack}
         />
       )}
     </div>
