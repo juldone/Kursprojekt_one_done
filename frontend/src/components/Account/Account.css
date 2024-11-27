@@ -8,6 +8,20 @@
   position: relative; /* Erforderlich für die Overlay-Überlagerung */
   animation: fadeInBackground 1.5s ease-out; /* Fading-Effekt beim Laden der Seite */
 }
+
+/* Neuer transparenter schwarzer Rahmen */
+.transparent-black-border {
+  position: absolute; /* Absolute Positionierung */
+  top: 0;
+  left: 0;
+  width: 100%; /* Deckt die gesamte Breite ab */
+  height: 100%; /* Deckt die gesamte Höhe ab */
+  border: 20px solid rgba(0, 0, 0, 0.65); /* Schwarzer Rahmen mit 65% Transparenz */
+  box-sizing: border-box; /* Rahmen wird in die Breite und Höhe einbezogen */
+  pointer-events: none; /* Klicks gelangen durch den Rahmen */
+  z-index: 9999; /* Höchste Priorität für den Rahmen */
+}
+
 .account-container {
   padding: 20px;
   font-family: Arial, sans-serif;

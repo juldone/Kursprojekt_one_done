@@ -315,9 +315,17 @@ const Account = () => {
       <ul>
         {userData.materials && (
           <>
-            <li>Holz: {userData.materials.Holz || 0}</li>
-            <li>Stein: {userData.materials.Stein || 0}</li>
-            <li>Metall: {userData.materials.Metall || 0}</li>
+            <li style={{ listStyleType: "none" }}>
+              Holz: {userData.materials.Holz || 0}
+            </li>
+            <li style={{ listStyleType: "none" }}>
+              {" "}
+              Stein: {userData.materials.Stein || 0}
+            </li>
+            <li style={{ listStyleType: "none" }}>
+              {" "}
+              Metall: {userData.materials.Metall || 0}
+            </li>
           </>
         )}
       </ul>
