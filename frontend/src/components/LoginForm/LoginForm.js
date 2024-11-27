@@ -56,6 +56,7 @@ const LoginForm = ({ setToken, setAccountId }) => {
   return (
     <div>
       <form onSubmit={handleLogin}>
+        <h1> Login</h1>
         <input
           type="email"
           placeholder="Email"
