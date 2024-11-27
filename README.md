@@ -16,7 +16,15 @@
 
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
+### Changelog 27.11.24
+### Tim
 
+### Brian
+
+### Julian
+- Login und Registerbereich angepasst. Farben aufeinander abgestimmt, Rahmen feature nach clickin eingebaut
+- Front end design, Acccount information versucht anzupassen Buttons überarbeitert
+  
 ### Changelog 26.11.24
 
 ### Tim
