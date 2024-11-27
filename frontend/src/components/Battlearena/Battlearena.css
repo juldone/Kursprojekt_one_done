@@ -1,6 +1,13 @@
 .battlearena {
   text-align: center;
   font-family: Arial, sans-serif;
+  color: #ffffff; /* Weißer Text */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Leicht durchsichtiger Hintergrund für besseren Kontrast */
 }
 
 .battle-area {
@@ -54,6 +61,8 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold; /* Fettgedruckter Text für bessere Lesbarkeit */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schattierung für mehr Tiefe */
 }
 
 .fight-button {
@@ -75,10 +84,14 @@
 .fight-result {
   margin-top: 20px;
   line-height: 1.6;
+  font-size: 18px; /* Größere Schrift für die Kampfergebnisse */
+  font-weight: bold; /* Fettgedruckt für bessere Lesbarkeit */
+  color: #f1f1f1; /* Helle Schriftfarbe */
 }
 
 .log-toggle {
   cursor: pointer;
+  font-weight: bold; /* Fettgedruckter Text für den Log-Button */
 }
 
 .battle-log {
@@ -88,8 +101,12 @@
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
+  background-color: #f9f9f9; /* Heller Hintergrund für das Log */
+  color: #333; /* Dunklere Textfarbe für bessere Lesbarkeit */
 }
 
 .error-message {
   color: red;
+  font-weight: bold; /* Fettgedruckt für Fehlernachrichten */
+  font-size: 18px; /* Größere Schrift für Fehler */
 }

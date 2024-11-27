@@ -1,7 +1,8 @@
-/* Setze Hintergrundbild mit !important */
 .fight-background {
-  background-image: url("../../../public/75689471_p10.png");
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
+  background-image: url("../../../public/bilder/BattleBG.png");
+  background-size: cover !important; /* Bild wird skaliert, um den gesamten Container zu füllen */
+  background-position: center !important; /* Bild wird zentriert */
+  background-repeat: no-repeat !important; /* Verhindert Wiederholung des Bildes */
+  width: 100%;
+  height: 100vh; /* Deckt den gesamten sichtbaren Bereich des Bildschirms ab (Viewport-Höhe) */
 }
