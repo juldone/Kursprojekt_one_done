@@ -418,7 +418,7 @@ const Account = () => {
         >
           {userData.armorinventory &&
             userData.armorinventory.map((item, index) => (
-              <li key={`armor-${index}`}>
+              <div key={`armor-${index}`}>
                 <strong></strong> {item.itemName} -{" "}
                 {item.type === "Kopf"
                   ? "Kopf"
@@ -463,7 +463,7 @@ const Account = () => {
                 >
                   Ausrüsten
                 </button>
-              </li>
+              </div>
             ))}
         </ul>
       )}
@@ -637,7 +637,7 @@ const Account = () => {
                   </div>
                 )}
                 {character.equipment.armor.legs && (
-                  <li>
+                  <div>
                     Füße: {character.equipment.armor.legs}
                     <button
                       style={{
@@ -669,7 +669,7 @@ const Account = () => {
                     >
                       Füße ablegen
                     </button>
-                  </li>
+                  </div>
                 )}
                 {/* Weitere Rüstungsteile wie oben wiederholen */}
               </ul>
