@@ -16,6 +16,23 @@
 
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
+
+### Changelog 28.11.24
+
+### Tim
+- Weiter am Design der Battlearena.js/.css gearbeitet.
+- Weiter am Design von Fight.js/.css gearbeitet.
+- Präsentation Ahmet gezeigt, Feedback eingeholt.
+- Feedback umgesetzt: Teamfolie hinzugefügt.
+- Charaktere für Teamfolie erstellt und in GIMP bearbeitet.
+- Präsentation Details (2 Sterne in Team Folie) ausgearbeitet.
+- Mit Julian den groben Ablauf für morgen besprochen.
+
+### Brian 
+
+* URLAUB *
+
+### Julian
 ### Changelog 27.11.24
 ### Tim
 - Fight.js und Fight.css angepasst.
