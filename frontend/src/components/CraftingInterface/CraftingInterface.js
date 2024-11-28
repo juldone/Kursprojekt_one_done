@@ -121,7 +121,17 @@ const CraftingInterface = () => {
           </div>
 
           {selectedRecipe && (
-            <div className="selected-recipe">
+            <div
+              style={{
+                padding: "20px",
+                fontFamily: "Arial, sans-serif",
+                backgroundColor: "rgba(0, 0, 0, 0.86)", // Grau mit 60% Transparenz
+                border: "2px solid rgba(128, 128, 128, 0.9)", // Etwas dunklerer grauer Rand
+                borderRadius: "10px", // Abgerundete Ecken für ein moderneres Design
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Optionaler Schatten für mehr Tiefe
+              }}
+              className="selected-recipe"
+            >
               <h3 className="selected-recipe-title">
                 Ausgewähltes Rezept: {selectedRecipe.name}
               </h3>
@@ -129,15 +139,15 @@ const CraftingInterface = () => {
                 Typ: {selectedRecipe.type}
               </p>
               <p className="selected-recipe-detail">Material kosten :</p>
-              <ul className="materials-list">
+              <div className="materials-list">
                 {Object.entries(selectedRecipe.materials).map(
                   ([material, amount]) => (
-                    <li key={material} className="material-item">
+                    <div key={material} className="material-item">
                       {material}: {amount}
-                    </li>
+                    </div>
                   )
                 )}
-              </ul>
+              </div>
               <button
                 onClick={() => navigate("/account")}
                 className="back-button"

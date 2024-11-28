@@ -385,9 +385,9 @@ const Account = () => {
                     });
                   }}
                   style={{
-                    padding: "5px 10px",
-                    fontSize: "14px",
-                    backgroundColor: "green",
+                    padding: "2px 2px",
+                    fontSize: "12px",
+                    backgroundColor: "rgba(41, 93, 205, 0.8)",
                     color: "#222",
                     border: "none",
                     borderRadius: "5px",
@@ -432,9 +432,9 @@ const Account = () => {
                 - {item.rarity} - {item.armor} Verteidigung
                 <button
                   style={{
-                    padding: "5px 10px",
-                    fontSize: "14px",
-                    backgroundColor: "green",
+                    padding: "2px 2px",
+                    fontSize: "12px",
+                    backgroundColor: "rgba(255, 215, 0, 0.7)",
                     color: "#222",
                     border: "none",
                     borderRadius: "5px",
@@ -481,6 +481,7 @@ const Account = () => {
       >
         Charaktere:
       </h2>
+
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.characters && userData.characters.length > 0 ? (
           userData.characters.map((character, index) => (
@@ -495,7 +496,7 @@ const Account = () => {
               {character.equipment.weapon && (
                 <button
                   style={{
-                    padding: "5px 10px",
+                    padding: "2px 2px",
                     fontSize: "14px",
                     backgroundColor: "rgba208, 32, 144, 0.5)",
                     color: "#fff",
@@ -535,9 +536,9 @@ const Account = () => {
                     <button
                       style={{
                         listStyleType: "none",
-                        padding: "5px 10px",
+                        padding: "2px 2px",
                         fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
+                        backgroundColor: "rgba(255, 215, 0, 0.8)",
                         color: "#fff",
                         border: "none",
                         borderRadius: "5px",
@@ -570,9 +571,9 @@ const Account = () => {
                     Brust: {character.equipment.armor.chest}
                     <button
                       style={{
-                        padding: "5px 10px",
+                        padding: "2px 2px",
                         fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
+                        backgroundColor: "rgb(255, 215, 0, 0.8)",
                         color: "#fff",
                         border: "none",
                         borderRadius: "5px",
@@ -605,9 +606,9 @@ const Account = () => {
                     Handschuhe: {character.equipment.armor.hands}
                     <button
                       style={{
-                        padding: "5px 10px",
+                        padding: "2px 2px",
                         fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
+                        backgroundColor: "rgb(255, 215, 0, 0.8)",
                         color: "#fff",
                         border: "none",
                         borderRadius: "5px",
@@ -640,9 +641,9 @@ const Account = () => {
                     Füße: {character.equipment.armor.legs}
                     <button
                       style={{
-                        padding: "5px 10px",
+                        padding: "2px 2px",
                         fontSize: "14px",
-                        backgroundColor: "#ff4d4d",
+                        backgroundColor: "rgb(255, 215, 0, 0.8)",
                         color: "#fff",
                         border: "none",
                         borderRadius: "5px",
@@ -674,7 +675,7 @@ const Account = () => {
               </ul>
               <button
                 style={{
-                  padding: "5px 10px",
+                  padding: "1px 5px",
                   fontSize: "14px",
                   backgroundColor: "#ff4d4d",
                   color: "#fff",

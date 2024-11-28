@@ -1,7 +1,6 @@
 /* Setze Hintergrundbild mit !important */
 .crafting-background {
   background-image: url("../../../public/bilder/Craftingbajuti.jpg") !important;
-  background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
@@ -38,7 +37,7 @@
 /* Spalten für Waffen- und Rüstungsrezepte */
 .recipes-column {
   flex: 1;
-  background-color: #f8f9fa;
+  background-color: rgba(0, 0, 0, 0.8);
   border: 1px solid #ced4da;
   border-radius: 10px;
   padding: 15px;
@@ -47,7 +46,7 @@
 .recipe-title {
   text-align: center;
   font-size: 1.5em;
-  color: #555;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
@@ -58,11 +57,11 @@
 }
 
 .recipe-item {
-  background-color: #e9ecef;
-  border: 1px solid #ced4da;
+  background-color: #3f8fde;
+  border: 1px solid #292e34;
   border-radius: 5px;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -84,11 +83,11 @@
 .selected-recipe-title {
   text-align: center;
   font-size: 1.2em;
-  color: #333;
+  color: #ffffff;
 }
 
 .selected-recipe-detail {
-  color: #555;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
@@ -96,7 +95,7 @@
 button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: rgba(41, 93, 205, 0.8);
   color: white;
   border: none;
   border-radius: 5px;
