@@ -140,7 +140,7 @@ const CraftingInterface = () => {
               </ul>
               <button
                 onClick={() => navigate("/account")}
-                className="back-button"
+                className="back-button2"
               >
                 Zurück zur Account-Seite
               </button>

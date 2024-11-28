@@ -99,11 +99,20 @@ const Battlearena = ({
       const turn = battleLog[currentTurn];
 
       if (turn.characterAttack > 0 && enemyHpRef.current > 0) {
-        setEnemyHp((prevHp) => Math.max(0, prevHp - turn.characterAttack));
+        setEnemyHp((prevHp) => {
+          // Berechne den neuen HP-Wert des Gegner und setze den Zustand
+          const newHp = Math.max(0, prevHp - turn.characterAttack);
+          enemyHpRef.current = newHp; // Update der Referenz
+          return newHp;
+        });
       }
 
-      if (turn.enemyAttack > 0 && playerHpRef.current > 0) {
-        setPlayerHp((prevHp) => Math.max(0, prevHp - turn.enemyAttack));
+      if (turn.enemyAttack > 0 && playerFinalHp > 0) {
+        setPlayerHp((prevHp) => {
+          // Berechne den neuen HP-Wert des Spielers und setze den Zustand
+          const newHp = Math.max(0, prevHp - turn.enemyAttack);
+          playerHpRef.current = newHp; // Update der Referenz
+        });
       }
 
       setBattleLog((prevLog) => [

@@ -1,4 +1,4 @@
-/* Setze Hintergrundbild mit !important */
+/* Hintergrundbild */
 .crafting-background {
   background-image: url("../../../public/bilder/Craftingbajuti.jpg") !important;
   background-size: contain !important;
@@ -6,6 +6,7 @@
   background-repeat: no-repeat !important;
 }
 
+/* Container für das Crafting */
 .crafting-container {
   display: flex;
   flex-direction: column;
@@ -13,29 +14,26 @@
   justify-content: center;
 }
 
-/* Überschriften */
+/* Titel */
 .crafting-title {
   background-color: #d40b33;
   border: none;
   color: white;
   padding: 15px 32px;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
 }
 
-/* Rezepte nebeneinander anordnen */
+/* Rezepte-Layout */
 .recipes-container {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
-/* Spalten für Waffen- und Rüstungsrezepte */
 .recipes-column {
   flex: 1;
   background-color: #f8f9fa;
@@ -90,35 +88,4 @@
 .selected-recipe-detail {
   color: #555;
   margin-bottom: 10px;
-}
-
-/* Buttons */
-button {
-  display: inline-block;
-  margin: 10px 5px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-.back-button {
-  background-color: #6c757d;
-}
-
-.back-button:hover {
-  background-color: #5a6268;
 }

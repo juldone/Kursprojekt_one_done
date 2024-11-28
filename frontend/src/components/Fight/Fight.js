@@ -203,7 +203,7 @@ const Fight = () => {
             </button>
             <button
               onClick={() => navigate("/account")}
-              className="back-button"
+              className="back-button3"
               style={{
                 padding: "12px 25px",
                 fontSize: "16px",

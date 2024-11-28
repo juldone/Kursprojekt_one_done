@@ -1,111 +1,98 @@
+/* Allgemeine Stile */
 .battlearena {
   text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.7); /* Etwas dunkler für mehr Kontrast */
   background-size: cover;
   background-position: center;
   padding: 20px 0;
 }
 
-.battle-area {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 20px;
-  margin-top: 20px;
-  gap: 30px; /* Bessere Spacing zwischen Spieler und Gegner */
+.battlearena h1 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
+/* Battle Area */
+.battle-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 100px;
+  margin: 20px auto;
+  padding: 50px;
+  max-width: 800px;
+}
+
+/* Spieler und Gegner */
 .player,
 .enemy {
+  width: 100%;
   text-align: center;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Etwas mehr Tiefe durch transparente Hintergrundfarbe */
+  background: rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease;
+  overflow: hidden;
 }
 
 .player:hover,
 .enemy:hover {
-  transform: scale(1.05); /* Spieler und Gegner beim Hover leicht vergrößern */
+  transform: scale(1.05);
 }
 
+/* Charakterbild */
 .character-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  margin-bottom: 10px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 42%;
+  margin-bottom: 5px;
 }
 
+/* Health Bar */
 .health-bar {
-  position: absolute;
-  width: 220px;
+  position: relative;
+  width: 100%;
   height: 18px;
   margin: 5px auto;
-  overflow: inherit;
   border-radius: 50px;
+  overflow: hidden;
 }
 
 .health-bar-fill {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: green; /* Oder eine andere Farbe */
-  transition: width 1s ease-in-out; /* Übergang auf Breite anwenden */
-}
-
-.player-hp {
-  background: linear-gradient(90deg, #76d7c4, #2ecc71); /* Sanfter Grünton */
+  background-color: rgb(63, 242, 63);
+  transition: width 1s ease-in-out;
+  border-radius: 50px;
 }
 
 .enemy-hp {
-  background: linear-gradient(90deg, #e74c3c, #c0392b); /* Sanfter Rottton */
+  background: linear-gradient(90deg, #ff5441, #f95442);
 }
 
+/* Buttons */
 .fight-button,
 .back-button {
-  padding: 12px 25px;
-  font-size: 18px;
+  position: relative;
+  padding: 10px 20px;
+  font-size: 16px;
   font-weight: bold;
-  border: none;
-  border-radius: 20px;
+  border-radius: 50px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
+  text-align: center;
+  width: auto;
 }
 
-.fight-button {
-  background-color: #3498db;
-  color: white;
-}
-
-.fight-button:hover {
-  background-color: #148dde;
-  transform: translateY(-2px); /* Hover-Effekt für den Button */
-}
-
-.fight-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.back-button {
-  background-color: #e74c3c;
-  color: white;
-  margin-left: 10px;
-}
-
-.back-button:hover {
-  background-color: #c0392b;
-}
-
+/* Ergebnisanzeige */
 .fight-result {
   margin-top: 20px;
   font-size: 20px;
@@ -117,14 +104,7 @@
   border-radius: 8px;
 }
 
-.log-toggle {
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 18px;
-  margin-top: 15px;
-  text-decoration: underline;
-}
-
+/* Kampfprotokoll */
 .battle-log {
   max-height: 350px;
   overflow-y: auto;
@@ -136,11 +116,15 @@
   color: #333;
 }
 
-.battle-log p {
-  margin: 5px 0;
-  font-size: 14px;
+.log-toggle {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 15px;
+  text-decoration: underline;
 }
 
+/* Fehlermeldungen */
 .error-message {
   color: red;
   font-weight: bold;
