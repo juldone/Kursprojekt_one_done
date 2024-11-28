@@ -307,11 +307,35 @@ const Account = () => {
   }
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ color: "##fffaf0" }}>Account Information</h1>
+    <div
+      style={{
+        padding: "20px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: "rgba(0, 0, 0, 0.86)", // Grau mit 60% Transparenz
+        border: "2px solid rgba(128, 128, 128, 0.9)", // Etwas dunklerer grauer Rand
+        borderRadius: "10px", // Abgerundete Ecken für ein moderneres Design
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Optionaler Schatten für mehr Tiefe
+      }}
+    >
+      <h2
+        style={{
+          marginTop: "20px",
+          color: "#ffffff", // Textfarbe (weiß)
+          backgroundColor: "rgba(50, 50, 90, 0.7)", // Hintergrundfarbe (grün, kann angepasst werden)
+          padding: "10px 15px", // Innenabstand für den Kasten
+          borderRadius: "8px", // Abgerundete Ecken
+          display: "inline-block", // Sorgt dafür, dass der Kasten die Breite des Inhalts hat
+          boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)", // Optionaler Schatten
+        }}
+      >
+        Accountinformationen:
+      </h2>
       <p>Account ID: {userData.accountId}</p>
       <p>Benutzername: {userData.username}</p>
-      <p>Materialien:</p>
+      <p>
+        {" "}
+        <p style={{ marginTop: "15px" }}></p>Materialien:
+      </p>
       <ul>
         {userData.materials && (
           <>
@@ -319,11 +343,9 @@ const Account = () => {
               Holz: {userData.materials.Holz || 0}
             </li>
             <li style={{ listStyleType: "none" }}>
-              {" "}
               Stein: {userData.materials.Stein || 0}
             </li>
             <li style={{ listStyleType: "none" }}>
-              {" "}
               Metall: {userData.materials.Metall || 0}
             </li>
           </>
@@ -339,9 +361,9 @@ const Account = () => {
         <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
           {userData.weaponinventory &&
             userData.weaponinventory.map((item, index) => (
-              <li key={`weapon-${index}`}>
-                <strong>Waffe:</strong> {item.itemName} - {item.type} -{" "}
-                {item.rarity} - {item.damage} Schaden
+              <li style={{ listStyleType: "none" }} key={`weapon-${index}`}>
+                <strong></strong> {item.itemName} - {item.type} - {item.rarity}{" "}
+                - {item.damage} Schaden
                 <button
                   onClick={() => {
                     equipItem(
@@ -387,11 +409,17 @@ const Account = () => {
         Rüstung: {isArmorVisible ? "▼" : "▶"}
       </h2>
       {isArmorVisible && (
-        <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
+        <ul
+          style={{
+            paddingLeft: "20px",
+            lineHeight: "1.8",
+            listStyleType: "none",
+          }}
+        >
           {userData.armorinventory &&
             userData.armorinventory.map((item, index) => (
               <li key={`armor-${index}`}>
-                <strong>Rüstung:</strong> {item.itemName} -{" "}
+                <strong></strong> {item.itemName} -{" "}
                 {item.type === "Kopf"
                   ? "Kopf"
                   : item.type === "Brust"
@@ -440,11 +468,23 @@ const Account = () => {
         </ul>
       )}
 
-      <h2 style={{ marginTop: "20px", color: "#ebebeb" }}>Charaktere:</h2>
+      <h2
+        style={{
+          marginTop: "20px",
+          color: "#ffffff", // Textfarbe (weiß)
+          backgroundColor: "rgba(208, 32, 144, 0.3)", // Hintergrundfarbe (grün, kann angepasst werden)
+          padding: "10px 15px", // Innenabstand für den Kasten
+          borderRadius: "8px", // Abgerundete Ecken
+          display: "inline-block", // Sorgt dafür, dass der Kasten die Breite des Inhalts hat
+          boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)", // Optionaler Schatten
+        }}
+      >
+        Charaktere:
+      </h2>
       <ul style={{ paddingLeft: "20px", lineHeight: "1.8" }}>
         {userData.characters && userData.characters.length > 0 ? (
           userData.characters.map((character, index) => (
-            <li key={`character-${index}`}>
+            <li style={{ listStyleType: "none" }} key={`character-${index}`}>
               <strong>Charaktername:</strong> {character.name} <br />
               <strong>Level:</strong> {character.level} <br />
               <strong>HP:</strong> {character.stats.hp} <br />
@@ -457,7 +497,7 @@ const Account = () => {
                   style={{
                     padding: "5px 10px",
                     fontSize: "14px",
-                    backgroundColor: "#ff4d4d",
+                    backgroundColor: "rgba208, 32, 144, 0.5)",
                     color: "#fff",
                     border: "none",
                     borderRadius: "5px",
@@ -490,10 +530,11 @@ const Account = () => {
               <strong>Rüstung:</strong>
               <ul>
                 {character.equipment.armor.head && (
-                  <li>
+                  <div>
                     Helm: {character.equipment.armor.head}
                     <button
                       style={{
+                        listStyleType: "none",
                         padding: "5px 10px",
                         fontSize: "14px",
                         backgroundColor: "#ff4d4d",
@@ -522,10 +563,10 @@ const Account = () => {
                     >
                       Helm ablegen
                     </button>
-                  </li>
+                  </div>
                 )}
                 {character.equipment.armor.chest && (
-                  <li>
+                  <div>
                     Brust: {character.equipment.armor.chest}
                     <button
                       style={{
@@ -557,10 +598,10 @@ const Account = () => {
                     >
                       Brust ablegen
                     </button>
-                  </li>
+                  </div>
                 )}
                 {character.equipment.armor.hands && (
-                  <li>
+                  <div>
                     Handschuhe: {character.equipment.armor.hands}
                     <button
                       style={{
@@ -592,7 +633,7 @@ const Account = () => {
                     >
                       Handschuhe ablegen
                     </button>
-                  </li>
+                  </div>
                 )}
                 {character.equipment.armor.legs && (
                   <li>

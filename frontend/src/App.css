@@ -10,9 +10,21 @@ body {
   font-family: "Arial", sans-serif;
   background-color: #4f4f4f;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+/* Großer grauer transparenter Rahmen */
+.frame {
+  background-color: rgba(200, 200, 200, 0.3); /* Grau mit Transparenz */
+  padding: 30px;
+  border: 2px solid rgba(200, 200, 200, 0.5); /* Halbtransparenter Rand */
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Schatten für mehr Tiefe */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Formular Container */
