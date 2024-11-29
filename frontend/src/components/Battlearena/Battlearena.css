@@ -1,112 +1,132 @@
+/* Allgemeine Stile */
 .battlearena {
   text-align: center;
-  font-family: Arial, sans-serif;
-  color: #ffffff; /* Weißer Text */
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Leicht durchsichtiger Hintergrund für besseren Kontrast */
+  color: #ffffff;
+  background-size: cover;
+  background-position: center;
+  padding: 20px 0;
 }
 
+.battlearena h1 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Battle Area */
 .battle-area {
   display: flex;
+  align-items: center;
   justify-content: space-around;
-  padding: 20px;
+  gap: 100px;
+  margin: 20px auto;
+  padding: 50px;
+  max-width: 800px;
 }
 
-.player {
-  text-align: center;
-  margin-right: 2em;
-}
+/* Spieler und Gegner */
+.player,
 .enemy {
+  width: 100%;
   text-align: center;
-  margin-left: 2em;
-}
-
-.character-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
-
-.health-bar {
-  width: 200px;
-  height: 20px;
-  background-color: #ccc;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
   overflow: hidden;
+}
+
+.player:hover,
+.enemy:hover {
+  transform: scale(1.05);
+}
+
+/* Charakterbild */
+.character-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 42%;
+  margin-bottom: 5px;
+}
+
+/* Health Bar */
+.health-bar {
+  position: relative;
+  width: 100%;
+  height: 18px;
   margin: 5px auto;
+  border-radius: 50px;
+  overflow: hidden;
 }
 
 .health-bar-fill {
+  position: relative;
+  width: 100%;
   height: 100%;
-  transition: width 0.5s ease-out;
-}
-
-.player-hp {
-  background-color: green;
+  background-color: rgb(63, 242, 63);
+  transition: width 1s ease-in-out;
+  border-radius: 50px;
 }
 
 .enemy-hp {
-  background-color: red;
+  background: linear-gradient(90deg, #ff5441, #f95442);
 }
 
+/* Buttons */
 .fight-button,
 .back-button {
-  margin-top: 20px;
+  position: relative;
   padding: 10px 20px;
   font-size: 16px;
-  border: none;
-  border-radius: 5px;
+  font-weight: bold;
+  border-radius: 50px;
   cursor: pointer;
-  font-weight: bold; /* Fettgedruckter Text für bessere Lesbarkeit */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schattierung für mehr Tiefe */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  text-align: center;
+  width: auto;
 }
 
-.fight-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.fight-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.back-button {
-  background-color: #f44336;
-  color: white;
-  margin-left: 10px;
-}
-
+/* Ergebnisanzeige */
 .fight-result {
   margin-top: 20px;
-  line-height: 1.6;
-  font-size: 18px; /* Größere Schrift für die Kampfergebnisse */
-  font-weight: bold; /* Fettgedruckt für bessere Lesbarkeit */
-  color: #f1f1f1; /* Helle Schriftfarbe */
+  font-size: 20px;
+  font-weight: bold;
+  color: #f1f1f1;
+  line-height: 1.8;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+}
+
+/* Kampfprotokoll */
+.battle-log {
+  max-height: 350px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  color: #333;
 }
 
 .log-toggle {
   cursor: pointer;
-  font-weight: bold; /* Fettgedruckter Text für den Log-Button */
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 15px;
+  text-decoration: underline;
 }
 
-.battle-log {
-  max-height: 300px;
-  overflow-y: auto;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9; /* Heller Hintergrund für das Log */
-  color: #333; /* Dunklere Textfarbe für bessere Lesbarkeit */
-}
-
+/* Fehlermeldungen */
 .error-message {
   color: red;
-  font-weight: bold; /* Fettgedruckt für Fehlernachrichten */
-  font-size: 18px; /* Größere Schrift für Fehler */
+  font-weight: bold;
+  font-size: 18px;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./Battlearena.css"; // Import der CSS-Datei
+import "./Battlearena.css";
 
 const Battlearena = ({
   battleResult,
@@ -12,9 +12,9 @@ const Battlearena = ({
   const [fightResult, setFightResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [playerHp, setPlayerHp] = useState(100); // Spieler-HP (zum Testen voreingestellt)
-  const [enemyHp, setEnemyHp] = useState(100); // Gegner-HP
-  const [isLogOpen, setIsLogOpen] = useState(false); // Zustand für Einklappen des Kampflogs
+  const [playerHp, setPlayerHp] = useState(100);
+  const [enemyHp, setEnemyHp] = useState(100);
+  const [isLogOpen, setIsLogOpen] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
   const APP_URL = "http://63.176.74.46:3000";
@@ -23,7 +23,6 @@ const Battlearena = ({
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
   );
-
   const playerHpRef = useRef(playerHp);
   const enemyHpRef = useRef(enemyHp);
 
@@ -36,12 +35,19 @@ const Battlearena = ({
   }, [enemyHp]);
 
   const handleFightInArena = async () => {
+    const fightSound = new Audio("/sounds/Battlescream.wav");
+    fightSound.volume = 0.5;
+    fightSound
+      .play()
+      .catch((error) =>
+        console.error("Fehler beim Abspielen des Sound:", error)
+      );
+
     setLoading(true);
     setError(null);
     setFightResult(null);
-    setBattleLog([]); // Kampflog zurücksetzen
+    setBattleLog([]);
     setAnimationComplete(false);
-
     setPlayerHp(100);
     setEnemyHp(100);
 
@@ -65,7 +71,6 @@ const Battlearena = ({
 
       const data = await response.json();
       setFightResult(data);
-
       simulateHpChanges(
         data.character.stats.hp,
         data.enemy.stats.health,
@@ -96,14 +101,22 @@ const Battlearena = ({
       const turn = battleLog[currentTurn];
 
       if (turn.characterAttack > 0 && enemyHpRef.current > 0) {
-        setEnemyHp((prevHp) => Math.max(0, prevHp - turn.characterAttack));
+        setEnemyHp((prevHp) => {
+          // Berechne den neuen HP-Wert des Gegner und setze den Zustand
+          const newHp = Math.max(0, prevHp - turn.characterAttack);
+          enemyHpRef.current = newHp; // Update der Referenz
+          return newHp;
+        });
       }
 
-      if (turn.enemyAttack > 0 && playerHpRef.current > 0) {
-        setPlayerHp((prevHp) => Math.max(0, prevHp - turn.enemyAttack));
+      if (turn.enemyAttack > 0 && playerFinalHp > 0) {
+        setPlayerHp((prevHp) => {
+          // Berechne den neuen HP-Wert des Spielers und setze den Zustand
+          const newHp = Math.max(0, prevHp - turn.enemyAttack);
+          playerHpRef.current = newHp; // Update der Referenz
+        });
       }
 
-      // Schrittweise das Log aktualisieren
       setBattleLog((prevLog) => [
         ...prevLog,
         {
@@ -116,7 +129,7 @@ const Battlearena = ({
       ]);
 
       currentTurn++;
-    }, 1000); // Jede Runde wird alle 1 Sekunde hinzugefügt
+    }, 1000);
   };
 
   const toggleLogVisibility = () => {
@@ -130,7 +143,7 @@ const Battlearena = ({
         <div className="player">
           <h2>{playerCharacter?.name}</h2>
           <img
-            src={`../../logo512.png`}
+            src={"/bilder/player.png"}
             alt={playerCharacter?.name}
             className="character-img"
           />
@@ -167,7 +180,11 @@ const Battlearena = ({
 
         <div className="enemy">
           <h2>Gegner</h2>
-          <img src={`../../logo512.png`} alt="Bild" className="character-img" />
+          <img
+            src={"/bilder/gorgon.png"}
+            alt="Bild"
+            className="character-img"
+          />
           <p>Level: ????</p>
           <div className="health-bar">
             <div
@@ -182,25 +199,25 @@ const Battlearena = ({
       <button
         onClick={handleFightInArena}
         disabled={loading}
-        className={`fight-button ${loading ? "disabled" : ""}`}
+        className={`button fight-button ${loading ? "disabled" : ""}`}
       >
         {loading ? "Kämpft..." : "Kämpfen"}
       </button>
 
-      <button onClick={onBack} className="back-button">
+      <button onClick={onBack} className="button back-button">
         Zurück zur Auswahl
       </button>
 
       {fightResult && animationComplete && (
         <div className="fight-result">
-          <h2>Kampfergebnis</h2>
-          <p>{fightResult.battleSummary.message}</p>
+          <h2 className="title">Kampfergebnis</h2>
+          <p className="text">{fightResult.battleSummary.message}</p>
 
           {fightResult?.rewards?.drops?.length > 0 && (
             <div>
-              <h3>Belohnungen</h3>
+              <h3 className="title">Belohnungen</h3>
               {fightResult.rewards.drops.map((drop, index) => (
-                <div key={index}>
+                <div key={index} className="text">
                   <p>
                     {drop.material}: {drop.quantity} Stück
                   </p>
