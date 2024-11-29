@@ -93,6 +93,7 @@
 
 .material-item {
   list-style: none;
+  color: white;
 }
 /* Buttons */
 button {
