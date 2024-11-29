@@ -7,7 +7,8 @@ const LoginForm = ({ setToken, setAccountId }) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Fehlernachricht für die Anzeige
   const navigate = useNavigate(); // Verwende `useNavigate` für die Navigation
-  const url = "http://localhost:3000/login"; // Deine API-Login-URL
+  const APP_URL = "http://63.176.74.46:3000";
+  //  const APP_URL = "http://local:3000";
 
   useEffect(() => {
     // Füge die Klasse zu body hinzu
@@ -30,7 +31,7 @@ const LoginForm = ({ setToken, setAccountId }) => {
 
     // Login-Daten an den Server schicken
     try {
-      const response = await fetch(url, {
+      const response = await fetch(`${APP_URL}/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },

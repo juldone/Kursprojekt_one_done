@@ -17,13 +17,69 @@
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
 
-### Changelog 25.11.24
+### Changelog 28.11.24
 
 ### Tim
+- Weiter am Design der Battlearena.js/.css gearbeitet.
+- Weiter am Design von Fight.js/.css gearbeitet.
+- Präsentation Ahmet gezeigt, Feedback eingeholt.
+- Feedback umgesetzt: Teamfolie hinzugefügt.
+- Charaktere für Teamfolie erstellt und in GIMP bearbeitet.
+- Präsentation Details (2 Sterne in Team Folie) ausgearbeitet.
+- Mit Julian den groben Ablauf für morgen besprochen.
+
+### Brian 
+
+* URLAUB *
+
+### Julian
+### Changelog 27.11.24
+### Tim
+- Fight.js und Fight.css angepasst.
+- BattleArena.js und Battlearena.css angepasst.
+- Sound zu "Kämpfen" Button hinzugefügt in der BattleArena
+- Präsentation Team Folie hinzugefügt.
+- Spieler Platzhalter und Gegner Platzhalter Bilder erstellt und eingefügt
 
 ### Brian
 
+* URLAUB * 
+
 ### Julian
+- Login und Registerbereich angepasst. Farben aufeinander abgestimmt, Rahmen feature nach clickin eingebaut
+- Front end design, Acccount information versucht anzupassen Buttons überarbeitert
+  
+### Changelog 26.11.24
+
+### Tim
+- Präsentation gemeinsam mit Julian und Brian ausgearbeitet
+- Insgesamt 7 Sprites für die Präsentation erstellt
+- Branch für morgige Frontend Arbeit vorbereitet
+
+### Brian
+- Präsentation gemeinsam mit Julian und Tim ausgearbeitet 
+
+## Julian
+- Präsentation gemeinsam mit Tim und Brian ausgearbeitet
+  
+### Changelog 25.11.24
+
+### Tim
+- Login Bereich Designed und Eingebunden
+- Crafting Bereich Designed und Eingebunden
+- Angefangen Struktur in der Account.js zu schaffen (JSX Teil Auslagern)
+
+
+### Brian
+- BattleArena.js überarbeitet damit es etwas mehr engagement beim Kampfablauf gibt
+- Disable button beim Weapon Equipment eingebaut
+- Mit Julian zusammen Die andwendung in die Cloud zu bringen
+
+### Julian
+- Mit Brian zusammengearbeitet und die Anwendung in die Cloud gebracht
+- NGINX installiert als Webserver
+- EC2 Instanz aufgesetzt
+- DocumentDB als MongoDB initialisiert und sie mit der EC2 Instanz verbunden
 
 ### Changelog 22.11.24
 
