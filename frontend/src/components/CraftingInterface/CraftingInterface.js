@@ -6,8 +6,9 @@ const CraftingInterface = () => {
   const [weaponRecipes, setWeaponRecipes] = useState([]);
   const [armorRecipes, setArmorRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [isCraftingTableVisible, setIsCraftingTableVisible] = useState(false); // Standardmäßig zugeklappt
   const [materials] = useState({ Holz: 0, Stein: 0, Metall: 0 });
+  const APP_URL = "http://63.176.74.46:3000";
+  //  const APP_URL = "http://local:3000";
 
   const accountId = localStorage.getItem("accountId");
   const navigate = useNavigate();
@@ -28,14 +29,14 @@ const CraftingInterface = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/user/${accountId}/crafting/wpnrecipes`)
+    fetch(`${APP_URL}/user/${accountId}/crafting/wpnrecipes`)
       .then((res) => res.json())
       .then((data) => setWeaponRecipes(data))
       .catch((err) =>
         console.error("Fehler beim Laden der Waffenrezepte:", err)
       );
 
-    fetch(`http://localhost:3000/user/${accountId}/crafting/armrecipes`)
+    fetch(`${APP_URL}/user/${accountId}/crafting/armrecipes`)
       .then((res) => res.json())
       .then((data) => setArmorRecipes(data))
       .catch((err) =>
@@ -43,15 +44,11 @@ const CraftingInterface = () => {
       );
   }, [accountId]);
 
-  const toggleCraftingTable = () => {
-    setIsCraftingTableVisible(!isCraftingTableVisible);
-  };
-
   const craftItem = (recipeId, type) => {
     const endpoint =
       type === "Kopf" || type === "Brust" || type === "Hand" || type === "Füße"
-        ? `http://localhost:3000/user/${accountId}/crafting/armcraft`
-        : `http://localhost:3000/user/${accountId}/crafting/wpncraft`;
+        ? `${APP_URL}/user/${accountId}/crafting/armcraft`
+        : `${APP_URL}/user/${accountId}/crafting/wpncraft`;
 
     fetch(endpoint, {
       method: "POST",
@@ -80,81 +77,68 @@ const CraftingInterface = () => {
 
   return (
     <div className="crafting-container">
-      {/* Button, um das Crafting-Fenster umzuschalten */}
-      <button className="crafting-title" onClick={toggleCraftingTable}>
-        Schmiede Der Götter
-      </button>
+      <h1 className="crafting-title">Crafting Interface</h1>
 
-      {/* Crafting-Tabelle nur anzeigen, wenn isCraftingTableVisible true ist */}
-      {isCraftingTableVisible && (
-        <>
-          {/* Waffen- und Rüstungsrezepte nebeneinander */}
-          <div className="recipes-container">
-            <div className="recipes-column">
-              <h2 className="recipe-title">Waffenrezepte</h2>
-              <ul className="recipe-list">
-                {weaponRecipes.map((recipe) => (
-                  <li
-                    key={recipe.recipeId}
-                    onClick={() => setSelectedRecipe(recipe)}
-                    className="recipe-item"
-                  >
-                    {recipe.name} - Typ: {recipe.type}, Schaden: {recipe.damage}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="recipes-column">
-              <h2 className="recipe-title">Rüstungsrezepte</h2>
-              <ul className="recipe-list">
-                {armorRecipes.map((recipe) => (
-                  <li
-                    key={recipe.recipeId}
-                    onClick={() => setSelectedRecipe(recipe)}
-                    className="recipe-item"
-                  >
-                    {recipe.name} - Typ: {recipe.type}, Rüstung: {recipe.armor}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+      {/* Waffen- und Rüstungsrezepte nebeneinander */}
+      <div className="recipes-container">
+        <div className="recipes-column">
+          <h2 className="recipe-title">Waffenrezepte</h2>
+          <ul className="recipe-list">
+            {weaponRecipes.map((recipe) => (
+              <li
+                key={recipe.recipeId}
+                onClick={() => setSelectedRecipe(recipe)}
+                className="recipe-item"
+              >
+                {recipe.name} - Typ: {recipe.type}, Schaden: {recipe.damage}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="recipes-column">
+          <h2 className="recipe-title">Rüstungsrezepte</h2>
+          <ul className="recipe-list">
+            {armorRecipes.map((recipe) => (
+              <li
+                key={recipe.recipeId}
+                onClick={() => setSelectedRecipe(recipe)}
+                className="recipe-item"
+              >
+                {recipe.name} - Typ: {recipe.type}, Rüstung: {recipe.armor}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
-          {selectedRecipe && (
-            <div className="selected-recipe">
-              <h3 className="selected-recipe-title">
-                Ausgewähltes Rezept: {selectedRecipe.name}
-              </h3>
-              <p className="selected-recipe-detail">
-                Typ: {selectedRecipe.type}
-              </p>
-              <p className="selected-recipe-detail">Material kosten :</p>
-              <ul className="materials-list">
-                {Object.entries(selectedRecipe.materials).map(
-                  ([material, amount]) => (
-                    <li key={material} className="material-item">
-                      {material}: {amount}
-                    </li>
-                  )
-                )}
-              </ul>
-              <button
-                onClick={() => navigate("/account")}
-                className="back-button2"
-              >
-                Zurück zur Account-Seite
-              </button>
-              <button
-                onClick={() =>
-                  craftItem(selectedRecipe.recipeId, selectedRecipe.type)
-                }
-                className="craft-button"
-              >
-                Craften
-              </button>
-            </div>
-          )}
-        </>
+      {selectedRecipe && (
+        <div className="selected-recipe">
+          <h3 className="selected-recipe-title">
+            Ausgewähltes Rezept: {selectedRecipe.name}
+          </h3>
+          <p className="selected-recipe-detail">Typ: {selectedRecipe.type}</p>
+          <p className="selected-recipe-detail">Material kosten :</p>
+          <ul className="materials-list">
+            {Object.entries(selectedRecipe.materials).map(
+              ([material, amount]) => (
+                <li key={material} className="material-item">
+                  {material}: {amount}
+                </li>
+              )
+            )}
+          </ul>
+          <button onClick={() => navigate("/account")} className="back-button">
+            Zurück zur Account-Seite
+          </button>
+          <button
+            onClick={() =>
+              craftItem(selectedRecipe.recipeId, selectedRecipe.type)
+            }
+            className="craft-button"
+          >
+            Craften
+          </button>
+        </div>
       )}
     </div>
   );

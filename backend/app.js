@@ -23,6 +23,8 @@ import equipmentRoutes from "./routes/equipmentRoutes.js"; // Pfad anpassen, fal
 
 // Initialisiere Express
 const app = express();
+const CORS_URL = "http://63.176.74.46:3001";
+// const CORS_URL = "http://localhost:3001";
 
 // Middleware, um JSON-Daten zu verarbeiten
 app.use(express.json());
@@ -30,7 +32,7 @@ app.use(express.json());
 // CORS konfigurieren
 app.use(
   cors({
-    origin: "http://localhost:3001", // Frontend URL anpassen
+    origin: CORS_URL, // Frontend URL anpassen
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
