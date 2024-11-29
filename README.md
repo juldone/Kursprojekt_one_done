@@ -16,6 +16,19 @@
 
 
 Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-UFRd74kOSfOGGBVd1SDcI/edit?gid=585685019#gid=585685019
+### Changelog 29.11.24
+
+### Tim
+
+### Brian
+
+### Julian
+- Probepräsentation mit dem Team & Ahmet und Jacob / Anschließende Besprechungen mit Feedback / Verbesserungen
+- EC2 Instanz neugestartet / Git pull from main 
+- Frontend am Design der account.js/.css gearbeitet.
+- Frontend am Design von craftinginterface.js/.css gearbeitet.
+- Präsentation Details ausgearbeitet.
+- Schönes WE.
 
 ### Changelog 28.11.24
 
@@ -33,6 +46,12 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 * URLAUB *
 
 ### Julian
+- Frontend am Design der account.js/.css gearbeitet.
+- Frontend am Design von craftinginterface.js/.css gearbeitet.
+- Präsentation Details (2 Sterne in Team Folie) ausgearbeitet.
+- Call mit Ahmet, Projektpräsentation
+- Mit Tim den groben Ablauf für die präsentatiotn besprochen.
+  
 ### Changelog 27.11.24
 ### Tim
 - Fight.js und Fight.css angepasst.
