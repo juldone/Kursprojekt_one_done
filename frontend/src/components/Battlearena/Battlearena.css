@@ -78,8 +78,7 @@
 }
 
 /* Buttons */
-.fight-button,
-.back-button {
+.fight-button {
   position: relative;
   padding: 10px 20px;
   font-size: 16px;

@@ -93,6 +93,8 @@
 }
 
 .material-item {
+  margin-top: 0px;
+  margin-bottom: 0px;
   list-style: none;
   color: white;
 }
@@ -118,7 +120,37 @@ button:active {
   transform: scale(0.95);
 }
 
+.craft-button {
+  padding: 10px 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, #4b02f6, #47fffc);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-out;
+  width: auto;
+  background-color: #6c757d;
+  margin-left: 10px;
+}
+
 .back-button {
+  padding: 10px 10px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, #4b02f6, #47fffc);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-out;
+  width: auto;
   background-color: #6c757d;
 }
 
