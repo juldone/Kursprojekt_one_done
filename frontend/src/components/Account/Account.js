@@ -224,7 +224,7 @@ const Account = () => {
           level: 1,
           stats: {
             hp: 100,
-            attack: 10,
+            attack: 20,
             defense: 5,
             speed: 5,
           },
