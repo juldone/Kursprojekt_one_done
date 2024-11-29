@@ -94,27 +94,33 @@ const Battlearena = ({
 
     const interval = setInterval(() => {
       if (currentTurn >= battleLog.length) {
+        console.log("Kampf abgeschlossen:", {
+          playerFinalHp: playerHpRef.current,
+          enemyFinalHp: enemyHpRef.current,
+        });
         clearInterval(interval);
         setAnimationComplete(true);
         return;
       }
 
       const turn = battleLog[currentTurn];
+      console.log(`Runde ${turn.round}:`, turn);
 
-      if (turn.characterAttack > 0 && enemyHpRef.current > 0) {
+      if (turn.characterAttack > 0) {
         setEnemyHp((prevHp) => {
-          // Berechne den neuen HP-Wert des Gegner und setze den Zustand
           const newHp = Math.max(0, prevHp - turn.characterAttack);
-          enemyHpRef.current = newHp; // Update der Referenz
+          console.log(`Spieler-HP: ${prevHp} -> ${newHp}`);
+          enemyHpRef.current = newHp;
           return newHp;
         });
       }
 
-      if (turn.enemyAttack > 0 && playerFinalHp > 0) {
+      if (turn.enemyAttack > 0) {
         setPlayerHp((prevHp) => {
           // Berechne den neuen HP-Wert des Spielers und setze den Zustand
           const newHp = Math.max(0, prevHp - turn.enemyAttack);
           playerHpRef.current = newHp; // Update der Referenz
+          return newHp; // Rückgabewert hinzufügen
         });
       }
 

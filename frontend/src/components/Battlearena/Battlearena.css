@@ -69,8 +69,8 @@
   width: 100%;
   height: 100%;
   background-color: rgb(63, 242, 63);
-  transition: width 1s ease-in-out;
   border-radius: 50px;
+  transition: width 1s ease-in-out;
 }
 
 .enemy-hp {
