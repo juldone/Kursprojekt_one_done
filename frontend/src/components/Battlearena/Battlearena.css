@@ -1,0 +1,132 @@
+/* Allgemeine Stile */
+.battlearena {
+  text-align: center;
+  color: #ffffff;
+  background-size: cover;
+  background-position: center;
+  padding: 20px 0;
+}
+
+.battlearena h1 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Battle Area */
+.battle-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 100px;
+  margin: 20px auto;
+  padding: 50px;
+  max-width: 800px;
+}
+
+/* Spieler und Gegner */
+.player,
+.enemy {
+  width: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.player:hover,
+.enemy:hover {
+  transform: scale(1.05);
+}
+
+/* Charakterbild */
+.character-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 42%;
+  margin-bottom: 5px;
+}
+
+/* Health Bar */
+.health-bar {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  margin: 5px auto;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.health-bar-fill {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(63, 242, 63);
+  transition: width 1s ease-in-out;
+  border-radius: 50px;
+}
+
+.enemy-hp {
+  background: linear-gradient(90deg, #ff5441, #f95442);
+}
+
+/* Buttons */
+.fight-button,
+.back-button {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  text-align: center;
+  width: auto;
+}
+
+/* Ergebnisanzeige */
+.fight-result {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #f1f1f1;
+  line-height: 1.8;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+}
+
+/* Kampfprotokoll */
+.battle-log {
+  max-height: 350px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.log-toggle {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 15px;
+  text-decoration: underline;
+}
+
+/* Fehlermeldungen */
+.error-message {
+  color: red;
+  font-weight: bold;
+  font-size: 18px;
+}

@@ -1,0 +1,94 @@
+/* Setze Hintergrundbild */
+.form-background {
+  background-image: url("../../../public/bilder/Loginbajuti2.jpg");
+  background-size: cover; /* Passt Hintergrundbild an */
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Vollbild */
+  display: flex; /* Zentriert Inhalt */
+  justify-content: center;
+  align-items: center;
+  margin: 0; /* Entfernt Standardabstände */
+  overflow: hidden; /* Kein Scrollen bei Überlauf */
+}
+
+/* Container für das Formular */
+form {
+  background: #ffffff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Überschrift */
+form h1 {
+  font-size: 24px;
+  color: #ffffff; /* Weißer Text */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Labels */
+label {
+  color: #ffffff; /* Weiße Schrift für Label */
+  font-size: 14px;
+  margin-bottom: 5px;
+  align-self: flex-start; /* Links ausrichten */
+}
+
+/* Eingabefelder */
+input[type="email"],
+input[type="text"], /* Neu hinzugefügt für Username */
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #ffffff; /* Textfarbe Weiß */
+  background-color: #2d3436; /* Dunkler Hintergrund */
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* Fokus-Effekt für alle Eingabefelder */
+input[type="email"]:focus,
+input[type="text"]:focus, /* Neu hinzugefügt für Username */
+input[type="password"]:focus {
+  border-color: #6c5ce7; /* Lila Umrandung */
+  box-shadow: 0 0 5px rgba(108, 92, 231, 0.5); /* Lila Schimmer */
+  background-color: #000000; /* Schwarzer Hintergrund bei Fokus */
+}
+
+/* Login-Button */
+button {
+  background: linear-gradient(135deg, #6c5ce7, #0984e3);
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 100%;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #0984e3, #6c5ce7);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Button schwebt leicht */
+}
+
+/* Fehlernachricht */
+div[style] {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  color: #ffffff;
+}

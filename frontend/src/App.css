@@ -71,10 +71,6 @@ button.no-reg-btn {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #0077b3;
-}
-
 /* Text für den Button (Login/Registrierung umschalten) */
 button:focus {
   outline: none;
@@ -89,7 +85,7 @@ h1 {
 
 label {
   font-size: 14px;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 5px;
   display: block;
 }

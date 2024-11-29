@@ -1,8 +1,0 @@
-/* Setze Hintergrundbild mit !important */
-.mainpage-background {
-  background-image: url("../../public/mirco-cabbia-sciamano240-st-louis-2-3.jpg");
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  color: aliceblue;
-}
