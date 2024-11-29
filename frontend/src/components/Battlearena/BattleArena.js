@@ -36,7 +36,7 @@ const Battlearena = ({
 
   const handleFightInArena = async () => {
     const fightSound = new Audio("/sounds/Battlescream.wav");
-    fightSound.volume = 0.2;
+    fightSound.volume = 1;
     fightSound
       .play()
       .catch((error) =>
@@ -106,24 +106,52 @@ const Battlearena = ({
       const turn = battleLog[currentTurn];
       console.log(`Runde ${turn.round}:`, turn);
 
+      // Spieler verursacht Schaden
       if (turn.characterAttack > 0) {
+        // Schaden-Sound abspielen
+        const damageSound = new Audio("/sounds/EnemyHit.wav"); // Pfad zur Datei anpassen
+        damageSound.volume = 0.2; // Lautstärkeregler (0 bis 1)
+        damageSound
+          .play()
+          .catch((error) =>
+            console.error(
+              "Fehler beim Abspielen des Schaden-Geräusches:",
+              error
+            )
+          );
+
         setEnemyHp((prevHp) => {
           const newHp = Math.max(0, prevHp - turn.characterAttack);
-          console.log(`Spieler-HP: ${prevHp} -> ${newHp}`);
-          enemyHpRef.current = newHp;
+          setEnemyDamage(`-${turn.characterAttack} Dmg`); // Schadensanzeige
+          setEnemyBlink(true); // Gegner blinkt rot
+          setTimeout(() => setEnemyBlink(false), 300); // Nach 300ms zurücksetzen
+          setTimeout(() => setEnemyDamage(null), 500); // Schadenszahl verschwindet nach 500 ms
           return newHp;
         });
       }
 
+      // Gegner verursacht Schaden
       if (turn.enemyAttack > 0) {
+        // Schaden-Sound abspielen
+        const damageSound = new Audio("/sounds/PlayerDamage.wav");
+        damageSound.volume = 0.2; // Lautstärkeregler (0 bis 1)
+        damageSound
+          .play()
+          .catch((error) =>
+            console.error("Fehler beim Abspielen des Schaden-Geräusches:")
+          );
+
         setPlayerHp((prevHp) => {
-          // Berechne den neuen HP-Wert des Spielers und setze den Zustand
           const newHp = Math.max(0, prevHp - turn.enemyAttack);
-          playerHpRef.current = newHp; // Update der Referenz
+          setPlayerDamage(`-${turn.enemyAttack} Dmg`); // Schadensanzeige
+          setPlayerBlink(true); // Spieler blinkt rot
+          setTimeout(() => setPlayerBlink(false), 300); // Nach 300ms zurücksetzen
+          setTimeout(() => setPlayerDamage(null), 500); // Schaden verschwindet nach 500ms
           return newHp; // Rückgabewert hinzufügen
         });
       }
 
+      // Battle-Log aktualisieren
       setBattleLog((prevLog) => [
         ...prevLog,
         {
@@ -143,6 +171,11 @@ const Battlearena = ({
     setIsLogOpen((prev) => !prev);
   };
 
+  const [playerDamage, setPlayerDamage] = useState(null);
+  const [enemyDamage, setEnemyDamage] = useState(null);
+  const [playerBlink, setPlayerBlink] = useState(false);
+  const [enemyBlink, setEnemyBlink] = useState(false);
+
   return (
     <div className="battlearena">
       <h1>Battle Arena</h1>
@@ -152,8 +185,13 @@ const Battlearena = ({
           <img
             src={"/bilder/player.png"}
             alt={playerCharacter?.name}
-            className="character-img"
+            className={`character-img ${playerBlink ? "blink" : ""}`}
           />
+          {playerDamage && (
+            <span className="damage-popup" style={{ top: "-20px" }}>
+              {playerDamage}
+            </span>
+          )}
           <p>Level: {playerCharacter?.level}</p>
           <div className="health-bar">
             <div
@@ -190,8 +228,13 @@ const Battlearena = ({
           <img
             src={"/bilder/gorgon.png"}
             alt="Bild"
-            className="character-img"
+            className={`character-img ${enemyBlink ? "blink" : ""}`}
           />
+          {enemyDamage && (
+            <span className="damage-popup" style={{ top: "-20px" }}>
+              {enemyDamage}
+            </span>
+          )}
           <p>Level: ????</p>
           <div className="health-bar">
             <div

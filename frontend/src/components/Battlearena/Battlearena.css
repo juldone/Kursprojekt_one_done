@@ -153,3 +153,38 @@
   font-weight: bold;
   font-size: 18px;
 }
+
+/* Schadensanzeige */
+.damage-popup {
+  position: absolute;
+  color: red;
+  font-weight: bold;
+  font-size: 1.5rem;
+  animation: popup 0.5s ease-out forwards;
+}
+
+@keyframes ppopup {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+/* Blink-Effekt bei Schaden nehmen */
+.character-img.blink {
+  animation: blink 0.3s ease-in-out;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(3) saturate(0.5) hue-rotate(0deg);
+  }
+}
