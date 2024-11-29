@@ -18,7 +18,7 @@ const Battlearena = ({
   const [animationComplete, setAnimationComplete] = useState(false);
   const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
   // const APP_URL = "http://63.176.74.46:3000";
-  const APP_URL = "http://local:3000";
+  const APP_URL = "http://localhost:3000";
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
@@ -36,7 +36,7 @@ const Battlearena = ({
 
   const handleFightInArena = async () => {
     const fightSound = new Audio("/sounds/Battlescream.wav");
-    fightSound.volume = 0.5;
+    fightSound.volume = 0.2;
     fightSound
       .play()
       .catch((error) =>
@@ -70,6 +70,7 @@ const Battlearena = ({
       }
 
       const data = await response.json();
+      console.log(data.battleLog);
       setFightResult(data);
       simulateHpChanges(
         data.character.stats.hp,
@@ -163,7 +164,7 @@ const Battlearena = ({
               {isLogOpen ? "Kampflog schließen" : "Kampflog anzeigen"}
             </h3>
             {isLogOpen && (
-              <div className="battle-log">
+              <div className={`battle-log ${isLogOpen ? "visible" : ""}`}>
                 {battleLog.map((log, index) => (
                   <div key={index}>
                     <p>Runde {log.round}</p>
@@ -208,11 +209,14 @@ const Battlearena = ({
         Zurück zur Auswahl
       </button>
 
-      {fightResult && animationComplete && (
-        <div className="fight-result">
+      {fightResult && (
+        <div
+          className={`fight-result fade-in ${
+            animationComplete ? "visible" : ""
+          }`}
+        >
           <h2 className="title">Kampfergebnis</h2>
           <p className="text">{fightResult.battleSummary.message}</p>
-
           {fightResult?.rewards?.drops?.length > 0 && (
             <div>
               <h3 className="title">Belohnungen</h3>
