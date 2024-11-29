@@ -75,19 +75,20 @@
 .selected-recipe {
   margin-top: 20px;
   padding: 15px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  background-color: #f8f9fa;
+  border: 2px solid rgba(128, 128, 128, 0.9);
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.86);
+  box-shadow: 0.4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .selected-recipe-title {
   text-align: center;
   font-size: 1.2em;
-  color: #000000;
+  color: #ffffff;
 }
 
 .selected-recipe-detail {
-  color: #020202;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
