@@ -25,6 +25,11 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 - Sound für Spielerschaden und Gegnerschaden (2 seperate Files implementiert) implementiert, kein Code Fehler angezeigt aber keine Wiedergabe (Wochenend Fleißarbeit)
 
 ### Brian
+- Arbeiten von Mittwoch und Donnerstag kontrolliert und gemerged
+- Probepräsentation teilgenommen
+- Paar Enemy.json angepasst das es bei der Präsentation hoffentlichzu keinen komplikationen kommt
+- Battlearena css und js überarbeitet das man das Result und den Log wieder sehen kann
+  
 
 ### Julian
 - Probepräsentation mit dem Team & Ahmet und Jacob / Anschließende Besprechungen mit Feedback / Verbesserungen
