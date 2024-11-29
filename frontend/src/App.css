@@ -15,6 +15,18 @@ body {
   height: 100vh;
 }
 
+/* Großer grauer transparenter Rahmen */
+.frame {
+  background-color: rgba(200, 200, 200, 0.3); /* Grau mit Transparenz */
+  padding: 30px;
+  border: 2px solid rgba(200, 200, 200, 0.5); /* Halbtransparenter Rand */
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Schatten für mehr Tiefe */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Formular Container */
 form {
   background-color: #272727;
@@ -78,7 +90,7 @@ button:focus {
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 20px;
   font-size: 24px;
 }
