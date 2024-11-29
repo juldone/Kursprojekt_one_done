@@ -19,6 +19,10 @@ Productbacklog : https://docs.google.com/spreadsheets/d/1tCEmYaCuT7FTPfnBtTO3C-U
 ### Changelog 29.11.24
 
 ### Tim
+- Probepräsentation teilgenommen
+- Frontend BattleArena.js und Battlearea.css designed
+- Schadenseffekt erstellt, Spieler und Gegnerbild blinken rot wenn sie Schaden bekommen.
+- Sound für Spielerschaden und Gegnerschaden (2 seperate Files implementiert) implementiert, kein Code Fehler angezeigt aber keine Wiedergabe (Wochenend Fleißarbeit)
 
 ### Brian
 
