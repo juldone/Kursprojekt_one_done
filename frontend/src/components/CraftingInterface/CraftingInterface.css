@@ -83,14 +83,17 @@
 .selected-recipe-title {
   text-align: center;
   font-size: 1.2em;
-  color: #ffffff;
+  color: #000000;
 }
 
 .selected-recipe-detail {
-  color: #ffffff;
+  color: #020202;
   margin-bottom: 10px;
 }
 
+.material-item {
+  list-style: none;
+}
 /* Buttons */
 button {
   display: inline-block;
