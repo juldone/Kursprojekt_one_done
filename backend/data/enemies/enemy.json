@@ -481,8 +481,8 @@
     "level": 8,
     "stats": {
       "health": 150,
-      "attack": 10,
-      "defense": 5,
+      "attack": 69,
+      "defense": 15,
       "speed": 8
     },
     "drops": [
@@ -537,8 +537,8 @@
     "level": 9,
     "stats": {
       "health": 140,
-      "attack": 80,
-      "defense": 65,
+      "attack": 50,
+      "defense": 15,
       "speed": 10
     },
     "drops": [
@@ -566,7 +566,7 @@
     "stats": {
       "health": 180,
       "attack": 33,
-      "defense": 40,
+      "defense": 15,
       "speed": 12
     },
     "drops": [
@@ -594,7 +594,7 @@
     "stats": {
       "health": 200,
       "attack": 100,
-      "defense": 80,
+      "defense": 15,
       "speed": 15
     },
     "drops": [
@@ -622,7 +622,7 @@
     "stats": {
       "health": 400,
       "attack": 100,
-      "defense": 90,
+      "defense": 15,
       "speed": 10
     },
     "drops": [
