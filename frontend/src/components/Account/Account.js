@@ -10,8 +10,8 @@ const Account = () => {
   const [isArmorVisible, setIsArmorVisible] = useState(false); // Rüstung ein-/ausklappen
   const navigate = useNavigate(); // useNavigate korrekt benutzen
 
-  //const APP_URL = "http://63.176.74.46:3000";
-  const APP_URL = "http://localhost:3000";
+  const APP_URL = "http://63.176.74.46:3000";
+  //const APP_URL = "http://localhost:3000";
   useEffect(() => {
     // Füge die Klasse zu body hinzu
     document.body.classList.add("mainpage-background");

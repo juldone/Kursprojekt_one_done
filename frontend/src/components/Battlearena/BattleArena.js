@@ -17,8 +17,8 @@ const Battlearena = ({
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
-  // const APP_URL = "http://63.176.74.46:3000";
-  const APP_URL = "http://localhost:3000";
+  const APP_URL = "http://63.176.74.46:3000";
+  //const APP_URL = "http://localhost:3000";
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
