@@ -36,7 +36,7 @@ const Battlearena = ({
 
   const handleFightInArena = async () => {
     const fightSound = new Audio("/sounds/Battlescream.wav");
-    fightSound.volume = 1;
+    fightSound.volume = 0.2;
     fightSound
       .play()
       .catch((error) =>
