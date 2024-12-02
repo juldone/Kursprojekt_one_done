@@ -69,8 +69,8 @@
   width: 100%;
   height: 100%;
   background-color: rgb(63, 242, 63);
-  transition: width 1s ease-in-out;
   border-radius: 50px;
+  transition: width 1s ease-in-out;
 }
 
 .enemy-hp {
@@ -78,8 +78,7 @@
 }
 
 /* Buttons */
-.fight-button,
-.back-button {
+.fight-button {
   position: relative;
   padding: 10px 20px;
   font-size: 16px;
@@ -104,6 +103,24 @@
   border-radius: 8px;
 }
 
+.battle-log {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.battle-log.visible {
+  opacity: 1;
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+}
+
 /* Kampfprotokoll */
 .battle-log {
   max-height: 350px;
@@ -112,8 +129,9 @@
   border: 1px solid #ccc;
   padding: 12px;
   border-radius: 8px;
-  background: #f9f9f9;
+  background: #000000;
   color: #333;
+  opacity: 1;
 }
 
 .log-toggle {
@@ -122,6 +140,11 @@
   font-size: 18px;
   margin-top: 15px;
   text-decoration: underline;
+  color: #333;
+  opacity: 1;
+}
+.title {
+  color: #e0e0e0;
 }
 
 /* Fehlermeldungen */
@@ -129,4 +152,39 @@
   color: red;
   font-weight: bold;
   font-size: 18px;
+}
+
+/* Schadensanzeige */
+.damage-popup {
+  position: absolute;
+  color: red;
+  font-weight: bold;
+  font-size: 1.5rem;
+  animation: popup 0.5s ease-out forwards;
+}
+
+@keyframes ppopup {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+/* Blink-Effekt bei Schaden nehmen */
+.character-img.blink {
+  animation: blink 0.3s ease-in-out;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(3) saturate(0.5) hue-rotate(0deg);
+  }
 }

@@ -7,8 +7,8 @@ const LoginForm = ({ setToken, setAccountId }) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Fehlernachricht für die Anzeige
   const navigate = useNavigate(); // Verwende `useNavigate` für die Navigation
-  const APP_URL = "http://63.176.74.46:3000";
-  //  const APP_URL = "http://local:3000";
+  //const APP_URL = "http://63.176.74.46:3000";
+  const APP_URL = "http://localhost:3000";
 
   useEffect(() => {
     // Füge die Klasse zu body hinzu

@@ -17,8 +17,8 @@ const Battlearena = ({
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [battleLog, setBattleLog] = useState([]); // Neues Log-Array für schrittweise Anzeige
-  const APP_URL = "http://63.176.74.46:3000";
-  //  const APP_URL = "http://local:3000";
+  // const APP_URL = "http://63.176.74.46:3000";
+  const APP_URL = "http://localhost:3000";
 
   const playerCharacter = characters.find(
     (char) => char.characterId === characterId
@@ -36,7 +36,7 @@ const Battlearena = ({
 
   const handleFightInArena = async () => {
     const fightSound = new Audio("/sounds/Battlescream.wav");
-    fightSound.volume = 0.5;
+    fightSound.volume = 1;
     fightSound
       .play()
       .catch((error) =>
@@ -70,6 +70,7 @@ const Battlearena = ({
       }
 
       const data = await response.json();
+      console.log(data.battleLog);
       setFightResult(data);
       simulateHpChanges(
         data.character.stats.hp,
@@ -93,30 +94,64 @@ const Battlearena = ({
 
     const interval = setInterval(() => {
       if (currentTurn >= battleLog.length) {
+        console.log("Kampf abgeschlossen:", {
+          playerFinalHp: playerHpRef.current,
+          enemyFinalHp: enemyHpRef.current,
+        });
         clearInterval(interval);
         setAnimationComplete(true);
         return;
       }
 
       const turn = battleLog[currentTurn];
+      console.log(`Runde ${turn.round}:`, turn);
 
-      if (turn.characterAttack > 0 && enemyHpRef.current > 0) {
+      // Spieler verursacht Schaden
+      if (turn.characterAttack > 0) {
+        // Schaden-Sound abspielen
+        const damageSound = new Audio("/sounds/EnemyHit.wav"); // Pfad zur Datei anpassen
+        damageSound.volume = 0.2; // Lautstärkeregler (0 bis 1)
+        damageSound
+          .play()
+          .catch((error) =>
+            console.error(
+              "Fehler beim Abspielen des Schaden-Geräusches:",
+              error
+            )
+          );
+
         setEnemyHp((prevHp) => {
-          // Berechne den neuen HP-Wert des Gegner und setze den Zustand
           const newHp = Math.max(0, prevHp - turn.characterAttack);
-          enemyHpRef.current = newHp; // Update der Referenz
+          setEnemyDamage(`-${turn.characterAttack} Dmg`); // Schadensanzeige
+          setEnemyBlink(true); // Gegner blinkt rot
+          setTimeout(() => setEnemyBlink(false), 300); // Nach 300ms zurücksetzen
+          setTimeout(() => setEnemyDamage(null), 500); // Schadenszahl verschwindet nach 500 ms
           return newHp;
         });
       }
 
-      if (turn.enemyAttack > 0 && playerFinalHp > 0) {
+      // Gegner verursacht Schaden
+      if (turn.enemyAttack > 0) {
+        // Schaden-Sound abspielen
+        const damageSound = new Audio("/sounds/PlayerDamage.wav");
+        damageSound.volume = 0.2; // Lautstärkeregler (0 bis 1)
+        damageSound
+          .play()
+          .catch((error) =>
+            console.error("Fehler beim Abspielen des Schaden-Geräusches:")
+          );
+
         setPlayerHp((prevHp) => {
-          // Berechne den neuen HP-Wert des Spielers und setze den Zustand
           const newHp = Math.max(0, prevHp - turn.enemyAttack);
-          playerHpRef.current = newHp; // Update der Referenz
+          setPlayerDamage(`-${turn.enemyAttack} Dmg`); // Schadensanzeige
+          setPlayerBlink(true); // Spieler blinkt rot
+          setTimeout(() => setPlayerBlink(false), 300); // Nach 300ms zurücksetzen
+          setTimeout(() => setPlayerDamage(null), 500); // Schaden verschwindet nach 500ms
+          return newHp; // Rückgabewert hinzufügen
         });
       }
 
+      // Battle-Log aktualisieren
       setBattleLog((prevLog) => [
         ...prevLog,
         {
@@ -136,6 +171,11 @@ const Battlearena = ({
     setIsLogOpen((prev) => !prev);
   };
 
+  const [playerDamage, setPlayerDamage] = useState(null);
+  const [enemyDamage, setEnemyDamage] = useState(null);
+  const [playerBlink, setPlayerBlink] = useState(false);
+  const [enemyBlink, setEnemyBlink] = useState(false);
+
   return (
     <div className="battlearena">
       <h1>Battle Arena</h1>
@@ -145,8 +185,13 @@ const Battlearena = ({
           <img
             src={"/bilder/player.png"}
             alt={playerCharacter?.name}
-            className="character-img"
+            className={`character-img ${playerBlink ? "blink" : ""}`}
           />
+          {playerDamage && (
+            <span className="damage-popup" style={{ top: "-20px" }}>
+              {playerDamage}
+            </span>
+          )}
           <p>Level: {playerCharacter?.level}</p>
           <div className="health-bar">
             <div
@@ -163,7 +208,7 @@ const Battlearena = ({
               {isLogOpen ? "Kampflog schließen" : "Kampflog anzeigen"}
             </h3>
             {isLogOpen && (
-              <div className="battle-log">
+              <div className={`battle-log ${isLogOpen ? "visible" : ""}`}>
                 {battleLog.map((log, index) => (
                   <div key={index}>
                     <p>Runde {log.round}</p>
@@ -183,8 +228,13 @@ const Battlearena = ({
           <img
             src={"/bilder/gorgon.png"}
             alt="Bild"
-            className="character-img"
+            className={`character-img ${enemyBlink ? "blink" : ""}`}
           />
+          {enemyDamage && (
+            <span className="damage-popup" style={{ top: "-20px" }}>
+              {enemyDamage}
+            </span>
+          )}
           <p>Level: ????</p>
           <div className="health-bar">
             <div
@@ -208,11 +258,14 @@ const Battlearena = ({
         Zurück zur Auswahl
       </button>
 
-      {fightResult && animationComplete && (
-        <div className="fight-result">
+      {fightResult && (
+        <div
+          className={`fight-result fade-in ${
+            animationComplete ? "visible" : ""
+          }`}
+        >
           <h2 className="title">Kampfergebnis</h2>
           <p className="text">{fightResult.battleSummary.message}</p>
-
           {fightResult?.rewards?.drops?.length > 0 && (
             <div>
               <h3 className="title">Belohnungen</h3>
