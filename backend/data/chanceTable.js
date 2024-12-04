@@ -14,7 +14,7 @@ function getRandomRarity() {
 
   for (const [rarity, chance] of Object.entries(rarityChanceTable)) {
     cumulativeChance += chance; // Addiert die Wahrscheinlichkeit jedes Seltenheitsgrads
-    if (randomNumber <= cumulativeChance) {
+    if (randomNumber < cumulativeChance) {
       return rarity; // Gibt den Seltenheitsgrad zurück, wenn die Zufallszahl kleiner oder gleich der kumulierten Wahrscheinlichkeit ist
     }
   }
