@@ -1,6 +1,6 @@
-// Ein Objekt, das die Seltenheitsgrade und ihre Wahrscheinlichkeiten enthält
+// chanceTable.js
 const rarityChanceTable = {
-  common: 50, // 50 % wahrscheinlichkeit für gewöhnliche Items
+  common: 50, // 50 % Wahrscheinlichkeit für gewöhnliche Items
   uncommon: 30, // 30 % Wahrscheinlichkeit für ungewöhnliche Items
   rare: 15, // 15 % Wahrscheinlichkeit für seltene Items
   epic: 4, // 4 % Wahrscheinlichkeit für epische Items
@@ -8,7 +8,7 @@ const rarityChanceTable = {
 };
 
 // Funktion, die basierend auf dem Chance-Table eine Seltenheit zurückgibt
-function getRandomRarity() {
+export function getRandomRarity() {
   const randomNumber = Math.random() * 100; // Zufallszahl zwischen 0 und 100
   let cumulativeChance = 0;
 
@@ -20,5 +20,3 @@ function getRandomRarity() {
   }
   return "common"; // Standardwert, falls keine Übereinstimmung gefunden wird
 }
-
-module.exports = { getRandomRarity };

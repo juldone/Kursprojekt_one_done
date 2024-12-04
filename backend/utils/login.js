@@ -4,26 +4,29 @@ import User from "../data/User.js";
 
 export async function login(req, res) {
   const { email, password } = req.body;
-
   try {
-    // Benutzer suchen
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Ungültige Anmeldedaten" });
     }
 
-    // Passwort überprüfen
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Ungültige Anmeldedaten" });
     }
 
     // JWT erstellen
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { accountId: user.accountId },
+      "dein-geheimer-schlüssel"
+    );
 
-    res.json({ message: "Login erfolgreich", token });
+    // Antwort mit Token und userName
+    res.json({
+      token,
+      accountId: user.accountId,
+      userName: user.userName, // Benutzername hinzufügen
+    });
   } catch (error) {
     res.status(500).json({ message: "Fehler beim Login", error });
   }

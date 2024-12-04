@@ -1,45 +1,49 @@
-// LoginForm.js
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const LoginForm = ({ setMessage, setToken }) => {
+const LoginForm = ({ setToken, setAccountId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Verwende `useNavigate` für die Navigation
+  const url = "http://localhost:3000/login"; // Deine API-Login-URL
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    // Login-Daten an den Server schicken
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.ok) {
       const data = await response.json();
-      if (response.ok) {
-        setMessage(data.message);
-        setToken(data.token);
-      } else {
-        setMessage(data.message || "Login failed");
-      }
-    } catch (error) {
-      setMessage("Error: " + error.message);
+
+      // Speichern des Tokens und der Account-ID im state oder localStorage
+      setToken(data.token);
+      setAccountId(data.accountId);
+
+      // Navigiere zur Account-Seite
+      navigate("/account");
+    } else {
+      alert("Login fehlgeschlagen!");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Email:</label>
+    <form onSubmit={handleLogin}>
       <input
         type="email"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        required
       />
-      <label>Password:</label>
       <input
         type="password"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        required
       />
       <button type="submit">Login</button>
     </form>

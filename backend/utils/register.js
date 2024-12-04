@@ -28,7 +28,7 @@ export async function register(req, res) {
 
     // Neuen Benutzer mit der auto-incrementierten `userId` erstellen
     const user = new User({
-      userId: counter.sequenz, // Verwendung der auto-incrementierten ID
+      accountId: counter.sequenz, // Verwendung der auto-incrementierten ID
       email,
       password: hashedPassword,
       userName,
